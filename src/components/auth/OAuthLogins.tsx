@@ -1,6 +1,6 @@
 import { FcGoogle } from 'react-icons/fc';
 import { FaApple } from 'react-icons/fa';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 function OAuthLogins() {
   return (

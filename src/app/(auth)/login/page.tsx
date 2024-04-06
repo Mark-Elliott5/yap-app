@@ -1,5 +1,5 @@
-import CardWrapper from '@/components/CardWrapper';
-import LoginForm from '@/components/LoginForm';
+import CardWrapper from '@/components/auth/AuthCardWrapper';
+import LoginForm from '@/components/auth/LoginForm';
 import { Metadata } from 'next/types';
 
 export const metadata: Metadata = {

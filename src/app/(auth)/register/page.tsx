@@ -1,4 +1,4 @@
-import CardWrapper from '@/components/CardWrapper';
+import CardWrapper from '@/components/auth/AuthCardWrapper';
 import { Metadata } from 'next/types';
 
 export const metadata: Metadata = {

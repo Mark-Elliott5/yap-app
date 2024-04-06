@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import CardBackButton from './CardBackButton';
+import CardBackButton from './AuthCardBackButton';
 import { cn } from '@/lib/utils';
 import OAuthLogins from './OAuthLogins';
 

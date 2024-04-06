@@ -1,10 +1,17 @@
 'use server';
 
-import { z } from 'zod';
+import { ZodError } from 'zod';
 import LoginSchema from '../schemas';
 
-const login = async (values: z.infer<typeof LoginSchema>) => {
-  console.log(values);
+const login = async (data: FormData) => {
+  try {
+    const values = LoginSchema.parse(data);
+    console.log(values);
+    return { success: 'Logged in!' };
+  } catch (err) {
+    console.log(err);
+    return { error: (err as ZodError).errors[0].message };
+  }
 };
 
 export { login };
