@@ -1,6 +1,7 @@
+import { Metadata } from 'next/types';
+
 import CardWrapper from '@/components/auth/AuthCardWrapper';
 import RegisterForm from '@/components/auth/RegisterForm';
-import { Metadata } from 'next/types';
 
 export const metadata: Metadata = {
   title: `Register | Yap`,

@@ -1,24 +1,26 @@
 'use client';
 
-import { z } from 'zod';
-import { LoginSchema } from '../../../schemas';
+import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import FormButton from '@/components/auth/PendingButton';
+import FormError from '@/components/FormError';
+import FormSuccess from '@/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
   FormField,
-  FormLabel,
   FormItem,
+  FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 // import { Button } from '../ui/button';
 import { login } from '../../../actions/actions';
-import FormError from '../FormError';
-import FormSuccess from '../FormSuccess';
-import FormButton from './PendingButton';
-import { useState } from 'react';
+import { LoginSchema } from '../../../schemas';
 
 function LoginForm() {
   const [loginTry, setLoginTry] = useState<{

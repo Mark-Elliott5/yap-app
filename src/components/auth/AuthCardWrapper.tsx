@@ -1,6 +1,9 @@
 'use client';
 
 import { Archivo_Black } from 'next/font/google';
+
+import CardBackButton from '@/components/auth/AuthCardBackButton';
+import OAuthLogins from '@/components/auth/OAuthLogins';
 import {
   Card,
   CardContent,
@@ -9,9 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import CardBackButton from './AuthCardBackButton';
 import { cn } from '@/lib/utils';
-import OAuthLogins from './OAuthLogins';
 
 const archivoBlack = Archivo_Black({
   subsets: ['latin'],
