@@ -1,7 +1,7 @@
 'use client';
 
 import { z } from 'zod';
-import { LoginSchema } from '../../../schemas';
+import { RegisterSchema } from '../../../schemas';
 import { Form, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -14,34 +14,34 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 // import { Button } from '../ui/button';
-import { login } from '../../../actions/actions';
+import { register } from '../../../actions/actions';
 import FormError from '../FormError';
 import FormSuccess from '../FormSuccess';
 import FormButton from './PendingButton';
 import { useState } from 'react';
 
-function LoginForm() {
-  const [loginTry, setLoginTry] = useState<{
+function RegisterForm() {
+  const [registerTry, setRegistrationTry] = useState<{
     error?: string;
     success?: string;
   }>({});
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const handleLogin = async (data: FormData) => {
-    setLoginTry(await login(data));
+  const handleRegister = async (data: FormData) => {
+    setRegistrationTry(await register(data));
   };
 
   return (
     <FormProvider {...form}>
       <Form
-        action={handleLogin}
-        onSubmit={(e) => handleLogin(e.formData)}
+        action={handleRegister}
+        onSubmit={(e) => handleRegister(e.formData)}
         control={form.control}
       >
         <div className='flex flex-col gap-2 pb-6'>
@@ -83,15 +83,35 @@ function LoginForm() {
               </FormItem>
             )}
           ></FormField>
+          <FormField
+            control={form.control}
+            name='username'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder='Yapper'
+                    type='text'
+                    minLength={1}
+                    maxLength={32}
+                    required
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          ></FormField>
         </div>
         <div className='flex flex-col gap-y-6'>
-          {loginTry.error && <FormError message={loginTry.error} />}
-          {loginTry.success && <FormSuccess message={loginTry.success} />}
-          <FormButton label='Log in' />
+          {registerTry.error && <FormError message={registerTry.error} />}
+          {registerTry.success && <FormSuccess message={registerTry.success} />}
+          <FormButton label='Register' />
         </div>
       </Form>
     </FormProvider>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;

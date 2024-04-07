@@ -1,4 +1,5 @@
 import CardWrapper from '@/components/auth/AuthCardWrapper';
+import RegisterForm from '@/components/auth/RegisterForm';
 import { Metadata } from 'next/types';
 
 export const metadata: Metadata = {
@@ -6,16 +7,15 @@ export const metadata: Metadata = {
   description: 'Yap Social Media App',
 };
 
-function LoginPage({ children }: { children: React.ReactNode }) {
+function LoginPage() {
   return (
     <CardWrapper
       cardDescription={'Register'}
-      backButtonLabel={'Login using Yap or other platforms here.'}
+      backButtonLabel={'Already have an account?'}
       backButtonHref={'/login'}
       showOAuth={false}
     >
-      {/* <RegisterForm></RegisterForm> */}
-      {children}
+      <RegisterForm />
     </CardWrapper>
   );
 }
