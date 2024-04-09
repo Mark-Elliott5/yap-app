@@ -41,11 +41,7 @@ function LoginForm() {
 
   return (
     <FormProvider {...form}>
-      <Form
-        action={handleLogin}
-        onSubmit={(e) => handleLogin(e.formData)}
-        control={form.control}
-      >
+      <Form action={login} onSubmit={({ formData }) => handleLogin(formData)}>
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             control={form.control}
@@ -87,8 +83,8 @@ function LoginForm() {
           ></FormField>
         </div>
         <div className='flex flex-col gap-y-6'>
-          {loginTry.error && <FormError message={loginTry.error} />}
-          {loginTry.success && <FormSuccess message={loginTry.success} />}
+          {loginTry?.error && <FormError message={loginTry.error} />}
+          {loginTry?.success && <FormSuccess message={loginTry.success} />}
           <FormButton label='Log in' />
         </div>
       </Form>

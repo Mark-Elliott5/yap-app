@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Yap Social Media App',
 };
 
-function LoginPage() {
+function RegisterPage() {
   return (
     <CardWrapper
       cardDescription={'Register'}
@@ -21,4 +21,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

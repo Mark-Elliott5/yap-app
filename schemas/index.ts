@@ -25,16 +25,16 @@ const RegisterSchema = zfd.formData({
       message: 'Minimum password length is 8 characters.',
     })
   ),
-  username: zfd.text(
-    z
-      .string()
-      .min(1, {
-        message: 'Username is required.',
-      })
-      .max(32, {
-        message: 'Username cannot be longer than 32 characters.',
-      })
-  ),
+  // username: zfd.text(
+  //   z
+  //     .string()
+  //     .min(1, {
+  //       message: 'Username is required.',
+  //     })
+  //     .max(32, {
+  //       message: 'Username cannot be longer than 32 characters.',
+  //     })
+  // ),
 });
 
 export { LoginSchema, RegisterSchema };

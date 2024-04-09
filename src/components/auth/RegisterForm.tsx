@@ -10,7 +10,7 @@ import FormSuccess from '@/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -43,8 +43,8 @@ function RegisterForm() {
   return (
     <FormProvider {...form}>
       <Form
-        action={handleRegister}
-        onSubmit={(e) => handleRegister(e.formData)}
+        action={register}
+        onSubmit={({ formData }) => handleRegister(formData)}
         control={form.control}
       >
         <div className='flex flex-col gap-2 pb-6'>
@@ -86,7 +86,7 @@ function RegisterForm() {
               </FormItem>
             )}
           ></FormField>
-          <FormField
+          {/* <FormField
             control={form.control}
             name='username'
             render={({ field }) => (
@@ -106,11 +106,13 @@ function RegisterForm() {
                 <FormDescription>You can change this later.</FormDescription>
               </FormItem>
             )}
-          ></FormField>
+          ></FormField> */}
         </div>
         <div className='flex flex-col gap-y-6'>
-          {registerTry.error && <FormError message={registerTry.error} />}
-          {registerTry.success && <FormSuccess message={registerTry.success} />}
+          {registerTry?.error && <FormError message={registerTry.error} />}
+          {registerTry?.success && (
+            <FormSuccess message={registerTry.success} />
+          )}
           <FormButton label='Register' />
         </div>
       </Form>
