@@ -9,8 +9,10 @@ import db from '@/lib/db';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-import { getUserByEmail } from '../data-utils';
+// import { getUserByEmail } from '../data-utils';
 import { LoginSchema, RegisterSchema } from '../schemas';
+
+// class EmailError extends Error {}
 
 const login = async (data: FormData) => {
   let values;
@@ -19,7 +21,7 @@ const login = async (data: FormData) => {
     console.log(values);
   } catch (err) {
     console.log(err);
-    return { error: (err as ZodError).message };
+    return { error: (err as ZodError).errors[0].message };
   }
   const { email, password } = values;
   console.log(email, password);
@@ -53,16 +55,26 @@ const register = async (data: FormData) => {
   let values;
   try {
     values = RegisterSchema.parse(data);
+    if (values.password !== values.confirmPassword) {
+      throw new ZodError([
+        {
+          message: 'Passwords do not match.',
+          fatal: true,
+          code: 'custom',
+          path: ['confirmPassword'],
+        },
+      ]);
+    }
   } catch (err) {
     console.log(err);
-    return { error: (err as ZodError).message };
+    return { error: (err as ZodError).errors[0].message };
   }
-  const { email, password } = values;
-  const user = await getUserByEmail(email);
   try {
-    if (user) {
-      throw new Error('Email already taken.');
-    }
+    const { email, password } = values;
+    // const user = await getUserByEmail(email);
+    // // if (user) {
+    // //   throw new EmailError('Email already taken.', {});
+    // // }
     const hashedPassword = await bcrypt.hash(password, 10);
     const userObj = {
       email,
@@ -77,8 +89,12 @@ const register = async (data: FormData) => {
         return { error: 'Email already in use.' };
       }
       console.log('Prisma error:', err);
-      return { error: 'Unknown error occurred.' };
+      return { error: 'Something went wrong!' };
     }
+    // if (err instanceof EmailError) {
+    //   console.log('DB error:', err);
+    //   return { error: 'Email already in use.' };
+    // }
     console.log('Unknown error:', err);
     return { error: 'Something went wrong!' };
   }

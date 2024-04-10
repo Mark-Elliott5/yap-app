@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 
 function CardBackButton({ label, href }: { label: string; href: string }) {
   return (
-    <Button variant='link'>
-      <Link href={href}>{label}</Link>
+    <Button className='p-0' variant='link'>
+      <Link className='p-2' href={href}>
+        {label}
+      </Link>
     </Button>
   );
 }

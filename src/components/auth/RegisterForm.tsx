@@ -33,6 +33,7 @@ function RegisterForm() {
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -86,27 +87,27 @@ function RegisterForm() {
               </FormItem>
             )}
           ></FormField>
-          {/* <FormField
+          <FormField
             control={form.control}
-            name='username'
+            name='confirmPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='Yapper'
-                    type='text'
+                    placeholder='************'
+                    type='password'
                     minLength={1}
                     maxLength={32}
                     required
                   />
                 </FormControl>
                 <FormMessage />
-                <FormDescription>You can change this later.</FormDescription>
+                {/* <FormDescription>You can change this later.</FormDescription> */}
               </FormItem>
             )}
-          ></FormField> */}
+          ></FormField>
         </div>
         <div className='flex flex-col gap-y-6'>
           {registerTry?.error && <FormError message={registerTry.error} />}

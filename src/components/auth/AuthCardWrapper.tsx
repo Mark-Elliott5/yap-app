@@ -19,7 +19,7 @@ const archivoBlack = Archivo_Black({
   weight: '400',
 });
 
-function CardWrapper({
+function AuthCardWrapper({
   children,
   cardDescription,
   backButtonLabel,
@@ -53,4 +53,4 @@ function CardWrapper({
   );
 }
 
-export default CardWrapper;
+export default AuthCardWrapper;

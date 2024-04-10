@@ -1,13 +1,13 @@
 /**
  * Routes that are accessible to logged out users
  */
-const publicRoutes = new Set(['/', '/login', '/register']);
+const publicRoutes = new Set(['/']);
 
 /**
  * Authentication routes.
  * Should redirect logged in users to /settings
  */
-const authRoutes = new Set(['/login', '/register']);
+const authRoutes = new Set(['/login', '/register', '/authentication-error']);
 
 /**
  * Prefix for authentication routes

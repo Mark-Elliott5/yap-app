@@ -1,6 +1,6 @@
 import { Metadata } from 'next/types';
 
-import CardWrapper from '@/components/auth/AuthCardWrapper';
+import AuthCardWrapper from '@/components/auth/AuthCardWrapper';
 import RegisterForm from '@/components/auth/RegisterForm';
 
 export const metadata: Metadata = {
@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 
 function RegisterPage() {
   return (
-    <CardWrapper
+    <AuthCardWrapper
       cardDescription={'Register'}
       backButtonLabel={'Already have an account?'}
       backButtonHref={'/login'}
-      showOAuth={false}
+      showOAuth={true}
     >
       <RegisterForm />
-    </CardWrapper>
+    </AuthCardWrapper>
   );
 }
 
