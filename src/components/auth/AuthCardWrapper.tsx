@@ -2,8 +2,8 @@
 
 import { Archivo_Black } from 'next/font/google';
 
-import CardBackButton from '@/components/auth/AuthCardBackButton';
-import OAuthLogins from '@/components/auth/OAuthLogins';
+import CardBackButton from '@/src/components/auth/AuthCardBackButton';
+import OAuthLogins from '@/src/components/auth/OAuthLogins';
 import {
   Card,
   CardContent,
@@ -11,8 +11,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+} from '@/src/components/ui/card';
+import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({
   subsets: ['latin'],
@@ -36,7 +36,7 @@ function AuthCardWrapper({
     <Card className='w-[400px]'>
       <CardHeader>
         <CardTitle className={cn('text-yap-red-500', archivoBlack.className)}>
-          Yap
+          yap
         </CardTitle>
         <CardDescription className=''>{cardDescription}</CardDescription>
       </CardHeader>

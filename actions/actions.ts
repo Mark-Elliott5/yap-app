@@ -4,9 +4,9 @@ import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
-import { signIn } from '@/auth';
-import db from '@/lib/db';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { signIn } from '@/src/auth';
+import db from '@/src/lib/db';
+import { DEFAULT_LOGIN_REDIRECT } from '@/src/routes';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 // import { getUserByEmail } from '../data-utils';
@@ -100,4 +100,197 @@ const register = async (data: FormData) => {
   }
 };
 
-export { login, register };
+const changeEmail = async (data: FormData) => {
+  // let values;
+  // try {
+  //   values = LoginSchema.parse(data);
+  //   console.log(values);
+  // } catch (err) {
+  //   console.log(err);
+  //   return { error: (err as ZodError).errors[0].message };
+  // }
+  // const { email, password } = values;
+  // console.log(email, password);
+  // try {
+  //   await signIn('credentials', {
+  //     email,
+  //     password,
+  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
+  //   });
+  // } catch (err) {
+  //   let msg = '';
+  //   if (err instanceof AuthError) {
+  //     switch (err.type) {
+  //       // no way currently of suppressing CredentialSignin console log
+  //       case 'CredentialsSignin':
+  //         msg = 'Invalid credentials.';
+  //         break;
+  //       default:
+  //         msg = 'Something went wrong!';
+  //     }
+  //     return { error: msg };
+  //   }
+  //   // successful auth throws NEXT_REDIRECT which is an error??
+  //   // therefore this line is necessary to redirect successful logins
+  //   throw err;
+  // }
+  // return { success: 'Login successful!' };
+};
+
+const changePassword = async (data: FormData) => {
+  // let values;
+  // try {
+  //   values = LoginSchema.parse(data);
+  //   console.log(values);
+  // } catch (err) {
+  //   console.log(err);
+  //   return { error: (err as ZodError).errors[0].message };
+  // }
+  // const { email, password } = values;
+  // console.log(email, password);
+  // try {
+  //   await signIn('credentials', {
+  //     email,
+  //     password,
+  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
+  //   });
+  // } catch (err) {
+  //   let msg = '';
+  //   if (err instanceof AuthError) {
+  //     switch (err.type) {
+  //       // no way currently of suppressing CredentialSignin console log
+  //       case 'CredentialsSignin':
+  //         msg = 'Invalid credentials.';
+  //         break;
+  //       default:
+  //         msg = 'Something went wrong!';
+  //     }
+  //     return { error: msg };
+  //   }
+  //   // successful auth throws NEXT_REDIRECT which is an error??
+  //   // therefore this line is necessary to redirect successful logins
+  //   throw err;
+  // }
+  // return { success: 'Login successful!' };
+};
+
+const changeAvatar = async (data: FormData) => {
+  // let values;
+  // try {
+  //   values = LoginSchema.parse(data);
+  //   console.log(values);
+  // } catch (err) {
+  //   console.log(err);
+  //   return { error: (err as ZodError).errors[0].message };
+  // }
+  // const { email, password } = values;
+  // console.log(email, password);
+  // try {
+  //   await signIn('credentials', {
+  //     email,
+  //     password,
+  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
+  //   });
+  // } catch (err) {
+  //   let msg = '';
+  //   if (err instanceof AuthError) {
+  //     switch (err.type) {
+  //       // no way currently of suppressing CredentialSignin console log
+  //       case 'CredentialsSignin':
+  //         msg = 'Invalid credentials.';
+  //         break;
+  //       default:
+  //         msg = 'Something went wrong!';
+  //     }
+  //     return { error: msg };
+  //   }
+  //   // successful auth throws NEXT_REDIRECT which is an error??
+  //   // therefore this line is necessary to redirect successful logins
+  //   throw err;
+  // }
+  // return { success: 'Login successful!' };
+};
+
+const deleteAccount = async (data: FormData) => {
+  // let values;
+  // try {
+  //   values = LoginSchema.parse(data);
+  //   console.log(values);
+  // } catch (err) {
+  //   console.log(err);
+  //   return { error: (err as ZodError).errors[0].message };
+  // }
+  // const { email, password } = values;
+  // console.log(email, password);
+  // try {
+  //   await signIn('credentials', {
+  //     email,
+  //     password,
+  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
+  //   });
+  // } catch (err) {
+  //   let msg = '';
+  //   if (err instanceof AuthError) {
+  //     switch (err.type) {
+  //       // no way currently of suppressing CredentialSignin console log
+  //       case 'CredentialsSignin':
+  //         msg = 'Invalid credentials.';
+  //         break;
+  //       default:
+  //         msg = 'Something went wrong!';
+  //     }
+  //     return { error: msg };
+  //   }
+  //   // successful auth throws NEXT_REDIRECT which is an error??
+  //   // therefore this line is necessary to redirect successful logins
+  //   throw err;
+  // }
+  // return { success: 'Login successful!' };
+};
+
+const changeDisplayName = async (data: FormData) => {
+  // let values;
+  // try {
+  //   values = LoginSchema.parse(data);
+  //   console.log(values);
+  // } catch (err) {
+  //   console.log(err);
+  //   return { error: (err as ZodError).errors[0].message };
+  // }
+  // const { email, password } = values;
+  // console.log(email, password);
+  // try {
+  //   await signIn('credentials', {
+  //     email,
+  //     password,
+  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
+  //   });
+  // } catch (err) {
+  //   let msg = '';
+  //   if (err instanceof AuthError) {
+  //     switch (err.type) {
+  //       // no way currently of suppressing CredentialSignin console log
+  //       case 'CredentialsSignin':
+  //         msg = 'Invalid credentials.';
+  //         break;
+  //       default:
+  //         msg = 'Something went wrong!';
+  //     }
+  //     return { error: msg };
+  //   }
+  //   // successful auth throws NEXT_REDIRECT which is an error??
+  //   // therefore this line is necessary to redirect successful logins
+  //   throw err;
+  // }
+  // return { success: 'Login successful!' };
+};
+
+export {
+  changeAvatar,
+  changeDisplayName,
+  changeEmail,
+  changePassword,
+  deleteAccount,
+  login,
+  register,
+};

@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+// import { Button } from '../ui/button';
+import { changeEmail } from '@/actions/actions';
+import { ChangeEmailSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -18,30 +21,29 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-// import { Button } from '../ui/button';
-import { login } from '../../../actions/actions';
-import { LoginSchema } from '../../../schemas';
-
-function LoginForm() {
-  const [loginTry, setLoginTry] = useState<{
+function ChangeEmailForm() {
+  const [changeTry, setChangeTry] = useState<{
     error?: string;
     success?: string;
   }>({});
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof ChangeEmailSchema>>({
+    resolver: zodResolver(ChangeEmailSchema),
     defaultValues: {
       email: '',
-      password: '',
+      confirmEmail: '',
     },
   });
 
-  const handleLogin = async (data: FormData) => {
-    setLoginTry(await login(data));
+  const handleChange = async (data: FormData) => {
+    setChangeTry(await changeEmail(data));
   };
 
   return (
     <FormProvider {...form}>
-      <Form action={login} onSubmit={({ formData }) => handleLogin(formData)}>
+      <Form
+        action={changeEmail}
+        onSubmit={({ formData }) => handleChange(formData)}
+      >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             control={form.control}
@@ -64,16 +66,16 @@ function LoginForm() {
           />
           <FormField
             control={form.control}
-            name='password'
+            name='confirmEmail'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Confirm Email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='************'
-                    type='password'
-                    minLength={8}
+                    placeholder='yapper@yap.com'
+                    type='email'
+                    minLength={1}
                     required
                   />
                 </FormControl>
@@ -83,13 +85,13 @@ function LoginForm() {
           />
         </div>
         <div className='flex flex-col gap-y-6'>
-          {loginTry?.error && <FormError message={loginTry.error} />}
-          {loginTry?.success && <FormSuccess message={loginTry.success} />}
-          <FormButton label='Log in' />
+          {changeTry?.error && <FormError message={changeTry.error} />}
+          {changeTry?.success && <FormSuccess message={changeTry.success} />}
+          <FormButton label='Save' />
         </div>
       </Form>
     </FormProvider>
   );
 }
 
-export default LoginForm;
+export default ChangeEmailForm;

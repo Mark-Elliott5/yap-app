@@ -1,11 +1,11 @@
 import { Metadata } from 'next/types';
 
-import AuthCardWrapper from '@/components/auth/AuthCardWrapper';
-import LoginForm from '@/components/auth/LoginForm';
+import AuthCardWrapper from '@/src/components/auth/AuthCardWrapper';
+import LoginForm from '@/src/components/auth/LoginForm';
 
 export const metadata: Metadata = {
-  title: `Login | Yap`,
-  description: 'Yap Social Media App',
+  title: `Login | yap`,
+  description: 'yap Social Media App',
 };
 
 function LoginPage() {

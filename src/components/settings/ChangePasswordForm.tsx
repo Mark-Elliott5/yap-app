@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+// import { Button } from '../ui/button';
+import { changePassword } from '@/actions/actions';
+import { ChangePasswordSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,47 +21,42 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-// import { Button } from '../ui/button';
-import { register } from '../../../actions/actions';
-import { RegisterSchema } from '../../../schemas';
-
-function RegisterForm() {
-  const [registerTry, setRegistrationTry] = useState<{
+function ChangePasswordForm() {
+  const [changeTry, setChangeTry] = useState<{
     error?: string;
     success?: string;
   }>({});
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof ChangePasswordSchema>>({
+    resolver: zodResolver(ChangePasswordSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      oldPassword: '',
+      newPassword: '',
       confirmPassword: '',
     },
   });
 
-  const handleRegister = async (data: FormData) => {
-    setRegistrationTry(await register(data));
+  const handleChange = async (data: FormData) => {
+    setChangeTry(await changePassword(data));
   };
 
   return (
     <FormProvider {...form}>
       <Form
-        action={register}
-        onSubmit={({ formData }) => handleRegister(formData)}
-        control={form.control}
+        action={changePassword}
+        onSubmit={({ formData }) => handleChange(formData)}
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             control={form.control}
-            name='email'
+            name='oldPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Old Password</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='yapper@yap.com'
-                    type='email'
+                    placeholder='********'
+                    type='password'
                     minLength={1}
                     required
                   />
@@ -70,16 +67,16 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name='password'
+            name='newPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>New Password</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='************'
+                    placeholder='********'
                     type='password'
-                    minLength={8}
+                    minLength={1}
                     required
                   />
                 </FormControl>
@@ -92,33 +89,29 @@ function RegisterForm() {
             name='confirmPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Confirm New Password</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='************'
+                    placeholder='********'
                     type='password'
                     minLength={1}
-                    maxLength={32}
                     required
                   />
                 </FormControl>
                 <FormMessage />
-                {/* <FormDescription>You can change this later.</FormDescription> */}
               </FormItem>
             )}
           />
         </div>
         <div className='flex flex-col gap-y-6'>
-          {registerTry?.error && <FormError message={registerTry.error} />}
-          {registerTry?.success && (
-            <FormSuccess message={registerTry.success} />
-          )}
-          <FormButton label='Register' />
+          {changeTry?.error && <FormError message={changeTry.error} />}
+          {changeTry?.success && <FormSuccess message={changeTry.success} />}
+          <FormButton label='Save' />
         </div>
       </Form>
     </FormProvider>
   );
 }
 
-export default RegisterForm;
+export default ChangePasswordForm;

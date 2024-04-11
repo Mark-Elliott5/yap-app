@@ -2,7 +2,7 @@
 
 import { useFormStatus } from 'react-dom';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/src/components/ui/button';
 
 function FormButton({ label }: { label: string }) {
   const { pending } = useFormStatus();

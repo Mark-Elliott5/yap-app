@@ -3,7 +3,7 @@ import {
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
-} from '@/routes';
+} from '@/src/routes';
 
 import { auth } from './auth';
 

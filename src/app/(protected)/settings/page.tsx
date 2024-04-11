@@ -1,5 +1,5 @@
-import { auth } from '@/auth';
-import SignOutButton from '@/components/auth/SignOutButton';
+import { auth } from '@/src/auth';
+import SignOutButton from '@/src/components/auth/SignOutButton';
 
 async function Settings() {
   const session = await auth();

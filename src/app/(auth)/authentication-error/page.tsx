@@ -1,11 +1,11 @@
 import { Metadata } from 'next/types';
 import { BsExclamationTriangle } from 'react-icons/bs';
 
-import AuthCardWrapper from '@/components/auth/AuthCardWrapper';
+import AuthCardWrapper from '@/src/components/auth/AuthCardWrapper';
 
 export const metadata: Metadata = {
-  title: `Error 💔 | Yap`,
-  description: 'Yap Social Media App',
+  title: `Error 💔 | yap`,
+  description: 'yap Social Media App',
 };
 
 function AuthErrorPage() {

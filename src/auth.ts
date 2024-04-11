@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 
-import db from '@/lib/db';
+import db from '@/src/lib/db';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { UserRole } from '@prisma/client';
 
