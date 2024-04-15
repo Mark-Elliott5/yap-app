@@ -76,6 +76,7 @@ function ChangePasswordForm() {
                     {...field}
                     placeholder='********'
                     type='password'
+                    autoComplete='new-password'
                     minLength={1}
                     required
                   />

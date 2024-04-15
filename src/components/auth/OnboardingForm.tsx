@@ -5,14 +5,15 @@ import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 // import { Button } from '../ui/button';
-import { login } from '@/actions/actions';
-import { LoginSchema } from '@/schemas';
+import { onboarding } from '@/actions/actions';
+import { OnboardingSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,76 +22,85 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function LoginForm() {
-  const [loginTry, setLoginTry] = useState<{
+function OnboardingForm() {
+  const [onboardingTry, setOnboardingTry] = useState<{
     error?: string;
     success?: string;
   }>({});
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof OnboardingSchema>>({
+    resolver: zodResolver(OnboardingSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      username: '',
+      displayName: '',
     },
   });
 
-  const handleLogin = async (data: FormData) => {
-    setLoginTry(await login(data));
+  const handleOnboarding = async (data: FormData) => {
+    setOnboardingTry(await onboarding(data));
   };
 
   return (
     <FormProvider {...form}>
-      <Form action={login} onSubmit={({ formData }) => handleLogin(formData)}>
+      <Form
+        action={onboarding}
+        onSubmit={({ formData }) => handleOnboarding(formData)}
+      >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             control={form.control}
-            name='email'
+            name='username'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Username</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='yapper@yap.com'
-                    type='email'
-                    autoComplete='email'
+                    placeholder='yappy'
+                    type='text'
+                    autoComplete='username'
                     minLength={1}
                     required
                   />
                 </FormControl>
                 <FormMessage />
+                <FormDescription>Your permanent username.</FormDescription>
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name='password'
+            name='displayName'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Display Name</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='************'
-                    type='password'
-                    autoComplete='current-password'
-                    minLength={8}
-                    required
+                    placeholder='Yapper'
+                    type='nickname'
+                    autoComplete=''
+                    minLength={0}
                   />
                 </FormControl>
                 <FormMessage />
+                <FormDescription>
+                  You can change this later. If one is not provided, your
+                  username will be used instead.
+                </FormDescription>
               </FormItem>
             )}
           />
         </div>
         <div className='flex flex-col gap-y-6'>
-          {loginTry?.error && <FormError message={loginTry.error} />}
-          {loginTry?.success && <FormSuccess message={loginTry.success} />}
-          <FormButton label='Log in' />
+          {onboardingTry?.error && <FormError message={onboardingTry.error} />}
+          {onboardingTry?.success && (
+            <FormSuccess message={onboardingTry.success} />
+          )}
+          <FormButton label='Save' />
         </div>
       </Form>
     </FormProvider>
   );
 }
 
-export default LoginForm;
+export default OnboardingForm;

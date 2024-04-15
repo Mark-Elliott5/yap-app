@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+// import { Button } from '../ui/button';
+import { register } from '@/actions/actions';
+import { RegisterSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -18,10 +21,6 @@ import {
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-// import { Button } from '../ui/button';
-import { register } from '../../../actions/actions';
-import { RegisterSchema } from '../../../schemas';
 
 function RegisterForm() {
   const [registerTry, setRegistrationTry] = useState<{
@@ -60,6 +59,7 @@ function RegisterForm() {
                     {...field}
                     placeholder='yapper@yap.com'
                     type='email'
+                    autoComplete='email'
                     minLength={1}
                     required
                   />
@@ -79,6 +79,7 @@ function RegisterForm() {
                     {...field}
                     placeholder='************'
                     type='password'
+                    // autoComplete='new-password'
                     minLength={8}
                     required
                   />
@@ -98,6 +99,7 @@ function RegisterForm() {
                     {...field}
                     placeholder='************'
                     type='password'
+                    // autoComplete='new-password'
                     minLength={1}
                     maxLength={32}
                     required

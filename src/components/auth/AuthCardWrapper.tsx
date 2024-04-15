@@ -28,8 +28,8 @@ function AuthCardWrapper({
 }: {
   children: React.ReactNode;
   cardDescription: string;
-  backButtonLabel: string;
-  backButtonHref: string;
+  backButtonLabel?: string;
+  backButtonHref?: string;
   showOAuth: boolean;
 }) {
   return (
@@ -46,9 +46,11 @@ function AuthCardWrapper({
           <OAuthLogins />
         </CardContent>
       )}
-      <CardFooter>
-        <CardBackButton label={backButtonLabel} href={backButtonHref} />
-      </CardFooter>
+      {backButtonHref && backButtonLabel && (
+        <CardFooter>
+          <CardBackButton label={backButtonLabel} href={backButtonHref} />
+        </CardFooter>
+      )}
     </Card>
   );
 }
