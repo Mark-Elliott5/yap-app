@@ -19,28 +19,38 @@ const LoginSchema = zfd.formData({
   ),
 });
 
-const ChangeEmailSchema = zfd.formData({
-  email: zfd.text(
-    z.string().email().min(1, {
-      message: 'Email is required.',
-    })
-  ),
-  confirmEmail: zfd.text(
-    z.string().email().min(1, {
-      message: 'Confirm Email is required.',
-    })
-  ),
-});
+const ChangeEmailSchema = zfd
+  .formData({
+    email: zfd.text(
+      z.string().email().min(1, {
+        message: 'Email is required.',
+      })
+    ),
+    confirmEmail: zfd.text(
+      z.string().email().min(1, {
+        message: 'Confirm Email is required.',
+      })
+    ),
+  })
+  .superRefine(({ email, confirmEmail }, ctx) => {
+    if (email !== confirmEmail) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'The new emails do not match.',
+        path: ['confirmEmail'],
+      });
+    }
+  });
 
-const ChangeAvatarSchema = zfd.formData({
-  avatar: zfd.file(
-    typeof window === 'undefined'
-      ? z.any()
-      : z
-          .instanceof(FileList)
-          .refine((file) => file?.length == 1, 'File is required.')
-  ),
-});
+// const ChangeAvatarSchema = zfd.formData({
+//   avatar: zfd.file(
+//     typeof window === 'undefined'
+//       ? z.any()
+//       : z
+//           .instanceof(FileList)
+//           .refine((file) => file?.length == 1, 'File is required.')
+//   ),
+// });
 
 const ChangePasswordSchema = zfd
   .formData({
@@ -76,7 +86,14 @@ const ChangePasswordSchema = zfd
         })
     ),
   })
-  .superRefine(({ newPassword, confirmPassword }, ctx) => {
+  .superRefine(({ oldPassword, newPassword, confirmPassword }, ctx) => {
+    if (oldPassword === newPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'New password is the same as the old password',
+        path: ['newPassword'],
+      });
+    }
     if (confirmPassword !== newPassword) {
       ctx.addIssue({
         code: 'custom',
@@ -147,11 +164,33 @@ const RegisterSchema = zfd
     }
   });
 
+const OnboardingSchema = zfd.formData({
+  username: zfd.text(
+    z
+      .string()
+      .min(1, {
+        message: 'Username is required.',
+      })
+      .max(32, {
+        message: 'Username cannot be longer than 32 characters.',
+      })
+  ),
+  displayName: zfd.text(
+    z
+      .string()
+      .max(32, {
+        message: 'Display name cannot be longer than 32 characters.',
+      })
+      .optional()
+  ),
+});
+
 export {
-  ChangeAvatarSchema,
+  // ChangeAvatarSchema,
   ChangeDisplayNameSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
   LoginSchema,
+  OnboardingSchema,
   RegisterSchema,
 };

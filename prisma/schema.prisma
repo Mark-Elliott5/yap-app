@@ -45,16 +45,34 @@ enum UserRole {
   USER
 }
 
+model Yap {
+  id          String   @id @default(cuid())
+  content     String
+  date        DateTime
+  image       String[]
+  likes       User[]   @relation(name: "LikedYaps")
+  author      User     @relation(name: "AuthoredYaps", fields: [userId], references: [id])
+  userId      String
+  echos       User[]   @relation(name: "Echos")
+  replies     Yap[]    @relation("ParentYap")
+  parentYap   Yap?     @relation("ParentYap", fields: [parentYapId], references: [id])
+  parentYapId String?
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
   displayName   String?
-  username      String?
+  username      String?   @unique
   email         String?   @unique
   emailVerified DateTime?
   password      String?
   image         String?
   role          UserRole  @default(USER)
+  OAuth         Boolean?  @default(false)
+  yaps          Yap[]     @relation(name: "AuthoredYaps")
+  likedYaps     Yap[]     @relation(name: "LikedYaps")
+  echos         Yap[]     @relation(name: "Echos")
   accounts      Account[]
   sessions      Session[]
 }

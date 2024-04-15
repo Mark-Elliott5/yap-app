@@ -1,18 +1,38 @@
 'use server';
 
-import { AuthError } from 'next-auth';
+import { redirect, RedirectType } from 'next/navigation';
+import { AuthError, Session } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
-import { signIn } from '@/src/auth';
+import {
+  getCurrentUser,
+  getUserByEmail,
+  getUserByUsername,
+  updateUser,
+} from '@/data-utils';
+import {
+  auth,
+  signIn,
+  unstable_update,
+} from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/db';
-import { DEFAULT_LOGIN_REDIRECT } from '@/src/routes';
+import {
+  DEFAULT_LOGIN_REDIRECT,
+  DEFAULT_REGISTER_REDIRECT,
+} from '@/src/routes';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-// import { getUserByEmail } from '../data-utils';
-import { LoginSchema, RegisterSchema } from '../schemas';
+import {
+  // ChangeAvatarSchema,
+  ChangeEmailSchema,
+  ChangePasswordSchema,
+  LoginSchema,
+  OnboardingSchema,
+  RegisterSchema,
+} from '../schemas';
 
-// class EmailError extends Error {}
+class UsernameError extends Error {}
 
 const login = async (data: FormData) => {
   let values;
@@ -25,6 +45,7 @@ const login = async (data: FormData) => {
   }
   const { email, password } = values;
   console.log(email, password);
+
   try {
     await signIn('credentials', {
       email,
@@ -69,20 +90,23 @@ const register = async (data: FormData) => {
     console.log(err);
     return { error: (err as ZodError).errors[0].message };
   }
+  const { email, password } = values;
   try {
-    const { email, password } = values;
-    // const user = await getUserByEmail(email);
-    // // if (user) {
-    // //   throw new EmailError('Email already taken.', {});
-    // // }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userObj = {
+    const userObj: Session['user'] & {
+      password: string;
+    } = {
       email,
       password: hashedPassword,
+      OAuth: false,
+      role: 'USER',
+      username: undefined,
+      displayName: '',
     };
+
     await db.user.create({ data: userObj });
     console.log('User created: ' + email);
-    return { success: 'Registration successful!' };
+    // return { success: 'Registration successful!' };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
       if (err.code === 'P2002') {
@@ -91,206 +115,205 @@ const register = async (data: FormData) => {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong!' };
     }
-    // if (err instanceof EmailError) {
-    //   console.log('DB error:', err);
-    //   return { error: 'Email already in use.' };
-    // }
     console.log('Unknown error:', err);
     return { error: 'Something went wrong!' };
   }
+
+  try {
+    await signIn('credentials', {
+      email,
+      password,
+      redirectTo: DEFAULT_REGISTER_REDIRECT,
+    });
+  } catch (err) {
+    if (err instanceof AuthError) {
+      let msg = '';
+      switch (err.type) {
+        // currently, no way of suppressing CredentialSignin console log
+        case 'CredentialsSignin':
+          msg = 'Invalid credentials.';
+          break;
+        default:
+          msg = 'Something went wrong!';
+      }
+      return { error: msg };
+    }
+    // successful auth throws NEXT_REDIRECT which is an error??
+    // therefore this line is necessary to redirect successful logins
+    throw err;
+  }
+  return { success: 'Register successful!' };
+};
+
+const onboarding = async (data: FormData) => {
+  let values;
+  try {
+    values = OnboardingSchema.parse(data);
+  } catch (err) {
+    console.log(err);
+    return { error: (err as ZodError).errors[0].message };
+  }
+  const { username, displayName } = values;
+  try {
+    const session = await auth();
+    if (!session) {
+      throw new UsernameError('Session not found.');
+    }
+    if (session.user.username) {
+      throw new UsernameError('Username already set.');
+    }
+
+    const existingUser = await getUserByUsername(username);
+    if (existingUser) {
+      throw new UsernameError('Username already taken');
+    }
+
+    await db.user.update({
+      where: { id: session.user.id },
+      data: {
+        username,
+        displayName: displayName === '' ? username : displayName,
+      },
+    });
+    // update the session so session data is not stale
+    unstable_update({ user: { username, displayName } });
+    console.log('Username updated:', username);
+    // return { success: 'Registration successful!' };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong!' };
+    }
+    if (err instanceof UsernameError) {
+      console.log('UsernameError:', err);
+      return { error: err.message };
+    }
+    console.log('Unknown error:', err);
+    return { error: 'Something went wrong!' };
+  }
+  redirect(`/${username}`, RedirectType.replace);
 };
 
 const changeEmail = async (data: FormData) => {
-  // let values;
-  // try {
-  //   values = LoginSchema.parse(data);
-  //   console.log(values);
-  // } catch (err) {
-  //   console.log(err);
-  //   return { error: (err as ZodError).errors[0].message };
-  // }
-  // const { email, password } = values;
-  // console.log(email, password);
-  // try {
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
-  //   });
-  // } catch (err) {
-  //   let msg = '';
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       // no way currently of suppressing CredentialSignin console log
-  //       case 'CredentialsSignin':
-  //         msg = 'Invalid credentials.';
-  //         break;
-  //       default:
-  //         msg = 'Something went wrong!';
-  //     }
-  //     return { error: msg };
-  //   }
-  //   // successful auth throws NEXT_REDIRECT which is an error??
-  //   // therefore this line is necessary to redirect successful logins
-  //   throw err;
-  // }
-  // return { success: 'Login successful!' };
+  let values;
+  try {
+    values = ChangeEmailSchema.parse(data);
+    console.log(values);
+  } catch (err) {
+    console.log(err);
+    return { error: (err as ZodError).errors[0].message };
+  }
+
+  try {
+    const { email } = values;
+    // if (email !== confirmEmail) {
+    //   throw new Error('Emails must match.');
+    // }
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      throw new Error('Email already associated with an account.');
+    }
+
+    const session = await auth();
+    if (!session) {
+      throw new Error('No session found when updating user.');
+    }
+    if (session.user.OAuth) {
+      throw new Error('Cannot update OAuth user email.');
+    }
+
+    const success = await updateUser(session.user.id!, { email });
+    if (!success) {
+      throw new Error('Email update failed.');
+    }
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
+
+  return { success: 'Email updated.' };
 };
 
 const changePassword = async (data: FormData) => {
-  // let values;
-  // try {
-  //   values = LoginSchema.parse(data);
-  //   console.log(values);
-  // } catch (err) {
-  //   console.log(err);
-  //   return { error: (err as ZodError).errors[0].message };
-  // }
-  // const { email, password } = values;
-  // console.log(email, password);
-  // try {
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
-  //   });
-  // } catch (err) {
-  //   let msg = '';
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       // no way currently of suppressing CredentialSignin console log
-  //       case 'CredentialsSignin':
-  //         msg = 'Invalid credentials.';
-  //         break;
-  //       default:
-  //         msg = 'Something went wrong!';
-  //     }
-  //     return { error: msg };
-  //   }
-  //   // successful auth throws NEXT_REDIRECT which is an error??
-  //   // therefore this line is necessary to redirect successful logins
-  //   throw err;
-  // }
-  // return { success: 'Login successful!' };
+  let values;
+  try {
+    values = ChangePasswordSchema.parse(data);
+    console.log(values);
+  } catch (err) {
+    console.log(err);
+    return { error: (err as ZodError).errors[0].message };
+  }
+
+  try {
+    const { oldPassword, newPassword } = values;
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+      throw new Error('No session found when updating user.');
+    }
+    if (currentUser.OAuth) {
+      throw new Error('Cannot change password of OAuth user.');
+    }
+
+    // if OAuth false, password exists
+    const match = await bcrypt.compare(oldPassword, currentUser.password!);
+    if (!match) {
+      throw new Error('Old password incorrect.');
+    }
+    // if (newPassword !== confirmPassword) {
+    //   throw new Error('New passwords must match.');
+    // }
+    const success = await updateUser(currentUser.id, { password: newPassword });
+    if (!success) {
+      throw new Error('Password update failed.');
+    }
+  } catch (err) {
+    return { error: (err as Error).message };
+  }
+
+  return { success: 'Password updated.' };
 };
 
-const changeAvatar = async (data: FormData) => {
-  // let values;
-  // try {
-  //   values = LoginSchema.parse(data);
-  //   console.log(values);
-  // } catch (err) {
-  //   console.log(err);
-  //   return { error: (err as ZodError).errors[0].message };
-  // }
-  // const { email, password } = values;
-  // console.log(email, password);
-  // try {
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
-  //   });
-  // } catch (err) {
-  //   let msg = '';
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       // no way currently of suppressing CredentialSignin console log
-  //       case 'CredentialsSignin':
-  //         msg = 'Invalid credentials.';
-  //         break;
-  //       default:
-  //         msg = 'Something went wrong!';
-  //     }
-  //     return { error: msg };
-  //   }
-  //   // successful auth throws NEXT_REDIRECT which is an error??
-  //   // therefore this line is necessary to redirect successful logins
-  //   throw err;
-  // }
-  // return { success: 'Login successful!' };
-};
+// const changeAvatar = async (data: FormData) => {
+//   let values;
+//   try {
+//     values = ChangeAvatarSchema.parse(data);
+//     console.log(values);
+//   } catch (err) {
+//     console.log(err);
+//     return { error: (err as ZodError).errors[0].message };
+//   }
 
-const deleteAccount = async (data: FormData) => {
-  // let values;
-  // try {
-  //   values = LoginSchema.parse(data);
-  //   console.log(values);
-  // } catch (err) {
-  //   console.log(err);
-  //   return { error: (err as ZodError).errors[0].message };
-  // }
-  // const { email, password } = values;
-  // console.log(email, password);
-  // try {
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
-  //   });
-  // } catch (err) {
-  //   let msg = '';
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       // no way currently of suppressing CredentialSignin console log
-  //       case 'CredentialsSignin':
-  //         msg = 'Invalid credentials.';
-  //         break;
-  //       default:
-  //         msg = 'Something went wrong!';
-  //     }
-  //     return { error: msg };
-  //   }
-  //   // successful auth throws NEXT_REDIRECT which is an error??
-  //   // therefore this line is necessary to redirect successful logins
-  //   throw err;
-  // }
-  // return { success: 'Login successful!' };
-};
+//   try {
+//     const { avatar } = values;
+//     const currentUser = await getCurrentUser();
+//     if (!currentUser) {
+//       throw new Error('No session found when updating user.');
+//     }
 
-const changeDisplayName = async (data: FormData) => {
-  // let values;
-  // try {
-  //   values = LoginSchema.parse(data);
-  //   console.log(values);
-  // } catch (err) {
-  //   console.log(err);
-  //   return { error: (err as ZodError).errors[0].message };
-  // }
-  // const { email, password } = values;
-  // console.log(email, password);
-  // try {
-  //   await signIn('credentials', {
-  //     email,
-  //     password,
-  //     redirectTo: DEFAULT_LOGIN_REDIRECT,
-  //   });
-  // } catch (err) {
-  //   let msg = '';
-  //   if (err instanceof AuthError) {
-  //     switch (err.type) {
-  //       // no way currently of suppressing CredentialSignin console log
-  //       case 'CredentialsSignin':
-  //         msg = 'Invalid credentials.';
-  //         break;
-  //       default:
-  //         msg = 'Something went wrong!';
-  //     }
-  //     return { error: msg };
-  //   }
-  //   // successful auth throws NEXT_REDIRECT which is an error??
-  //   // therefore this line is necessary to redirect successful logins
-  //   throw err;
-  // }
-  // return { success: 'Login successful!' };
-};
+//     // if (newPassword !== confirmPassword) {
+//     //   throw new Error('New passwords must match.');
+//     // }
+//     const success = await updateUser(currentUser.id, { password: newPassword });
+//     if (!success) {
+//       throw new Error('Password update failed.');
+//     }
+//   } catch (err) {
+//     return { error: (err as Error).message };
+//   }
+
+//   return { success: 'Password updated.' };
+// };
+
+// const deleteAccount = async (data: FormData) => {};
+
+// const changeDisplayName = async (data: FormData) => {};
 
 export {
-  changeAvatar,
-  changeDisplayName,
+  // changeAvatar,
+  // changeDisplayName,
   changeEmail,
   changePassword,
-  deleteAccount,
+  // deleteAccount,
   login,
+  onboarding,
   register,
 };
