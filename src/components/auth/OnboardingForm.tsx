@@ -77,9 +77,10 @@ function OnboardingForm() {
                   <Input
                     {...field}
                     placeholder='Yapper'
-                    type='nickname'
-                    autoComplete=''
+                    type='text'
+                    autoComplete='username'
                     minLength={0}
+                    maxLength={32}
                   />
                 </FormControl>
                 <FormMessage />

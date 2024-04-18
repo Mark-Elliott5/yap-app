@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect, RedirectType } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { AuthError, Session } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
@@ -37,7 +37,7 @@ class UsernameError extends Error {}
 const login = async (data: FormData) => {
   let values;
   try {
-    values = LoginSchema.parse(data);
+    values = await await LoginSchema.parseAsync(data);
     console.log(values);
   } catch (err) {
     console.log(err);
@@ -75,7 +75,7 @@ const login = async (data: FormData) => {
 const register = async (data: FormData) => {
   let values;
   try {
-    values = RegisterSchema.parse(data);
+    values = await RegisterSchema.parseAsync(data);
     if (values.password !== values.confirmPassword) {
       throw new ZodError([
         {
@@ -100,8 +100,8 @@ const register = async (data: FormData) => {
       password: hashedPassword,
       OAuth: false,
       role: 'USER',
-      username: undefined,
-      displayName: '',
+      username: null,
+      displayName: null,
     };
 
     await db.user.create({ data: userObj });
@@ -148,14 +148,16 @@ const register = async (data: FormData) => {
 const onboarding = async (data: FormData) => {
   let values;
   try {
-    values = OnboardingSchema.parse(data);
+    values = await OnboardingSchema.parseAsync(data);
   } catch (err) {
     console.log(err);
     return { error: (err as ZodError).errors[0].message };
   }
   const { username, displayName } = values;
+  console.log(values);
   try {
     const session = await auth();
+    console.log('Onboarding session:', session);
     if (!session) {
       throw new UsernameError('Session not found.');
     }
@@ -172,11 +174,9 @@ const onboarding = async (data: FormData) => {
       where: { id: session.user.id },
       data: {
         username,
-        displayName: displayName === '' ? username : displayName,
+        displayName,
       },
     });
-    // update the session so session data is not stale
-    unstable_update({ user: { username, displayName } });
     console.log('Username updated:', username);
     // return { success: 'Registration successful!' };
   } catch (err) {
@@ -191,13 +191,17 @@ const onboarding = async (data: FormData) => {
     console.log('Unknown error:', err);
     return { error: 'Something went wrong!' };
   }
-  redirect(`/${username}`, RedirectType.replace);
+
+  // update the session so session data is not stale
+  const newSession = await unstable_update({ user: { username, displayName } });
+  console.log('UNSTABLE UPDATE:', newSession);
+  redirect(`/settings`); //, RedirectType.replace
 };
 
 const changeEmail = async (data: FormData) => {
   let values;
   try {
-    values = ChangeEmailSchema.parse(data);
+    values = await ChangeEmailSchema.parseAsync(data);
     console.log(values);
   } catch (err) {
     console.log(err);
@@ -236,7 +240,7 @@ const changeEmail = async (data: FormData) => {
 const changePassword = async (data: FormData) => {
   let values;
   try {
-    values = ChangePasswordSchema.parse(data);
+    values = await ChangePasswordSchema.parseAsync(data);
     console.log(values);
   } catch (err) {
     console.log(err);
@@ -275,7 +279,7 @@ const changePassword = async (data: FormData) => {
 // const changeAvatar = async (data: FormData) => {
 //   let values;
 //   try {
-//     values = ChangeAvatarSchema.parse(data);
+//     v awaitalues = ChangeAvatarSchema.parseAsync(data);
 //     console.log(values);
 //   } catch (err) {
 //     console.log(err);

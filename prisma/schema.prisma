@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -69,7 +70,7 @@ model User {
   password      String?
   image         String?
   role          UserRole  @default(USER)
-  OAuth         Boolean?  @default(false)
+  OAuth         Boolean   @default(false)
   yaps          Yap[]     @relation(name: "AuthoredYaps")
   likedYaps     Yap[]     @relation(name: "LikedYaps")
   echos         Yap[]     @relation(name: "Echos")

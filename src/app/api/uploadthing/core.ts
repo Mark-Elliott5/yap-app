@@ -1,7 +1,7 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
-import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
+import { auth, unstable_update } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/db';
 
 const f = createUploadthing();
@@ -37,6 +37,7 @@ export const ourFileRouter = {
             image: file.url,
           },
         });
+        await unstable_update({ user: { image: file.url } });
       } catch (err) {
         console.log(err);
       }

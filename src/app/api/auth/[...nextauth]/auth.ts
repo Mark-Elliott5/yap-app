@@ -1,10 +1,13 @@
+// import type { NextAuthConfig } from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 
 import { getUserByEmail, getUserById } from '@/data-utils';
 import { LoginSchema } from '@/schemas';
+// import authConfig from '@/src/app/api/auth/[...nextauth]/auth.config';
 import db from '@/src/lib/db';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
@@ -15,6 +18,7 @@ export const {
   signOut,
   unstable_update,
 } = NextAuth({
+  debug: process.env.NODE_ENV === 'development',
   pages: {
     signIn: '/login',
     error: '/authentication-error',
@@ -35,37 +39,38 @@ export const {
     // },
     // async redirect({user})
     async session({ session, token }) {
+      console.log('AUTH CONFIG SESSION');
+      console.log('SESSION CALLBACK TOKEN:', token);
+
       if (session.user) {
-        console.log(session.user);
-        if (token.sub) {
-          session.user.id = token.sub;
-        }
-        if (token.role) {
-          session.user.role = token.role;
-        }
-        if (token.OAuth) {
-          session.user.OAuth = token.OAuth;
-        }
-        if (token.username) {
-          session.user.username = token.username;
-        }
-        if (token.displayName) {
-          session.user.displayName = token.displayName;
-        }
+        if (!token.sub) return session;
+        session.user.id = token.sub;
+        session.user.role = token.user.role;
+        session.user.OAuth = token.user.OAuth;
+        session.user.username = token.user.username;
+        session.user.displayName = token.user.displayName;
       }
       console.log('SESSION:', session);
       return session;
     },
     async jwt({ token }) {
+      console.log('AUTH CONFIG TOKEN');
       if (!token.sub) return token;
+      console.log('GETTING EXISTING USER');
       const existingUser = await getUserById(token.sub);
-      if (!existingUser) return token;
-      console.log('EUSER:', existingUser);
-      token.role = existingUser.role;
-      token.OAuth = existingUser.OAuth!;
-      token.username = existingUser.username;
-      token.displayName = existingUser.displayName;
-      console.log('TOKEN: ', token);
+      if (!existingUser) {
+        console.log('FAILED TO GET EXISTING USER');
+        return token;
+      }
+      const { role, OAuth, username, displayName } = existingUser;
+      const tokenUserObj = {
+        role,
+        OAuth,
+        username,
+        displayName,
+      };
+      token.user = tokenUserObj;
+      console.log('TOKEN:', token);
       return token;
     },
   },
@@ -91,9 +96,9 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
-        const values = LoginSchema.parse(credentials);
-        const { email, password } = values;
+        const { email, password } = credentials as z.infer<typeof LoginSchema>;
         const user = await getUserByEmail(email);
+        if (!user) console.log('user not found');
         if (!user || !user.password) return null;
         const match = await bcrypt.compare(password, user.password);
         if (!match) {

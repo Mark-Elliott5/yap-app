@@ -174,14 +174,21 @@ const OnboardingSchema = zfd.formData({
       .max(32, {
         message: 'Username cannot be longer than 32 characters.',
       })
+      .regex(/^[a-z0-9_.]+$/, {
+        message:
+          'Username can only contain lowercase alphanumeric characters, underscores, and periods.',
+      })
   ),
   displayName: zfd.text(
     z
-      .string()
-      .max(32, {
-        message: 'Display name cannot be longer than 32 characters.',
-      })
+      .union([
+        z
+          .string()
+          .max(32, 'Display names cannot be more than 32 characters long.'),
+        z.string().length(0),
+      ])
       .optional()
+      .transform((val) => (val === '' || val === 'undefined' ? undefined : val))
   ),
 });
 

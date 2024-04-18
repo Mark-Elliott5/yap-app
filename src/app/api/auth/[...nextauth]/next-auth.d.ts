@@ -5,10 +5,12 @@ import { UserRole } from '@prisma/client';
 
 declare module 'next-auth/jwt' {
   interface JWT extends Record<string, unknown>, DefaultJWT {
-    role: UserRole;
-    OAuth: boolean;
-    username: string | null;
-    displayName: string | null;
+    user: {
+      role: UserRole;
+      OAuth: boolean;
+      username: string | null;
+      displayName: string | null;
+    };
   }
 }
 
@@ -17,8 +19,8 @@ declare module 'next-auth' {
     user: {
       role: 'ADMIN' | 'USER';
       OAuth: boolean;
-      username: string | undefined;
-      displayName: string;
+      username: string | null;
+      displayName: string | null;
     } & DefaultSession['user'];
   }
 }
