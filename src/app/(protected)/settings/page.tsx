@@ -23,14 +23,15 @@ async function Settings() {
         >
           yap
         </a>
-        <div className='text-white'>
+        <div className='flex items-center gap-2 text-white'>
+          {/* <div className='rounded-full bg-white'> */}
+          <img
+            className='w-6 rounded-sm'
+            alt={`${session?.user.displayName}'s avatar`}
+            src={session?.user.image ?? '/defaultavatar.svg'}
+          ></img>
+          {/* </div> */}
           <span>{session?.user.username}</span>
-          {session?.user.image && (
-            <img
-              alt={`${session.user.displayName}'s avatar`}
-              src={session.user.image}
-            ></img>
-          )}
         </div>
       </nav>
       <div className='text-white'>{JSON.stringify(session)}</div>

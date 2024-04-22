@@ -1,6 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import { AuthError, Session } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
@@ -11,11 +11,8 @@ import {
   getUserByUsername,
   updateUser,
 } from '@/data-utils';
-import {
-  auth,
-  signIn,
-  unstable_update,
-} from '@/src/app/api/auth/[...nextauth]/auth';
+import { utapi } from '@/server/uploadthing';
+import { auth, signIn } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/db';
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -24,6 +21,7 @@ import {
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import {
+  ChangeAvatarSchema,
   // ChangeAvatarSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
@@ -32,29 +30,26 @@ import {
   RegisterSchema,
 } from '../schemas';
 
-class UsernameError extends Error {}
+class ActionError extends Error {}
 
 const login = async (data: FormData) => {
-  let values;
   try {
-    values = await await LoginSchema.parseAsync(data);
-    console.log(values);
-  } catch (err) {
-    console.log(err);
-    return { error: (err as ZodError).errors[0].message };
-  }
-  const { email, password } = values;
-  console.log(email, password);
+    const { email, password } = await LoginSchema.parseAsync(data);
+    console.log(email, password);
 
-  try {
     await signIn('credentials', {
       email,
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (err) {
-    let msg = '';
+    console.log('LOGIN ERR:', err);
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
     if (err instanceof AuthError) {
+      let msg = '';
       switch (err.type) {
         // no way currently of suppressing CredentialSignin console log
         case 'CredentialsSignin':
@@ -69,29 +64,19 @@ const login = async (data: FormData) => {
     // therefore this line is necessary to redirect successful logins
     throw err;
   }
-  return { success: 'Login successful!' };
+
+  // return { success: 'Login successful!' };
 };
 
 const register = async (data: FormData) => {
-  let values;
   try {
-    values = await RegisterSchema.parseAsync(data);
-    if (values.password !== values.confirmPassword) {
-      throw new ZodError([
-        {
-          message: 'Passwords do not match.',
-          fatal: true,
-          code: 'custom',
-          path: ['confirmPassword'],
-        },
-      ]);
+    const { email, password, confirmPassword } =
+      await RegisterSchema.parseAsync(data);
+
+    if (password !== confirmPassword) {
+      throw new ActionError('Passwords do not match');
     }
-  } catch (err) {
-    console.log(err);
-    return { error: (err as ZodError).errors[0].message };
-  }
-  const { email, password } = values;
-  try {
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const userObj: Session['user'] & {
       password: string;
@@ -102,12 +87,28 @@ const register = async (data: FormData) => {
       role: 'USER',
       username: null,
       displayName: null,
+      image: null,
     };
 
     await db.user.create({ data: userObj });
     console.log('User created: ' + email);
     // return { success: 'Registration successful!' };
+
+    await signIn('credentials', {
+      email,
+      password,
+      redirectTo: DEFAULT_REGISTER_REDIRECT,
+    });
   } catch (err) {
+    console.log('REGISTER ERROR:', err);
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+
     if (err instanceof PrismaClientKnownRequestError) {
       if (err.code === 'P2002') {
         return { error: 'Email already in use.' };
@@ -115,17 +116,7 @@ const register = async (data: FormData) => {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong!' };
     }
-    console.log('Unknown error:', err);
-    return { error: 'Something went wrong!' };
-  }
 
-  try {
-    await signIn('credentials', {
-      email,
-      password,
-      redirectTo: DEFAULT_REGISTER_REDIRECT,
-    });
-  } catch (err) {
     if (err instanceof AuthError) {
       let msg = '';
       switch (err.type) {
@@ -142,32 +133,26 @@ const register = async (data: FormData) => {
     // therefore this line is necessary to redirect successful logins
     throw err;
   }
-  return { success: 'Register successful!' };
+
+  // return { success: 'Register successful!' };
 };
 
 const onboarding = async (data: FormData) => {
-  let values;
   try {
-    values = await OnboardingSchema.parseAsync(data);
-  } catch (err) {
-    console.log(err);
-    return { error: (err as ZodError).errors[0].message };
-  }
-  const { username, displayName } = values;
-  console.log(values);
-  try {
+    const { username, displayName } = await OnboardingSchema.parseAsync(data);
+
     const session = await auth();
     console.log('Onboarding session:', session);
     if (!session) {
-      throw new UsernameError('Session not found.');
+      throw new ActionError('Session not found.');
     }
     if (session.user.username) {
-      throw new UsernameError('Username already set.');
+      throw new ActionError('Username already set.');
     }
 
     const existingUser = await getUserByUsername(username);
     if (existingUser) {
-      throw new UsernameError('Username already taken');
+      throw new ActionError('Username already taken');
     }
 
     await db.user.update({
@@ -180,58 +165,77 @@ const onboarding = async (data: FormData) => {
     console.log('Username updated:', username);
     // return { success: 'Registration successful!' };
   } catch (err) {
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong!' };
     }
-    if (err instanceof UsernameError) {
-      console.log('UsernameError:', err);
+
+    if (err instanceof ActionError) {
+      console.log('ActionError:', err);
       return { error: err.message };
     }
+
     console.log('Unknown error:', err);
     return { error: 'Something went wrong!' };
   }
 
-  // update the session so session data is not stale
-  const newSession = await unstable_update({ user: { username, displayName } });
-  console.log('UNSTABLE UPDATE:', newSession);
-  redirect(`/settings`); //, RedirectType.replace
+  redirect(`/settings`, RedirectType.replace);
 };
 
 const changeEmail = async (data: FormData) => {
-  let values;
   try {
-    values = await ChangeEmailSchema.parseAsync(data);
-    console.log(values);
-  } catch (err) {
-    console.log(err);
-    return { error: (err as ZodError).errors[0].message };
-  }
-
-  try {
-    const { email } = values;
-    // if (email !== confirmEmail) {
-    //   throw new Error('Emails must match.');
-    // }
-    const existingUser = await getUserByEmail(email);
-    if (existingUser) {
-      throw new Error('Email already associated with an account.');
-    }
-
     const session = await auth();
-    if (!session) {
-      throw new Error('No session found when updating user.');
+    if (!session || !session.user) {
+      throw new ActionError('No session found when updating user.');
     }
     if (session.user.OAuth) {
-      throw new Error('Cannot update OAuth user email.');
+      throw new ActionError('Cannot update OAuth user email.');
+    }
+
+    const { email } = await ChangeEmailSchema.parseAsync(data);
+    // if (email !== confirmEmail) {
+    //   throw new ActionError('Emails must match.');
+    // }
+
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      throw new ActionError(
+        'Supplied email already associated with an account.'
+      );
     }
 
     const success = await updateUser(session.user.id!, { email });
     if (!success) {
-      throw new Error('Email update failed.');
+      throw new ActionError('Email update failed.');
     }
   } catch (err) {
-    return { error: (err as Error).message };
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
+    if (err instanceof AuthError) {
+      let msg = '';
+      switch (err.type) {
+        // no way currently of suppressing CredentialSignin console log
+        case 'CredentialsSignin':
+          msg = 'Invalid credentials.';
+          break;
+        default:
+          msg = 'Something went wrong!';
+      }
+      return { error: msg };
+    }
+
+    if (err instanceof ActionError) {
+      console.log('ActionError:', err);
+      return { error: err.message };
+    }
+
+    return { error: 'Something went wrong!' };
   }
 
   return { success: 'Email updated.' };
@@ -251,29 +255,89 @@ const changePassword = async (data: FormData) => {
     const { oldPassword, newPassword } = values;
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      throw new Error('No session found when updating user.');
+      throw new ActionError('No session found when updating user.');
     }
     if (currentUser.OAuth) {
-      throw new Error('Cannot change password of OAuth user.');
+      throw new ActionError('Cannot change password of OAuth user.');
     }
 
     // if OAuth false, password exists
     const match = await bcrypt.compare(oldPassword, currentUser.password!);
     if (!match) {
-      throw new Error('Old password incorrect.');
+      throw new ActionError('Old password incorrect.');
     }
     // if (newPassword !== confirmPassword) {
-    //   throw new Error('New passwords must match.');
+    //   throw new ActionError('New passwords must match.');
     // }
     const success = await updateUser(currentUser.id, { password: newPassword });
     if (!success) {
-      throw new Error('Password update failed.');
+      throw new ActionError('Password update failed.');
     }
   } catch (err) {
-    return { error: (err as Error).message };
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
+    if (err instanceof ActionError) {
+      console.log('ActionError:', err);
+      return { error: err.message };
+    }
+
+    return { error: 'Something went wrong!' };
   }
 
   return { success: 'Password updated.' };
+};
+
+const changeAvatar = async (data: FormData) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user) {
+      throw new ActionError('Access denied.');
+    }
+
+    const { avatar } = await ChangeAvatarSchema.parseAsync(data);
+
+    if (!avatar) {
+      throw new ActionError('No file detected.');
+    }
+
+    const acceptableTypes = new Set(['jpeg', 'png']);
+    if (!acceptableTypes.has(avatar.type)) {
+      throw new ActionError(
+        `File type not accepted. Received type: ${avatar.type}`
+      );
+    }
+
+    const response = await utapi.uploadFiles(avatar);
+    if (response.error !== null) {
+      console.log('UPLOADTHING ERR (CHANGEAVATAR):', response.error);
+      throw new Error(response.error.message);
+    }
+
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        image: response.data.url,
+      },
+    });
+    return { success: 'Avatar uploaded successfully.' };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.message };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknow error occured.' };
+  }
 };
 
 // const changeAvatar = async (data: FormData) => {
@@ -312,6 +376,7 @@ const changePassword = async (data: FormData) => {
 // const changeDisplayName = async (data: FormData) => {};
 
 export {
+  changeAvatar,
   // changeAvatar,
   // changeDisplayName,
   changeEmail,

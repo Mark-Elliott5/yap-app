@@ -159,6 +159,7 @@ const RegisterSchema = zfd
       ctx.addIssue({
         code: 'custom',
         message: 'The passwords do not match.',
+        fatal: true,
         path: ['confirmPassword'],
       });
     }
@@ -192,8 +193,16 @@ const OnboardingSchema = zfd.formData({
   ),
 });
 
+const ChangeAvatarSchema = zfd.formData({
+  avatar: zfd.file(
+    z.instanceof(File, {
+      message: 'Server expected a file but did not receive one.',
+    })
+  ),
+});
+
 export {
-  // ChangeAvatarSchema,
+  ChangeAvatarSchema,
   ChangeDisplayNameSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,

@@ -10,6 +10,7 @@ declare module 'next-auth/jwt' {
       OAuth: boolean;
       username: string | null;
       displayName: string | null;
+      image: string | null;
     };
   }
 }
@@ -21,6 +22,7 @@ declare module 'next-auth' {
       OAuth: boolean;
       username: string | null;
       displayName: string | null;
+      image: string | null;
     } & DefaultSession['user'];
   }
 }

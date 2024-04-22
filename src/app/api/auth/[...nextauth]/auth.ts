@@ -49,6 +49,7 @@ export const {
         session.user.OAuth = token.user.OAuth;
         session.user.username = token.user.username;
         session.user.displayName = token.user.displayName;
+        session.user.image = token.user.image;
       }
       console.log('SESSION:', session);
       return session;
@@ -62,12 +63,13 @@ export const {
         console.log('FAILED TO GET EXISTING USER');
         return token;
       }
-      const { role, OAuth, username, displayName } = existingUser;
+      const { role, OAuth, username, displayName, image } = existingUser;
       const tokenUserObj = {
         role,
         OAuth,
         username,
         displayName,
+        image,
       };
       token.user = tokenUserObj;
       console.log('TOKEN:', token);
