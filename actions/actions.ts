@@ -1,7 +1,8 @@
 'use server';
 
 import { redirect, RedirectType } from 'next/navigation';
-import { AuthError, Session } from 'next-auth';
+import { AuthError } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
@@ -12,7 +13,7 @@ import {
   updateUser,
 } from '@/data-utils';
 import { utapi } from '@/server/uploadthing';
-import { auth, signIn } from '@/src/app/api/auth/[...nextauth]/auth';
+import { auth, signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/db';
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -22,12 +23,15 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import {
   ChangeAvatarSchema,
+  ChangeDisplayNameSchema,
   // ChangeAvatarSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
+  DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,
+  // ServerChangeAvatarSchema,
 } from '../schemas';
 
 class ActionError extends Error {}
@@ -45,7 +49,7 @@ const login = async (data: FormData) => {
   } catch (err) {
     console.log('LOGIN ERR:', err);
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof AuthError) {
@@ -78,16 +82,19 @@ const register = async (data: FormData) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userObj: Session['user'] & {
+    const userObj: JWT['user'] & {
       password: string;
     } = {
       email,
+      emailVerified: null,
+      name: null,
       password: hashedPassword,
       OAuth: false,
       role: 'USER',
       username: null,
       displayName: null,
       image: null,
+      imageKey: null,
     };
 
     await db.user.create({ data: userObj });
@@ -102,7 +109,7 @@ const register = async (data: FormData) => {
   } catch (err) {
     console.log('REGISTER ERROR:', err);
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof ActionError) {
@@ -166,7 +173,7 @@ const onboarding = async (data: FormData) => {
     // return { success: 'Registration successful!' };
   } catch (err) {
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof PrismaClientKnownRequestError) {
@@ -214,7 +221,7 @@ const changeEmail = async (data: FormData) => {
     }
   } catch (err) {
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof AuthError) {
@@ -242,17 +249,10 @@ const changeEmail = async (data: FormData) => {
 };
 
 const changePassword = async (data: FormData) => {
-  let values;
   try {
-    values = await ChangePasswordSchema.parseAsync(data);
-    console.log(values);
-  } catch (err) {
-    console.log(err);
-    return { error: (err as ZodError).errors[0].message };
-  }
+    const { oldPassword, newPassword } =
+      await ChangePasswordSchema.parseAsync(data);
 
-  try {
-    const { oldPassword, newPassword } = values;
     const currentUser = await getCurrentUser();
     if (!currentUser) {
       throw new ActionError('No session found when updating user.');
@@ -266,6 +266,7 @@ const changePassword = async (data: FormData) => {
     if (!match) {
       throw new ActionError('Old password incorrect.');
     }
+
     // if (newPassword !== confirmPassword) {
     //   throw new ActionError('New passwords must match.');
     // }
@@ -275,7 +276,7 @@ const changePassword = async (data: FormData) => {
     }
   } catch (err) {
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof ActionError) {
@@ -297,37 +298,40 @@ const changeAvatar = async (data: FormData) => {
     }
 
     const { avatar } = await ChangeAvatarSchema.parseAsync(data);
-
     if (!avatar) {
       throw new ActionError('No file detected.');
     }
 
-    const acceptableTypes = new Set(['jpeg', 'png']);
-    if (!acceptableTypes.has(avatar.type)) {
-      throw new ActionError(
-        `File type not accepted. Received type: ${avatar.type}`
-      );
-    }
+    const { imageKey, id } = session.user;
 
-    const response = await utapi.uploadFiles(avatar);
+    const formattedFile = new File([avatar], `avatar#${id}`, {
+      type: avatar.type,
+    });
+
+    const response = await utapi.uploadFiles(formattedFile);
     if (response.error !== null) {
       console.log('UPLOADTHING ERR (CHANGEAVATAR):', response.error);
-      throw new Error(response.error.message);
+      throw new ActionError('Upload failed, please try again.');
+    }
+
+    if (imageKey) {
+      await utapi.deleteFiles(imageKey);
     }
 
     await db.user.update({
       where: {
-        id: session.user.id,
+        id,
       },
       data: {
         image: response.data.url,
+        imageKey: response.data.key,
       },
     });
     return { success: 'Avatar uploaded successfully.' };
   } catch (err) {
     console.log(err);
     if (err instanceof ZodError) {
-      return { error: err.message };
+      return { error: err.issues[0].message };
     }
 
     if (err instanceof ActionError) {
@@ -336,52 +340,86 @@ const changeAvatar = async (data: FormData) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    return { error: 'Unknow error occured.' };
+    return { error: 'Unknown error occured.' };
   }
 };
 
-// const changeAvatar = async (data: FormData) => {
-//   let values;
-//   try {
-//     v awaitalues = ChangeAvatarSchema.parseAsync(data);
-//     console.log(values);
-//   } catch (err) {
-//     console.log(err);
-//     return { error: (err as ZodError).errors[0].message };
-//   }
+const deleteAccount = async (data: FormData) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user) {
+      throw new ActionError('Access denied.');
+    }
 
-//   try {
-//     const { avatar } = values;
-//     const currentUser = await getCurrentUser();
-//     if (!currentUser) {
-//       throw new Error('No session found when updating user.');
-//     }
+    const { username } = await DeleteAccountSchema.parseAsync(data);
+    if (username !== session.user.username) {
+      throw new ActionError('Username incorrect. Account cannot be deleted.');
+    }
 
-//     // if (newPassword !== confirmPassword) {
-//     //   throw new Error('New passwords must match.');
-//     // }
-//     const success = await updateUser(currentUser.id, { password: newPassword });
-//     if (!success) {
-//       throw new Error('Password update failed.');
-//     }
-//   } catch (err) {
-//     return { error: (err as Error).message };
-//   }
+    await db.user.delete({
+      where: {
+        id: session.user.id,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.issues[0].message };
+    }
 
-//   return { success: 'Password updated.' };
-// };
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+  await signOut({
+    redirectTo: '/login',
+  });
+};
 
-// const deleteAccount = async (data: FormData) => {};
+const changeDisplayName = async (data: FormData) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user) {
+      throw new ActionError('Access denied.');
+    }
 
-// const changeDisplayName = async (data: FormData) => {};
+    const { displayName } = await ChangeDisplayNameSchema.parseAsync(data);
+
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        displayName,
+      },
+    });
+    return { success: 'Display name updated successfully.' };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.issues[0].message };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
 
 export {
   changeAvatar,
-  // changeAvatar,
-  // changeDisplayName,
+  changeDisplayName,
   changeEmail,
   changePassword,
-  // deleteAccount,
+  deleteAccount,
   login,
   onboarding,
   register,

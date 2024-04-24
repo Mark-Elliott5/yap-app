@@ -39,40 +39,39 @@ export const {
     // },
     // async redirect({user})
     async session({ session, token }) {
-      console.log('AUTH CONFIG SESSION');
-      console.log('SESSION CALLBACK TOKEN:', token);
+      // console.log('AUTH CONFIG SESSION');
+      // console.log('SESSION CALLBACK TOKEN:', token);
 
       if (session.user) {
         if (!token.sub) return session;
-        session.user.id = token.sub;
-        session.user.role = token.user.role;
-        session.user.OAuth = token.user.OAuth;
-        session.user.username = token.user.username;
-        session.user.displayName = token.user.displayName;
-        session.user.image = token.user.image;
+        const user = { ...token.user, id: token.sub };
+        session.user = user;
       }
-      console.log('SESSION:', session);
+      // console.log('SESSION:', session);
       return session;
     },
     async jwt({ token }) {
-      console.log('AUTH CONFIG TOKEN');
+      // console.log('AUTH CONFIG TOKEN');
       if (!token.sub) return token;
-      console.log('GETTING EXISTING USER');
+      // console.log('GETTING EXISTING USER');
       const existingUser = await getUserById(token.sub);
       if (!existingUser) {
-        console.log('FAILED TO GET EXISTING USER');
+        // console.log('FAILED TO GET EXISTING USER');
         return token;
       }
-      const { role, OAuth, username, displayName, image } = existingUser;
-      const tokenUserObj = {
-        role,
-        OAuth,
-        username,
-        displayName,
-        image,
-      };
-      token.user = tokenUserObj;
-      console.log('TOKEN:', token);
+      const { password, ...user } = existingUser;
+      // const tokenUserObj = {
+      //   role,
+      //   OAuth,
+      //   username,
+      //   displayName,
+      //   image,
+      //   imageKey,
+      //   email,
+      //   emailVerified,
+      // };
+      token.user = user;
+      // console.log('TOKEN:', token);
       return token;
     },
   },
@@ -100,7 +99,7 @@ export const {
       async authorize(credentials) {
         const { email, password } = credentials as z.infer<typeof LoginSchema>;
         const user = await getUserByEmail(email);
-        if (!user) console.log('user not found');
+        // if (!user) console.log('user not found');
         if (!user || !user.password) return null;
         const match = await bcrypt.compare(password, user.password);
         if (!match) {

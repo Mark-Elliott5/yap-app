@@ -57,9 +57,8 @@ const ChangePasswordSchema = zfd
     oldPassword: zfd.text(
       z
         .string()
-        .email()
         .min(8, {
-          message: 'Old password is required.',
+          message: 'Old password cannot be shorter than 8 characters.',
         })
         .max(64, {
           message: 'Old password cannot be longer than 64 characters.',
@@ -69,7 +68,7 @@ const ChangePasswordSchema = zfd
       z
         .string()
         .min(8, {
-          message: 'New password is required.',
+          message: 'New password cannot be shorter than 8 characters.',
         })
         .max(64, {
           message: 'New password cannot be longer than 64 characters.',
@@ -79,7 +78,7 @@ const ChangePasswordSchema = zfd
       z
         .string()
         .min(8, {
-          message: 'Confirm new password is required.',
+          message: 'Confirm new password cannot be shorter than 8 characters.',
         })
         .max(64, {
           message: 'Confirm new password cannot be longer than 64 characters.',
@@ -193,11 +192,41 @@ const OnboardingSchema = zfd.formData({
   ),
 });
 
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+
 const ChangeAvatarSchema = zfd.formData({
   avatar: zfd.file(
-    z.instanceof(File, {
-      message: 'Server expected a file but did not receive one.',
-    })
+    z
+      .instanceof(File, { message: 'Please add an image file.' })
+      .refine((file) => file.size <= MAX_FILE_SIZE, {
+        message: `Image size must be less than 5MB.`,
+      })
+      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+      })
+  ),
+});
+
+const DeleteAccountSchema = zfd.formData({
+  username: zfd.text(
+    z
+      .string()
+      .min(1, {
+        message: 'Username is required.',
+      })
+      .max(32, {
+        message: 'Username cannot be longer than 32 characters.',
+      })
+      .regex(/^[a-z0-9_.]+$/, {
+        message:
+          'Username can only contain lowercase alphanumeric characters, underscores, and periods.',
+      })
   ),
 });
 
@@ -206,6 +235,7 @@ export {
   ChangeDisplayNameSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
+  DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,

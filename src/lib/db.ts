@@ -14,8 +14,6 @@ declare global {
 
 const db = globalThis.prisma || new PrismaClient({ adapter });
 
-console.log('URL:', connectionString);
-
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = db;
 
 export default db;

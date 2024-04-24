@@ -65,10 +65,11 @@ model User {
   name          String?
   displayName   String?
   username      String?   @unique
-  email         String?   @unique
+  email         String    @unique
   emailVerified DateTime?
   password      String?
   image         String?
+  imageKey      String?
   role          UserRole  @default(USER)
   OAuth         Boolean   @default(false)
   yaps          Yap[]     @relation(name: "AuthoredYaps")
