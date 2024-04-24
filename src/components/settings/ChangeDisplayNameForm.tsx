@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,7 +21,16 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function ChangeDisplayNameForm() {
+function ChangeDisplayNameForm({
+  setUser,
+}: {
+  setUser: Dispatch<
+    SetStateAction<{
+      displayName: string | null;
+      image: string | null;
+    }>
+  >;
+}) {
   const [changeTry, setChangeTry] = useState<{
     error?: string;
     success?: string;
@@ -34,7 +43,17 @@ function ChangeDisplayNameForm() {
   });
 
   const handleChange = async (data: FormData) => {
-    setChangeTry(await changeDisplayName(data));
+    const response = await changeDisplayName(data);
+    setChangeTry(response);
+    if (response.success) {
+      setUser((prev) => {
+        const displayName = data.get('displayName') as string;
+        return {
+          ...prev,
+          displayName,
+        };
+      });
+    }
   };
 
   return (

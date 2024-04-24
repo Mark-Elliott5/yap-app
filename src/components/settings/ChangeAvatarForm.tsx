@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,7 +21,16 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function ChangeAvatarForm() {
+function ChangeAvatarForm({
+  setUser,
+}: {
+  setUser: Dispatch<
+    SetStateAction<{
+      displayName: string | null;
+      image: string | null;
+    }>
+  >;
+}) {
   const [changeTry, setChangeTry] = useState<{
     error?: string;
     success?: string;
@@ -31,7 +40,16 @@ function ChangeAvatarForm() {
   });
 
   const handleChange = async (data: FormData) => {
-    setChangeTry(await changeAvatar(data));
+    const response = await changeAvatar(data);
+    setChangeTry(response);
+    if (response.success) {
+      setUser((prev) => {
+        return {
+          ...prev,
+          image: response.url,
+        };
+      });
+    }
   };
 
   return (

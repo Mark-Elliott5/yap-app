@@ -42,16 +42,6 @@ const ChangeEmailSchema = zfd
     }
   });
 
-// const ChangeAvatarSchema = zfd.formData({
-//   avatar: zfd.file(
-//     typeof window === 'undefined'
-//       ? z.any()
-//       : z
-//           .instanceof(FileList)
-//           .refine((file) => file?.length == 1, 'File is required.')
-//   ),
-// });
-
 const ChangePasswordSchema = zfd
   .formData({
     oldPassword: zfd.text(
@@ -142,16 +132,6 @@ const RegisterSchema = zfd
           message: 'Password cannot be longer than 64 characters.',
         })
     ),
-    // username: zfd.text(
-    //   z
-    //     .string()
-    //     .min(1, {
-    //       message: 'Username is required.',
-    //     })
-    //     .max(32, {
-    //       message: 'Username cannot be longer than 32 characters.',
-    //     })
-    // ),
   })
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (confirmPassword !== password) {

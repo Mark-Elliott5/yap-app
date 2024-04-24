@@ -327,7 +327,7 @@ const changeAvatar = async (data: FormData) => {
         imageKey: response.data.key,
       },
     });
-    return { success: 'Avatar uploaded successfully.' };
+    return { success: 'Avatar uploaded successfully.', url: response.data.url };
   } catch (err) {
     console.log(err);
     if (err instanceof ZodError) {
