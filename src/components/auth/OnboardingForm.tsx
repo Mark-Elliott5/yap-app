@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { onboarding } from '@/actions/actions';
 import { OnboardingSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
@@ -60,6 +59,7 @@ function OnboardingForm() {
                     autoComplete='username'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -81,6 +81,7 @@ function OnboardingForm() {
                     autoComplete='username'
                     minLength={0}
                     maxLength={32}
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />

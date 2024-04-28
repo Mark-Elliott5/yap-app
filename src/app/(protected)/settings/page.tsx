@@ -3,7 +3,7 @@ import SettingsClient from '@/src/components/settings/SettingsClient';
 
 async function Settings() {
   const session = await auth();
-  // Will not evaluate to undefined, because they will be redirected if true.
+  // Will not evaluate to undefined, because they would have been redirected if so.
   const { username, displayName, image } = session!.user as {
     username: string;
     displayName: string | null;

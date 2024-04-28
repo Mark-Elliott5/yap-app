@@ -72,6 +72,12 @@ const login = async (data: FormData) => {
   // return { success: 'Login successful!' };
 };
 
+const logout = async () => {
+  await signOut({
+    redirectTo: '/login',
+  });
+};
+
 const register = async (data: FormData) => {
   try {
     const { email, password, confirmPassword } =
@@ -421,6 +427,7 @@ export {
   changePassword,
   deleteAccount,
   login,
+  logout,
   onboarding,
   register,
 };

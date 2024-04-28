@@ -1,15 +1,9 @@
-import { signOut } from '@/src/app/api/auth/[...nextauth]/auth';
+import { logout } from '@/actions/actions';
 
 function LogoutButton({ className }: { className?: string }) {
   return (
-    <form
-      action={async () => {
-        'use server';
-        await signOut();
-      }}
-      className={className}
-    >
-      <button type='submit' className='w-full p-2'>
+    <form action={logout} className={className}>
+      <button type='submit' className='h-10 w-full py-2'>
         Log out
       </button>
     </form>

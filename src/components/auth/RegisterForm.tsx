@@ -4,12 +4,11 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { register } from '@/actions/actions';
 import { RegisterSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
-import FormSuccess from '@/src/components/FormSuccess';
+// import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
@@ -23,10 +22,13 @@ import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function RegisterForm() {
-  const [registerTry, setRegistrationTry] = useState<{
-    error?: string;
-    success?: string;
-  }>({});
+  const [registerTry, setRegistrationTry] = useState<
+    | {
+        error?: string;
+        // success?: string;
+      }
+    | undefined
+  >({});
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -62,6 +64,7 @@ function RegisterForm() {
                     autoComplete='email'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -82,6 +85,7 @@ function RegisterForm() {
                     // autoComplete='new-password'
                     minLength={8}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -103,6 +107,7 @@ function RegisterForm() {
                     minLength={1}
                     maxLength={32}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -113,9 +118,9 @@ function RegisterForm() {
         </div>
         <div className='flex flex-col gap-y-6'>
           {registerTry?.error && <FormError message={registerTry.error} />}
-          {registerTry?.success && (
+          {/* {registerTry?.success && (
             <FormSuccess message={registerTry.success} />
-          )}
+          )} */}
           <FormButton label='Register' />
         </div>
       </Form>

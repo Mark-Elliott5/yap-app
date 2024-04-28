@@ -4,12 +4,11 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { login } from '@/actions/actions';
 import { LoginSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
-import FormSuccess from '@/src/components/FormSuccess';
+// import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
@@ -22,10 +21,13 @@ import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function LoginForm() {
-  const [loginTry, setLoginTry] = useState<{
-    error?: string;
-    success?: string;
-  }>({});
+  const [loginTry, setLoginTry] = useState<
+    | {
+        error?: string;
+        // success?: string;
+      }
+    | undefined
+  >({});
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -56,6 +58,7 @@ function LoginForm() {
                     autoComplete='email'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -76,6 +79,7 @@ function LoginForm() {
                     autoComplete='current-password'
                     minLength={8}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -85,7 +89,7 @@ function LoginForm() {
         </div>
         <div className='flex flex-col gap-y-6'>
           {loginTry?.error && <FormError message={loginTry.error} />}
-          {loginTry?.success && <FormSuccess message={loginTry.success} />}
+          {/* {loginTry?.success && <FormSuccess message={loginTry.success} />} */}
           <FormButton label='Log in' />
         </div>
       </Form>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { changeEmail } from '@/actions/actions';
 import { ChangeEmailSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
@@ -43,6 +42,7 @@ function ChangeEmailForm() {
       <Form
         action={changeEmail}
         onSubmit={({ formData }) => handleChange(formData)}
+        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
@@ -58,6 +58,7 @@ function ChangeEmailForm() {
                     type='email'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -77,6 +78,7 @@ function ChangeEmailForm() {
                     type='email'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />

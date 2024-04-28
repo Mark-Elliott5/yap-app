@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { changePassword } from '@/actions/actions';
 import { ChangePasswordSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
@@ -44,6 +43,7 @@ function ChangePasswordForm() {
       <Form
         action={changePassword}
         onSubmit={({ formData }) => handleChange(formData)}
+        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
@@ -59,6 +59,7 @@ function ChangePasswordForm() {
                     type='password'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -79,6 +80,7 @@ function ChangePasswordForm() {
                     autoComplete='new-password'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
@@ -98,6 +100,7 @@ function ChangePasswordForm() {
                     type='password'
                     minLength={1}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />

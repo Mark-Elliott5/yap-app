@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { changeAvatar } from '@/actions/actions';
 import { ChangeAvatarSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
@@ -57,6 +56,7 @@ function ChangeAvatarForm({
       <Form
         action={changeAvatar}
         onSubmit={({ formData }) => handleChange(formData)}
+        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
@@ -74,6 +74,7 @@ function ChangeAvatarForm({
                     onChange={(event) =>
                       onChange(event.target.files && event.target.files[0])
                     }
+                    className='text-black dark:text-white dark:placeholder:text-black'
                   />
                 </FormControl>
                 <FormMessage />

@@ -4,11 +4,30 @@ import { useFormStatus } from 'react-dom';
 
 import { Button } from '@/src/components/ui/button';
 
-function FormButton({ label }: { label: string }) {
+function FormButton({
+  label,
+  variant,
+}: {
+  label: string;
+  variant?:
+    | 'link'
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | null
+    | undefined;
+}) {
   const { pending } = useFormStatus();
 
   return (
-    <Button type='submit' className='w-full' disabled={pending}>
+    <Button
+      type='submit'
+      variant={variant}
+      className='w-full'
+      disabled={pending}
+    >
       {label}
     </Button>
   );

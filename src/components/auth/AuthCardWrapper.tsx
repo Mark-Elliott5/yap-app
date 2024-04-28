@@ -33,25 +33,27 @@ function AuthCardWrapper({
   showOAuth: boolean;
 }) {
   return (
-    <Card className='w-[400px]'>
-      <CardHeader>
-        <CardTitle className={cn('text-yap-red-500', archivoBlack.className)}>
-          yap
-        </CardTitle>
-        <CardDescription className=''>{cardDescription}</CardDescription>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      {showOAuth && (
-        <CardContent className='flex gap-x-2'>
-          <OAuthLogins />
-        </CardContent>
-      )}
-      {backButtonHref && backButtonLabel && (
-        <CardFooter>
-          <CardBackButton label={backButtonLabel} href={backButtonHref} />
-        </CardFooter>
-      )}
-    </Card>
+    <div className='rounded-lg bg-gradient-to-br from-yap-red-500 to-orange-500 p-[1px]'>
+      <Card className='w-[400px]'>
+        <CardHeader>
+          <CardTitle className={cn('text-yap-red-500', archivoBlack.className)}>
+            yap
+          </CardTitle>
+          <CardDescription className=''>{cardDescription}</CardDescription>
+        </CardHeader>
+        <CardContent>{children}</CardContent>
+        {showOAuth && (
+          <CardContent className='flex gap-x-2'>
+            <OAuthLogins />
+          </CardContent>
+        )}
+        {backButtonHref && backButtonLabel && (
+          <CardFooter>
+            <CardBackButton label={backButtonLabel} href={backButtonHref} />
+          </CardFooter>
+        )}
+      </Card>
+    </div>
   );
 }
 

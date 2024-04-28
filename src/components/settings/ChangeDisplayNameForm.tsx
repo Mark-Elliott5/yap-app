@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-// import { Button } from '../ui/button';
 import { changeDisplayName } from '@/actions/actions';
 import { ChangeDisplayNameSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
@@ -61,6 +60,7 @@ function ChangeDisplayNameForm({
       <Form
         action={changeDisplayName}
         onSubmit={({ formData }) => handleChange(formData)}
+        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
@@ -75,7 +75,9 @@ function ChangeDisplayNameForm({
                     placeholder='yapper'
                     type='displayName'
                     minLength={1}
+                    maxLength={32}
                     required
+                    className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
