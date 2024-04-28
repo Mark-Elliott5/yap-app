@@ -26,6 +26,15 @@ function Loading() {
         </div>
       </div>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
+      <div className='flex flex-col gap-6 p-10 sm:flex-row'>
+        <div className='flex flex-col gap-2'>
+          <Skeleton className='h-7 w-[100px]' />
+          <Skeleton className='h-10 w-full sm:w-[220px]' />
+        </div>
+        <div className='w-full sm:w-3/4'>
+          <Skeleton className='h-[400px] w-full sm:w-5/6 md:w-2/3 lg:w-7/12' />
+        </div>
+      </div>
     </div>
   );
 }
