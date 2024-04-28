@@ -33,8 +33,8 @@ function AuthCardWrapper({
   showOAuth: boolean;
 }) {
   return (
-    <div className='rounded-lg bg-gradient-to-br from-yap-red-500 to-orange-500 p-[1px]'>
-      <Card className='w-[400px]'>
+    <div className='w-11/12 rounded-lg bg-gradient-to-br from-yap-red-500 to-orange-500 p-[1px] sm:w-[400px]'>
+      <Card className=''>
         <CardHeader>
           <CardTitle className={cn('text-yap-red-500', archivoBlack.className)}>
             yap

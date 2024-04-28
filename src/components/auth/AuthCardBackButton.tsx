@@ -7,7 +7,7 @@ import { Button } from '@/src/components/ui/button';
 function CardBackButton({ label, href }: { label: string; href: string }) {
   return (
     <Button className='p-0' variant='link'>
-      <Link className='p-2' href={href}>
+      <Link className='text-wrap p-2' href={href}>
         {label}
       </Link>
     </Button>
