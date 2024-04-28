@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Separator } from '@/src/components/ui/separator';
+import UserHovercard from '@/src/components/UserHovercard';
 import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({
@@ -39,11 +40,13 @@ function SettingsClient({
   displayName,
   image,
   OAuth,
+  joinDate,
 }: {
   username: string;
   displayName: string | null;
   image: string | null;
   OAuth: boolean;
+  joinDate: Date;
 }) {
   const [updatedUser, setUser] = useState<{
     displayName: string | null;
@@ -78,35 +81,42 @@ function SettingsClient({
         >
           yap
         </a>
-        <div className='flex items-center gap-3 text-white'>
-          <div className='flex flex-col sm:flex-row sm:gap-2'>
-            <span
-              className='max-w-36 truncate text-sm text-black dark:text-white sm:max-w-44 sm:text-base'
-              title={username}
-            >
-              @{username}
-            </span>
-            <span
-              className='max-w-36 truncate text-sm font-light text-zinc-500 dark:text-zinc-400 sm:max-w-44 sm:text-base'
-              title={updatedUser?.displayName ?? displayName ?? ''}
-            >
-              {updatedUser?.displayName ?? displayName ?? ''}
-            </span>
-          </div>
-          <Avatar>
-            <AvatarImage
-              src={updatedUser.image ?? image ?? ''}
-              height={'1.5rem'}
-            />
-            <AvatarFallback>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={`${updatedUser.displayName ?? displayName}'s avatar`}
-                src={'/defaultavatar.svg'}
+        <UserHovercard
+          username={username}
+          joinDate={joinDate}
+          displayName={updatedUser.displayName ?? displayName}
+          image={updatedUser.image ?? image}
+        >
+          <div className='flex items-center gap-3 text-white'>
+            <div className='flex flex-col sm:flex-row sm:gap-2'>
+              <span
+                className='max-w-36 truncate text-sm text-black sm:max-w-44 sm:text-base dark:text-white'
+                title={username}
+              >
+                @{username}
+              </span>
+              <span
+                className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
+                title={updatedUser?.displayName ?? displayName ?? ''}
+              >
+                {updatedUser?.displayName ?? displayName ?? ''}
+              </span>
+            </div>
+            <Avatar>
+              <AvatarImage
+                src={updatedUser.image ?? image ?? ''}
+                height={'1.5rem'}
               />
-            </AvatarFallback>
-          </Avatar>
-        </div>
+              <AvatarFallback>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
+                  src={'/defaultavatar.svg'}
+                />
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        </UserHovercard>
       </nav>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
       <div className='flex flex-col gap-6 p-10 sm:flex-row'>
@@ -115,7 +125,7 @@ function SettingsClient({
             Settings
           </Label>
           <Select onValueChange={(value: PageValues) => setPage(value)}>
-            <SelectTrigger className='w-full text-black dark:text-white sm:w-[220px]'>
+            <SelectTrigger className='w-full text-black sm:w-[220px] dark:text-white'>
               {/* <Sel>Settings</SelectLabel> */}
               <SelectValue placeholder='Modify...' />
             </SelectTrigger>
