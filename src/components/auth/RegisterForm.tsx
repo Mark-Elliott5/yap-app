@@ -37,6 +37,7 @@ function RegisterForm() {
       confirmPassword: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleRegister = async (data: FormData) => {
     setRegistrationTry(await register(data));
@@ -121,7 +122,9 @@ function RegisterForm() {
           {/* {registerTry?.success && (
             <FormSuccess message={registerTry.success} />
           )} */}
-          <FormButton label='Register' />
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Registering...' : 'Register'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>

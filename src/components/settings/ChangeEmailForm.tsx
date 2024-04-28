@@ -12,6 +12,7 @@ import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,7 +21,7 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function ChangeEmailForm() {
+function ChangeEmailForm({ OAuth }: { OAuth: boolean }) {
   const [changeTry, setChangeTry] = useState<{
     error?: string;
     success?: string;
@@ -32,6 +33,7 @@ function ChangeEmailForm() {
       confirmEmail: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleChange = async (data: FormData) => {
     setChangeTry(await changeEmail(data));
@@ -44,53 +46,64 @@ function ChangeEmailForm() {
         onSubmit={({ formData }) => handleChange(formData)}
         className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
       >
-        <div className='flex flex-col gap-2 pb-6'>
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='yapper@yap.com'
-                    type='email'
-                    minLength={1}
-                    required
-                    className='placeholder:italic'
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+        <fieldset disabled={OAuth}>
+          <div className='flex flex-col gap-2 pb-6'>
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='yapper@yap.com'
+                      type='email'
+                      minLength={1}
+                      required
+                      disabled={OAuth}
+                      className='placeholder:italic'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='confirmEmail'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder='yapper@yap.com'
+                      type='email'
+                      minLength={1}
+                      required
+                      disabled={OAuth}
+                      className='placeholder:italic'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className='flex flex-col gap-y-6'>
+            {changeTry?.error && <FormError message={changeTry.error} />}
+            {changeTry?.success && <FormSuccess message={changeTry.success} />}
+            {OAuth && (
+              <FormDescription>
+                OAuth accounts cannot change their email or password.
+              </FormDescription>
             )}
-          />
-          <FormField
-            control={form.control}
-            name='confirmEmail'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Email</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder='yapper@yap.com'
-                    type='email'
-                    minLength={1}
-                    required
-                    className='placeholder:italic'
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className='flex flex-col gap-y-6'>
-          {changeTry?.error && <FormError message={changeTry.error} />}
-          {changeTry?.success && <FormSuccess message={changeTry.success} />}
-          <FormButton label='Save' />
-        </div>
+            <FormButton disabled={isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Save'}
+            </FormButton>
+          </div>
+        </fieldset>
       </Form>
     </FormProvider>
   );

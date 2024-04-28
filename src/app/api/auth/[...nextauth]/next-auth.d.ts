@@ -15,6 +15,7 @@ declare module 'next-auth/jwt' {
       email: string;
       emailVerified: Date | null;
       name: string | null;
+      joinDate: Date;
     };
   }
 }
@@ -28,6 +29,7 @@ declare module 'next-auth' {
       displayName: string | null;
       image: string | null;
       imageKey: string | null;
+      joinDate: Date;
     } & DefaultSession['user'];
   }
 }

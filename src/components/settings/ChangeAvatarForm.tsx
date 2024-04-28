@@ -37,6 +37,7 @@ function ChangeAvatarForm({
   const form = useForm<z.infer<typeof ChangeAvatarSchema>>({
     resolver: zodResolver(ChangeAvatarSchema),
   });
+  const { isSubmitting } = form.formState;
 
   const handleChange = async (data: FormData) => {
     const response = await changeAvatar(data);
@@ -70,7 +71,7 @@ function ChangeAvatarForm({
                     {...fieldProps}
                     placeholder='Picture'
                     type='file'
-                    accept='image/*, application/pdf'
+                    accept='image/jpeg, image/png, image/jpg'
                     onChange={(event) =>
                       onChange(event.target.files && event.target.files[0])
                     }
@@ -85,7 +86,9 @@ function ChangeAvatarForm({
         <div className='flex flex-col gap-y-6'>
           {changeTry?.error && <FormError message={changeTry.error} />}
           {changeTry?.success && <FormSuccess message={changeTry.success} />}
-          <FormButton label='Save' />
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Uploading...' : 'Save'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>

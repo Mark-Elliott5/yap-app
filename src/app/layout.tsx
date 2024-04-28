@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn('h-dvh bg-zinc-950', inter.className)}>
+      <body className={cn('h-dvh bg-zinc-900', inter.className)}>
         {children}
       </body>
     </html>

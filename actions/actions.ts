@@ -101,6 +101,7 @@ const register = async (data: FormData) => {
       displayName: null,
       image: null,
       imageKey: null,
+      joinDate: new Date(),
     };
 
     await db.user.create({ data: userObj });
@@ -217,7 +218,7 @@ const changeEmail = async (data: FormData) => {
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       throw new ActionError(
-        'Supplied email already associated with an account.'
+        'Supplied email is already associated with an account.'
       );
     }
 

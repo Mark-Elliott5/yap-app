@@ -34,6 +34,7 @@ function DeleteAccountForm() {
       username: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleChange = async (data: FormData) => {
     try {
@@ -81,7 +82,9 @@ function DeleteAccountForm() {
         </div>
         <div className='flex flex-col gap-y-6'>
           {changeTry?.error && <FormError message={changeTry.error} />}
-          <FormButton label='Delete Account' variant='destructive' />
+          <FormButton disabled={isSubmitting} variant='destructive'>
+            {isSubmitting ? 'Deleting...' : 'Delete Account'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>

@@ -40,6 +40,7 @@ function ChangeDisplayNameForm({
       displayName: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleChange = async (data: FormData) => {
     const response = await changeDisplayName(data);
@@ -88,7 +89,9 @@ function ChangeDisplayNameForm({
         <div className='flex flex-col gap-y-6'>
           {changeTry?.error && <FormError message={changeTry.error} />}
           {changeTry?.success && <FormSuccess message={changeTry.success} />}
-          <FormButton label='Save' />
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : 'Save'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>

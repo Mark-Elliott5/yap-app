@@ -1,14 +1,15 @@
 'use client';
 
-import { useFormStatus } from 'react-dom';
+// import { useFormStatus } from 'react-dom';
 
 import { Button } from '@/src/components/ui/button';
 
 function FormButton({
-  label,
+  children,
   variant,
+  disabled,
 }: {
-  label: string;
+  children: React.ReactNode;
   variant?:
     | 'link'
     | 'default'
@@ -18,17 +19,19 @@ function FormButton({
     | 'ghost'
     | null
     | undefined;
+  disabled: boolean;
 }) {
-  const { pending } = useFormStatus();
+  // the below is not disabling on submit
+  // const { pending } = useFormStatus();
 
   return (
     <Button
       type='submit'
       variant={variant}
-      className='w-full'
-      disabled={pending}
+      className='w-full select-none'
+      disabled={disabled}
     >
-      {label}
+      {children}
     </Button>
   );
 }

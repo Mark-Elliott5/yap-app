@@ -70,6 +70,7 @@ model User {
   password      String?
   image         String?
   imageKey      String?
+  joinDate      DateTime?
   role          UserRole  @default(USER)
   OAuth         Boolean   @default(false)
   yaps          Yap[]     @relation(name: "AuthoredYaps")

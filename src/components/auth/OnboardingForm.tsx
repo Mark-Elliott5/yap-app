@@ -33,6 +33,7 @@ function OnboardingForm() {
       displayName: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleOnboarding = async (data: FormData) => {
     setOnboardingTry(await onboarding(data));
@@ -58,6 +59,7 @@ function OnboardingForm() {
                     type='text'
                     autoComplete='username'
                     minLength={1}
+                    maxLength={32}
                     required
                     className='placeholder:italic'
                   />
@@ -98,7 +100,9 @@ function OnboardingForm() {
           {onboardingTry?.success && (
             <FormSuccess message={onboardingTry.success} />
           )}
-          <FormButton label='Save' />
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : 'Save'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>

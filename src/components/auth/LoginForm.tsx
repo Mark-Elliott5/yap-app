@@ -35,6 +35,7 @@ function LoginForm() {
       password: '',
     },
   });
+  const { isSubmitting } = form.formState;
 
   const handleLogin = async (data: FormData) => {
     setLoginTry(await login(data));
@@ -90,7 +91,9 @@ function LoginForm() {
         <div className='flex flex-col gap-y-6'>
           {loginTry?.error && <FormError message={loginTry.error} />}
           {/* {loginTry?.success && <FormSuccess message={loginTry.success} />} */}
-          <FormButton label='Log in' />
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </FormButton>
         </div>
       </Form>
     </FormProvider>
