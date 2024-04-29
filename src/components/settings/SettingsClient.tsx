@@ -9,6 +9,7 @@ import ChangeDisplayNameForm from '@/src/components/settings/ChangeDisplayNameFo
 import ChangeEmailForm from '@/src/components/settings/ChangeEmailForm';
 import ChangePasswordForm from '@/src/components/settings/ChangePasswordForm';
 import DeleteAccountForm from '@/src/components/settings/DeleteAccountForm';
+import SettingsDropDown from '@/src/components/SettingsDropDown';
 import {
   Avatar,
   AvatarFallback,
@@ -76,47 +77,51 @@ function SettingsClient({
     <div className='h-full bg-zinc-50 dark:bg-zinc-900'>
       <nav className='sticky flex items-center justify-between px-4 py-2'>
         <a
-          href='/'
+          href='/home'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
         >
           yap
         </a>
-        <UserHovercard
-          username={username}
-          joinDate={joinDate}
-          displayName={updatedUser.displayName ?? displayName}
-          image={updatedUser.image ?? image}
-        >
-          <div className='flex items-center gap-3 text-white'>
-            <div className='flex flex-col sm:flex-row sm:gap-2'>
-              <span
-                className='max-w-36 truncate text-sm text-black sm:max-w-44 sm:text-base dark:text-white'
-                title={username}
-              >
-                @{username}
-              </span>
-              <span
-                className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
-                title={updatedUser?.displayName ?? displayName ?? ''}
-              >
-                {updatedUser?.displayName ?? displayName ?? ''}
-              </span>
-            </div>
-            <Avatar>
-              <AvatarImage
-                src={updatedUser.image ?? image ?? ''}
-                height={'1.5rem'}
-              />
-              <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+        <div className='flex gap-3'>
+          <UserHovercard
+            username={username}
+            joinDate={joinDate}
+            displayName={updatedUser.displayName ?? displayName}
+            image={updatedUser.image ?? image}
+            // self={true}
+          >
+            <div className='flex items-center gap-3 text-white'>
+              <div className='flex flex-col sm:flex-row sm:gap-2'>
+                <span
+                  className='max-w-36 truncate text-sm text-black sm:max-w-44 sm:text-base dark:text-white'
+                  title={username}
+                >
+                  @{username}
+                </span>
+                <span
+                  className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
+                  title={updatedUser?.displayName ?? displayName ?? ''}
+                >
+                  {updatedUser?.displayName ?? displayName ?? ''}
+                </span>
+              </div>
+              <Avatar>
+                <AvatarImage
+                  src={updatedUser.image ?? image ?? ''}
+                  height={'1.5rem'}
                 />
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        </UserHovercard>
+                <AvatarFallback>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
+                    src={'/defaultavatar.svg'}
+                  />
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          </UserHovercard>
+          <SettingsDropDown />
+        </div>
       </nav>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
       <div className='flex flex-col gap-6 p-10 sm:flex-row'>

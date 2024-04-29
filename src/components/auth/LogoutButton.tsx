@@ -9,7 +9,7 @@ function LogoutButton({
 }) {
   return (
     <form action={logout} className={className}>
-      <button type='submit' className='h-10 w-full select-none py-2'>
+      <button type='submit' className={'h-10 w-full select-none py-2'}>
         Log out
         {username &&
           ` @${
