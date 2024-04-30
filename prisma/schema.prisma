@@ -73,6 +73,8 @@ model User {
   joinDate      DateTime?
   role          UserRole  @default(USER)
   OAuth         Boolean   @default(false)
+  private       Boolean   @default(false)
+  bio           String?
   yaps          Yap[]     @relation(name: "AuthoredYaps")
   likedYaps     Yap[]     @relation(name: "LikedYaps")
   echos         Yap[]     @relation(name: "Echos")

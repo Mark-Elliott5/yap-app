@@ -96,12 +96,23 @@ const ChangeDisplayNameSchema = zfd.formData({
   displayName: zfd.text(
     z
       .string()
-      .min(1, {
-        message: 'Display name is required.',
-      })
       .max(32, {
         message: 'Display name cannot be longer than 32 characters.',
       })
+      .optional()
+      .transform((val) => (val === '' ? undefined : val))
+  ),
+});
+
+const ChangeBioSchema = zfd.formData({
+  bio: zfd.text(
+    z
+      .string()
+      .max(144, {
+        message: 'Bio cannot be longer than 32 characters.',
+      })
+      .optional()
+      .transform((val) => (val === '' ? undefined : val))
   ),
 });
 
@@ -212,6 +223,7 @@ const DeleteAccountSchema = zfd.formData({
 
 export {
   ChangeAvatarSchema,
+  ChangeBioSchema,
   ChangeDisplayNameSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,

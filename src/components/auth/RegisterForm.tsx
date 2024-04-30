@@ -46,13 +46,12 @@ function RegisterForm() {
   return (
     <FormProvider {...form}>
       <Form
-        action={register}
         onSubmit={({ formData }) => handleRegister(formData)}
-        control={form.control}
+        // control={form.control}
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
-            control={form.control}
+            // control={form.control}
             name='email'
             render={({ field }) => (
               <FormItem>
@@ -73,7 +72,7 @@ function RegisterForm() {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name='password'
             render={({ field }) => (
               <FormItem>
@@ -94,7 +93,7 @@ function RegisterForm() {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name='confirmPassword'
             render={({ field }) => (
               <FormItem>

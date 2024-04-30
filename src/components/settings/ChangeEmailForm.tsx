@@ -42,14 +42,13 @@ function ChangeEmailForm({ OAuth }: { OAuth: boolean }) {
   return (
     <FormProvider {...form}>
       <Form
-        action={changeEmail}
         onSubmit={({ formData }) => handleChange(formData)}
-        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
+        className='margin-auto self-center'
       >
         <fieldset disabled={OAuth}>
           <div className='flex flex-col gap-2 pb-6'>
             <FormField
-              control={form.control}
+              // control={form.control}
               name='email'
               render={({ field }) => (
                 <FormItem>
@@ -70,7 +69,7 @@ function ChangeEmailForm({ OAuth }: { OAuth: boolean }) {
               )}
             />
             <FormField
-              control={form.control}
+              // control={form.control}
               name='confirmEmail'
               render={({ field }) => (
                 <FormItem>

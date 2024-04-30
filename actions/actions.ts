@@ -23,6 +23,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import {
   ChangeAvatarSchema,
+  ChangeBioSchema,
   ChangeDisplayNameSchema,
   // ChangeAvatarSchema,
   ChangeEmailSchema,
@@ -102,6 +103,8 @@ const register = async (data: FormData) => {
       image: null,
       imageKey: null,
       joinDate: new Date(),
+      private: false,
+      bio: '',
     };
 
     await db.user.create({ data: userObj });
@@ -401,7 +404,12 @@ const changeDisplayName = async (data: FormData) => {
         id: session.user.id,
       },
       data: {
-        displayName,
+        displayName:
+          displayName === undefined ||
+          displayName === 'undefined' ||
+          displayName === ''
+            ? null
+            : displayName,
       },
     });
     return { success: 'Display name updated successfully.' };
@@ -421,8 +429,44 @@ const changeDisplayName = async (data: FormData) => {
   }
 };
 
+const changeBio = async (data: FormData) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user) {
+      throw new ActionError('Access denied.');
+    }
+
+    const { bio } = await ChangeBioSchema.parseAsync(data);
+
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        bio:
+          bio === undefined || bio === 'undefined' || bio === '' ? null : bio,
+      },
+    });
+    return { success: 'Bio updated successfully.' };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.issues[0].message };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   changeAvatar,
+  changeBio,
   changeDisplayName,
   changeEmail,
   changePassword,

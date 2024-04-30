@@ -1,5 +1,5 @@
 import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
-import HomeApp from '@/src/components/home/HomeApp';
+import HomeClient from '@/src/components/home/HomeClient';
 
 async function Home() {
   const session = await auth();
@@ -19,7 +19,7 @@ async function Home() {
     joinDate,
   };
 
-  return <HomeApp {...user} />;
+  return <HomeClient {...user} />;
 }
 
 export default Home;

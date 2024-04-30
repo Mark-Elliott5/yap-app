@@ -43,10 +43,10 @@ function LoginForm() {
 
   return (
     <FormProvider {...form}>
-      <Form action={login} onSubmit={({ formData }) => handleLogin(formData)}>
+      <Form onSubmit={({ formData }) => handleLogin(formData)}>
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
-            control={form.control}
+            // control={form.control}
             name='email'
             render={({ field }) => (
               <FormItem>
@@ -67,7 +67,7 @@ function LoginForm() {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name='password'
             render={({ field }) => (
               <FormItem>

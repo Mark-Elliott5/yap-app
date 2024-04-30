@@ -41,13 +41,10 @@ function OnboardingForm() {
 
   return (
     <FormProvider {...form}>
-      <Form
-        action={onboarding}
-        onSubmit={({ formData }) => handleOnboarding(formData)}
-      >
+      <Form onSubmit={({ formData }) => handleOnboarding(formData)}>
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
-            control={form.control}
+            // control={form.control}
             name='username'
             render={({ field }) => (
               <FormItem>
@@ -70,7 +67,7 @@ function OnboardingForm() {
             )}
           />
           <FormField
-            control={form.control}
+            // control={form.control}
             name='displayName'
             render={({ field }) => (
               <FormItem>

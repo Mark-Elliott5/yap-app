@@ -11,7 +11,7 @@ const archivoBlack = Archivo_Black({
 
 function Loading() {
   return (
-    <div className='h-full bg-zinc-50 dark:bg-zinc-900'>
+    <div className='h-full'>
       <div className='sticky flex items-center justify-between px-4 py-2'>
         <a
           href='/'
@@ -25,7 +25,7 @@ function Loading() {
           <Skeleton className='h-6 w-6 rounded-full' />
         </div>
       </div>
-      <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
+      <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       <div className='flex flex-col gap-6 p-10 sm:flex-row'>
         <div className='flex flex-col gap-2'>
           <Skeleton className='h-7 w-[100px]' />

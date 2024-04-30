@@ -32,6 +32,10 @@ const config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      gridTemplateColumns: {
+        597: '5fr 9fr 7fr;',
+        doc: '1fr 3fr 1fr',
+      },
       colors: {
         'yap-red': {
           '50': '#ffe9e7',

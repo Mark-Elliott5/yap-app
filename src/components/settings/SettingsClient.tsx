@@ -5,6 +5,7 @@ import { Archivo_Black } from 'next/font/google';
 // import { useMediaQuery } from 'react-responsive';
 import LogoutButton from '@/src/components/auth/LogoutButton';
 import ChangeAvatarForm from '@/src/components/settings/ChangeAvatarForm';
+import ChangeBioForm from '@/src/components/settings/ChangeBioForm';
 import ChangeDisplayNameForm from '@/src/components/settings/ChangeDisplayNameForm';
 import ChangeEmailForm from '@/src/components/settings/ChangeEmailForm';
 import ChangePasswordForm from '@/src/components/settings/ChangePasswordForm';
@@ -15,7 +16,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import { Label } from '@/src/components/ui/label';
+// import { Label } from '@/src/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -34,7 +35,14 @@ const archivoBlack = Archivo_Black({
   weight: '400',
 });
 
-type PageValues = 'displayName' | 'email' | 'password' | 'avatar' | 'delete';
+type PageValues =
+  | 'displayName'
+  | 'email'
+  | 'password'
+  | 'avatar'
+  | 'delete'
+  | 'bio'
+  | 'privacy';
 
 function SettingsClient({
   username,
@@ -70,11 +78,15 @@ function SettingsClient({
         return <ChangeAvatarForm setUser={setUser} />;
       case 'delete':
         return <DeleteAccountForm />;
+      case 'bio':
+        return <ChangeBioForm />;
+      case 'privacy':
+        return <></>;
     }
   })();
 
   return (
-    <div className='h-full bg-zinc-50 dark:bg-zinc-900'>
+    <div className='h-full'>
       <nav className='sticky flex items-center justify-between px-4 py-2'>
         <a
           href='/home'
@@ -98,12 +110,14 @@ function SettingsClient({
                 >
                   @{username}
                 </span>
-                <span
-                  className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
-                  title={updatedUser?.displayName ?? displayName ?? ''}
-                >
-                  {updatedUser?.displayName ?? displayName ?? ''}
-                </span>
+                {(updatedUser?.displayName ?? displayName) && (
+                  <span
+                    className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
+                    title={updatedUser?.displayName ?? displayName!}
+                  >
+                    {updatedUser?.displayName ?? displayName}
+                  </span>
+                )}
               </div>
               <Avatar>
                 <AvatarImage
@@ -123,12 +137,12 @@ function SettingsClient({
           <SettingsDropDown />
         </div>
       </nav>
-      <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
-      <div className='flex flex-col gap-6 p-10 sm:flex-row'>
-        <div className='flex flex-col gap-2'>
-          <Label className='text-base text-black dark:text-white'>
-            Settings
-          </Label>
+      <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
+      <div className='m-auto flex w-full max-w-[600px] flex-col gap-6 p-10 sm:w-5/6 md:w-2/3 lg:w-1/2'>
+        <header className='text-3xl font-medium text-black dark:text-white'>
+          Settings
+        </header>
+        <div className=''>
           <Select onValueChange={(value: PageValues) => setPage(value)}>
             <SelectTrigger className='w-full text-black sm:w-[220px] dark:text-white'>
               {/* <Sel>Settings</SelectLabel> */}
@@ -136,14 +150,20 @@ function SettingsClient({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Profile</SelectLabel>
+                <SelectLabel className='text-left font-bold'>
+                  Profile
+                </SelectLabel>
                 <SelectItem value='displayName'>Display Name</SelectItem>
+                <SelectItem value='avatar'>Avatar</SelectItem>
+                <SelectItem value='bio'>Bio</SelectItem>
                 <SelectItem value='email'>Email</SelectItem>
                 <SelectItem value='password'>Password</SelectItem>
-                <SelectItem value='avatar'>Avatar</SelectItem>
               </SelectGroup>
               <SelectGroup>
-                <SelectLabel>Account</SelectLabel>
+                <SelectLabel className='text-left font-bold'>
+                  Account
+                </SelectLabel>
+                <SelectItem value='privacy'>Privacy</SelectItem>
                 <SelectItem
                   value='delete'
                   className='text-yap-red-500 focus:text-yap-red-500 dark:focus:text-yap-red-500'
@@ -155,7 +175,7 @@ function SettingsClient({
           </Select>
         </div>
         {/* <Separator orientation='vertical' className='bg-gray-300' /> */}
-        <main className='w-full sm:w-3/4'>{currentPage}</main>
+        <main className=''>{currentPage}</main>
       </div>
       <LogoutButton
         className='fixed bottom-8 right-8 max-w-44 rounded-md border-1 border-gray-300 bg-black px-2 font-medium text-white dark:bg-white dark:text-black'

@@ -47,13 +47,12 @@ function DeleteAccountForm() {
   return (
     <FormProvider {...form}>
       <Form
-        action={deleteAccount}
         onSubmit={({ formData }) => handleChange(formData)}
-        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
+        className='margin-auto self-center'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
-            control={form.control}
+            // control={form.control}
             name='username'
             render={({ field }) => (
               <FormItem>
@@ -71,10 +70,10 @@ function DeleteAccountForm() {
                 <FormMessage />
                 <FormDescription>
                   Enter your username to confirm you want to delete your
-                  account.{' '}
-                  <span className='font-bold text-yap-red-500'>
+                  account.
+                  <p className='font-bold text-yap-red-500'>
                     This action is irreversible.
-                  </span>
+                  </p>
                 </FormDescription>
               </FormItem>
             )}

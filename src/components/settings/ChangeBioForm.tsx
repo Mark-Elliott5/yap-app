@@ -1,11 +1,11 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { changeDisplayName } from '@/actions/actions';
-import { ChangeDisplayNameSchema } from '@/schemas';
+import { changeBio } from '@/actions/actions';
+import { ChangeBioSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -20,40 +20,22 @@ import {
 import { Input } from '@/src/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function ChangeDisplayNameForm({
-  setUser,
-}: {
-  setUser: Dispatch<
-    SetStateAction<{
-      displayName: string | null;
-      image: string | null;
-    }>
-  >;
-}) {
-  const [changeTry, setChangeTry] = useState<{
-    error?: string;
-    success?: string;
-  }>({});
-  const form = useForm<z.infer<typeof ChangeDisplayNameSchema>>({
-    resolver: zodResolver(ChangeDisplayNameSchema),
+function ChangeBioForm() {
+  const form = useForm<z.infer<typeof ChangeBioSchema>>({
+    resolver: zodResolver(ChangeBioSchema),
     defaultValues: {
-      displayName: '',
+      bio: '',
     },
   });
   const { isSubmitting } = form.formState;
 
+  const [changeTry, setChangeTry] = useState<{
+    error?: string;
+    success?: string;
+  }>({});
+
   const handleChange = async (data: FormData) => {
-    const response = await changeDisplayName(data);
-    setChangeTry(response);
-    if (response.success) {
-      setUser((prev) => {
-        const displayName = data.get('displayName') as string | null;
-        return {
-          ...prev,
-          displayName: displayName === 'undefined' ? null : displayName,
-        };
-      });
-    }
+    setChangeTry(await changeBio(data));
   };
 
   return (
@@ -65,14 +47,14 @@ function ChangeDisplayNameForm({
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             // control={form.control}
-            name='displayName'
+            name='bio'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Display Name</FormLabel>
+                <FormLabel>Bio</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='yapper'
+                    placeholder='This is me!'
                     type='text'
                     minLength={0}
                     maxLength={32}
@@ -96,4 +78,4 @@ function ChangeDisplayNameForm({
   );
 }
 
-export default ChangeDisplayNameForm;
+export default ChangeBioForm;

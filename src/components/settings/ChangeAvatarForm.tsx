@@ -55,13 +55,14 @@ function ChangeAvatarForm({
   return (
     <FormProvider {...form}>
       <Form
-        action={changeAvatar}
+        // action={changeAvatar}
         onSubmit={({ formData }) => handleChange(formData)}
-        className='margin-auto w-full self-center sm:w-5/6 md:w-2/3 lg:w-7/12'
+        className='margin-auto self-center'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
-            control={form.control}
+            // unnecessary when using FormProvider according to docs
+            // control={form.control}
             name='avatar'
             render={({ field: { value, onChange, ...fieldProps } }) => (
               <FormItem>

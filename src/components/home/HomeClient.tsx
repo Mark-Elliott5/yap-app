@@ -17,7 +17,7 @@ const archivoBlack = Archivo_Black({
 
 import { Separator } from '@/src/components/ui/separator';
 
-function HomeApp({
+function HomeClient({
   username,
   displayName,
   image,
@@ -38,7 +38,7 @@ function HomeApp({
   // })();
 
   return (
-    <div className={`h-full bg-zinc-50 dark:bg-zinc-900`}>
+    <div className='h-full'>
       <nav className='sticky flex items-center justify-between px-4 py-2'>
         <a
           href='/home'
@@ -86,9 +86,17 @@ function HomeApp({
           <SettingsDropDown />
         </div>
       </nav>
-      <Separator className='bg-gradient-to-r from-yap-red-500 to-orange-500' />
+      <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
+      <div className='grid h-full grid-cols-597'>
+        <div id='left' className='col-span-1 col-start-1'></div>
+        <div
+          id='middle'
+          className='col-span-1 col-start-2 border-1 border-zinc-700 bg-zinc-950'
+        ></div>
+        <div id='right' className='col-span-1 col-start-3'></div>
+      </div>
     </div>
   );
 }
 
-export default HomeApp;
+export default HomeClient;
