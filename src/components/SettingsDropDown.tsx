@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FaEllipsis } from 'react-icons/fa6';
 
 import DropDownLogout from '@/src/components/auth/DropDownLogout';
@@ -19,9 +20,9 @@ function SettingsDropDown() {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <a href='/settings'>
+        <Link href='/settings'>
           <DropdownMenuItem>Settings</DropdownMenuItem>
-        </a>
+        </Link>
         <DropdownMenuItem>
           <button
             className='w-full text-left'
