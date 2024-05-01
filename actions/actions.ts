@@ -38,6 +38,14 @@ import {
 
 class ActionError extends Error {}
 
+const getSession = async (err: string) => {
+  const session = await auth();
+  if (!session || !session.user) {
+    throw new ActionError(err);
+  }
+  return session;
+};
+
 const login = async (data: FormData) => {
   try {
     const { email, password } = await LoginSchema.parseAsync(data);
@@ -155,17 +163,14 @@ const register = async (data: FormData) => {
 
 const onboarding = async (data: FormData) => {
   try {
-    const { username, displayName } = await OnboardingSchema.parseAsync(data);
-
-    const session = await auth();
+    const session = await getSession('Access denied.');
     console.log('Onboarding session:', session);
-    if (!session) {
-      throw new ActionError('Session not found.');
-    }
+
     if (session.user.username) {
       throw new ActionError('Username already set.');
     }
 
+    const { username, displayName } = await OnboardingSchema.parseAsync(data);
     const existingUser = await getUserByUsername(username);
     if (existingUser) {
       throw new ActionError('Username already taken');
@@ -204,10 +209,7 @@ const onboarding = async (data: FormData) => {
 
 const changeEmail = async (data: FormData) => {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('No session found when updating user.');
-    }
+    const session = await getSession('Session not found.');
     if (session.user.OAuth) {
       throw new ActionError('Cannot update OAuth user email.');
     }
@@ -264,7 +266,7 @@ const changePassword = async (data: FormData) => {
 
     const currentUser = await getCurrentUser();
     if (!currentUser) {
-      throw new ActionError('No session found when updating user.');
+      throw new ActionError('User not found when attempting to update user.');
     }
     if (currentUser.OAuth) {
       throw new ActionError('Cannot change password of OAuth user.');
@@ -301,10 +303,7 @@ const changePassword = async (data: FormData) => {
 
 const changeAvatar = async (data: FormData) => {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('Access denied.');
-    }
+    const session = await getSession('Access denied.');
 
     const { avatar } = await ChangeAvatarSchema.parseAsync(data);
     if (!avatar) {
@@ -355,10 +354,7 @@ const changeAvatar = async (data: FormData) => {
 
 const deleteAccount = async (data: FormData) => {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('Access denied.');
-    }
+    const session = await getSession('Access denied.');
 
     const { username } = await DeleteAccountSchema.parseAsync(data);
     if (username !== session.user.username) {
@@ -391,10 +387,7 @@ const deleteAccount = async (data: FormData) => {
 
 const changeDisplayName = async (data: FormData) => {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('Access denied.');
-    }
+    const session = await getSession('Access denied.');
 
     const { displayName } = await ChangeDisplayNameSchema.parseAsync(data);
 
@@ -430,10 +423,7 @@ const changeDisplayName = async (data: FormData) => {
 
 const changeBio = async (data: FormData) => {
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('Access denied.');
-    }
+    const session = await getSession('Access denied.');
 
     const { bio } = await ChangeBioSchema.parseAsync(data);
 
@@ -466,11 +456,8 @@ const changeBio = async (data: FormData) => {
 const createPost = async (data: FormData) => {
   let postId = '';
   try {
-    const session = await auth();
-    if (!session || !session.user) {
-      throw new ActionError('Access denied.');
-    }
-    console.log('type:', typeof data.get('image'));
+    const session = await getSession('Access denied.');
+
     const { text, image } = await CreatePostSchema.parseAsync(data);
 
     let response = null;
@@ -525,6 +512,37 @@ const createPost = async (data: FormData) => {
   // redirect(`/post/${postId}`, RedirectType.push);
 };
 
+const getLatestYaps = async (skip: number | 0 = 0) => {
+  try {
+    await getSession('Access denied.');
+
+    const yaps = db.yap.findMany({
+      skip,
+      take: 10,
+      include: {
+        author: true,
+        likes: true,
+        echos: true,
+      },
+    });
+
+    return { yaps };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   changeAvatar,
   changeBio,
@@ -533,6 +551,7 @@ export {
   changePassword,
   createPost,
   deleteAccount,
+  getLatestYaps,
   login,
   logout,
   onboarding,
