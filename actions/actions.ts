@@ -2,7 +2,6 @@
 
 import { redirect, RedirectType } from 'next/navigation';
 import { AuthError } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
@@ -19,6 +18,7 @@ import {
   DEFAULT_LOGIN_REDIRECT,
   DEFAULT_REGISTER_REDIRECT,
 } from '@/src/routes';
+import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import {
@@ -28,6 +28,7 @@ import {
   // ChangeAvatarSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
+  CreatePostSchema,
   DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
@@ -89,9 +90,7 @@ const register = async (data: FormData) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userObj: JWT['user'] & {
-      password: string;
-    } = {
+    const userObj: Prisma.UserCreateInput = {
       email,
       emailVerified: null,
       name: null,
@@ -464,12 +463,69 @@ const changeBio = async (data: FormData) => {
   }
 };
 
+const createPost = async (data: FormData) => {
+  try {
+    const session = await auth();
+    if (!session || !session.user) {
+      throw new ActionError('Access denied.');
+    }
+
+    const { text, image } = await CreatePostSchema.parseAsync(data);
+
+    let response = null;
+    if (image) {
+      const formattedFile = new File([image], `image`, {
+        type: image.type,
+      });
+      response = await utapi.uploadFiles(formattedFile);
+      if (response.error !== null) {
+        console.log('UPLOADTHING ERR (CHANGEIMAGE):', response.error);
+        throw new ActionError('Image upload failed, please try again.');
+      }
+    }
+
+    const yap: Prisma.YapCreateInput = {
+      text,
+      date: new Date(),
+      author: {
+        connect: {
+          id: session.user.id,
+        },
+      },
+      image: response?.data.url ?? null,
+    };
+
+    await db.yap.create({ data: yap });
+
+    return { success: 'Bio updated successfully.' };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.issues[0].message };
+    }
+
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   changeAvatar,
   changeBio,
   changeDisplayName,
   changeEmail,
   changePassword,
+  createPost,
   deleteAccount,
   login,
   logout,

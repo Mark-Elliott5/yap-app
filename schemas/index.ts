@@ -184,12 +184,7 @@ const OnboardingSchema = zfd.formData({
 });
 
 const MAX_FILE_SIZE = 500000;
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-];
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 const ChangeAvatarSchema = zfd.formData({
   avatar: zfd.file(
@@ -199,7 +194,7 @@ const ChangeAvatarSchema = zfd.formData({
         message: `Image size must be less than 5MB.`,
       })
       .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+        message: 'Only .jpg, .jpeg, and .png files are accepted.',
       })
   ),
 });
@@ -221,29 +216,37 @@ const DeleteAccountSchema = zfd.formData({
   ),
 });
 
-const CreatePostSchema = zfd.formData({
-  text: zfd.text(
-    z
-      .string()
-      .min(1, {
-        message: 'Content is required.',
-      })
-      .max(144, {
-        message: 'Content cannot be longer than 32 characters.',
-      })
-  ),
-  image: zfd.file(
-    z
-      .instanceof(File, { message: 'Please add an image file.' })
-      .refine((file) => file.size <= MAX_FILE_SIZE, {
-        message: `Image size must be less than 5MB.`,
-      })
-      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
-      })
-      .optional()
-  ),
-});
+const CreatePostSchema = zfd
+  .formData({
+    text: zfd.text(
+      z
+        .string()
+        .max(144, {
+          message: 'Content cannot be longer than 32 characters.',
+        })
+        .optional()
+    ),
+    image: zfd.file(
+      z
+        .instanceof(File, { message: 'Please add an image file.' })
+        .refine((file) => file.size <= MAX_FILE_SIZE, {
+          message: `Image size must be less than 5MB.`,
+        })
+        .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+          message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+        })
+        .optional()
+    ),
+  })
+  .superRefine(({ text, image }, ctx) => {
+    if (!text && !image) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Please add text or an image to make a post.',
+        fatal: true,
+      });
+    }
+  });
 
 export {
   ChangeAvatarSchema,
