@@ -221,12 +221,37 @@ const DeleteAccountSchema = zfd.formData({
   ),
 });
 
+const CreatePostSchema = zfd.formData({
+  text: zfd.text(
+    z
+      .string()
+      .min(1, {
+        message: 'Content is required.',
+      })
+      .max(144, {
+        message: 'Content cannot be longer than 32 characters.',
+      })
+  ),
+  image: zfd.file(
+    z
+      .instanceof(File, { message: 'Please add an image file.' })
+      .refine((file) => file.size <= MAX_FILE_SIZE, {
+        message: `Image size must be less than 5MB.`,
+      })
+      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+      })
+      .optional()
+  ),
+});
+
 export {
   ChangeAvatarSchema,
   ChangeBioSchema,
   ChangeDisplayNameSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
+  CreatePostSchema,
   DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
