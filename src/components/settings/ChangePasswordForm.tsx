@@ -43,7 +43,7 @@ function ChangePasswordForm({ OAuth }: { OAuth: boolean }) {
   return (
     <FormProvider {...form}>
       <Form
-        onSubmit={({ formData }) => handleChange(formData)}
+        onSubmit={OAuth ? () => {} : ({ formData }) => handleChange(formData)}
         className='margin-auto self-center'
       >
         <fieldset disabled={OAuth}>
@@ -119,9 +119,11 @@ function ChangePasswordForm({ OAuth }: { OAuth: boolean }) {
                 OAuth accounts cannot change their email or password.
               </FormDescription>
             )}
-            <FormButton disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save'}
-            </FormButton>
+            {!OAuth && (
+              <FormButton disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : 'Save'}
+              </FormButton>
+            )}
           </div>
         </fieldset>
       </Form>
