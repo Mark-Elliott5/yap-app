@@ -45,12 +45,14 @@ type PageValues =
   | 'privacy';
 
 function SettingsClient({
+  email,
   username,
   displayName,
   image,
   OAuth,
   joinDate,
 }: {
+  email: string;
   username: string;
   displayName: string | null;
   image: string | null;
@@ -71,7 +73,7 @@ function SettingsClient({
       case 'displayName':
         return <ChangeDisplayNameForm setUser={setUser} />;
       case 'email':
-        return <ChangeEmailForm OAuth={OAuth} />;
+        return <ChangeEmailForm OAuth={OAuth} email={email} />;
       case 'password':
         return <ChangePasswordForm OAuth={OAuth} />;
       case 'avatar':
