@@ -48,25 +48,25 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           className='col-span-1 col-start-1 flex flex-col items-center justify-center gap-16 py-16'
         >
           <Link
-            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/home'
           >
             Latest
           </Link>
           <Link
-            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/notifications'
           >
             Notifications
           </Link>
           <Link
-            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/favorites'
           >
             Favorites
           </Link>
           <Link
-            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/profile'
           >
             Profile

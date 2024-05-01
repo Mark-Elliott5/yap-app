@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { IoIosClose } from 'react-icons/io';
 import { z } from 'zod';
@@ -36,6 +36,16 @@ function CreatePostButton() {
   const handleChange = async (data: FormData) => {
     setChangeTry(await createPost(data));
   };
+
+  useEffect(() => {
+    if (changeTry.success) {
+      const timeout = setTimeout(() => {
+        setChangeTry({});
+      }, 3000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [changeTry]);
 
   return (
     <>
