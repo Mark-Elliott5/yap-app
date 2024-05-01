@@ -65,6 +65,9 @@ function ChangeEmailForm({ OAuth, email }: { OAuth: boolean; email: string }) {
                     />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                    Your current email is {email}.
+                  </FormDescription>
                 </FormItem>
               )}
             />
