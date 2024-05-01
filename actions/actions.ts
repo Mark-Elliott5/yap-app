@@ -464,16 +464,17 @@ const changeBio = async (data: FormData) => {
 };
 
 const createPost = async (data: FormData) => {
+  let postId = '';
   try {
     const session = await auth();
     if (!session || !session.user) {
       throw new ActionError('Access denied.');
     }
-
+    console.log('type:', typeof data.get('image'));
     const { text, image } = await CreatePostSchema.parseAsync(data);
 
     let response = null;
-    if (image) {
+    if (image instanceof File) {
       const formattedFile = new File([image], `image`, {
         type: image.type,
       });
@@ -484,7 +485,7 @@ const createPost = async (data: FormData) => {
       }
     }
 
-    const yap: Prisma.YapCreateInput = {
+    const yapObj: Prisma.YapCreateInput = {
       text,
       date: new Date(),
       author: {
@@ -495,9 +496,11 @@ const createPost = async (data: FormData) => {
       image: response?.data.url ?? null,
     };
 
-    await db.yap.create({ data: yap });
+    const yap = await db.yap.create({ data: yapObj });
+    postId = yap.id;
+    console.log(postId);
 
-    return { success: 'Bio updated successfully.' };
+    return { success: 'Post created successfully.' };
   } catch (err) {
     console.log(err);
     if (err instanceof ZodError) {
@@ -517,6 +520,9 @@ const createPost = async (data: FormData) => {
     // }
     return { error: 'Unknown error occured.' };
   }
+
+  //uncomment when /post/* is created
+  // redirect(`/post/${postId}`, RedirectType.push);
 };
 
 export {

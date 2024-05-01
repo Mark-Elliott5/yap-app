@@ -226,24 +226,28 @@ const CreatePostSchema = zfd
         })
         .optional()
     ),
-    image: zfd.file(
-      z
-        .instanceof(File, { message: 'Please add an image file.' })
-        .refine((file) => file.size <= MAX_FILE_SIZE, {
-          message: `Image size must be less than 5MB.`,
-        })
-        .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-          message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
-        })
-        .optional()
-    ),
+    image: zfd
+      .file(z.instanceof(File, { message: 'Please add an image file.' }))
+      .refine((file) => file && file.size <= MAX_FILE_SIZE, {
+        message: `Image size must be less than 5MB.`,
+      })
+      .refine((file) => file && ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+      })
+      .optional()
+      .or(z.string().refine((val) => (val === '' ? undefined : val))),
   })
   .superRefine(({ text, image }, ctx) => {
     if (!text && !image) {
       ctx.addIssue({
         code: 'custom',
         message: 'Please add text or an image to make a post.',
-        fatal: true,
+        path: ['text'],
+      });
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Please add text or an image to make a post.',
+        path: ['image'],
       });
     }
   });

@@ -11,6 +11,7 @@ const archivoBlack = Archivo_Black({
 import { Suspense } from 'react';
 import Link from 'next/link';
 
+import CreatePostButton from '@/src/components/app/CreatePostButton';
 import NavBarUserInfo from '@/src/components/NavBarUserInfo';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
@@ -42,8 +43,42 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
       </nav>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       <div className='grid h-full grid-cols-597'>
-        <div id='left' className='col-span-1 col-start-1'></div>
-        {children}
+        <div
+          id='left'
+          className='col-span-1 col-start-1 flex flex-col items-center justify-center gap-16 py-16'
+        >
+          <Link
+            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            href='/home'
+          >
+            Latest
+          </Link>
+          <Link
+            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            href='/notifications'
+          >
+            Notifications
+          </Link>
+          <Link
+            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            href='/favorites'
+          >
+            Favorites
+          </Link>
+          <Link
+            className='text-2xl text-zinc-950 dark:text-zinc-100'
+            href='/profile'
+          >
+            Profile
+          </Link>
+          <CreatePostButton />
+        </div>
+        <div
+          id='middle latest-yaps profiles specific-yaps etc'
+          className='col-span-1 col-start-2 border-1 border-zinc-700 bg-zinc-950'
+        >
+          {children}
+        </div>
         <div id='right' className='col-span-1 col-start-3'></div>
       </div>
     </div>

@@ -19,7 +19,7 @@ function Loading() {
         >
           yap
         </a>
-        <div className='flex items-center gap-2 text-white'>
+        <div className='flex items-center gap-2 text-zinc-100'>
           <Skeleton className='h-4 w-[100px]' />
           <Skeleton className='h-4 w-[130px]' />
           <Skeleton className='h-10 w-10 rounded-full' />
@@ -28,7 +28,7 @@ function Loading() {
       </div>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       <div className='m-auto flex w-full max-w-[600px] flex-col gap-6 p-10 sm:w-5/6 md:w-2/3 lg:w-1/2'>
-        <header className='text-3xl font-medium text-black dark:text-white'>
+        <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
           Settings
         </header>
         <Skeleton className='h-10 w-full sm:w-[220px]' />

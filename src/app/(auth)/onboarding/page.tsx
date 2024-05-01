@@ -13,7 +13,7 @@ function OnboardingPage() {
   return (
     <AuthCardWrapper cardDescription={'Username'} showOAuth={false}>
       <OnboardingForm />
-      <LogoutButton className='mt-6 w-full rounded-md bg-yap-red-500 text-sm text-white' />
+      <LogoutButton className='mt-6 w-full rounded-md bg-yap-red-500 text-sm text-zinc-100' />
     </AuthCardWrapper>
   );
 }

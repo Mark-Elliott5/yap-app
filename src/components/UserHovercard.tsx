@@ -50,7 +50,7 @@ export function UserHovercard({
               </AvatarFallback>
             </Avatar>
             <span
-              className='text-sm text-black sm:text-base dark:text-white'
+              className='text-sm text-zinc-950 sm:text-base dark:text-zinc-100'
               title={username}
             >
               @{username}

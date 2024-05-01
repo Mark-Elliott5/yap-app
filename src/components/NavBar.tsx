@@ -44,10 +44,10 @@
 //           image={image}
 //           // self={true}
 //         >
-//           <div className='flex items-center gap-3 text-white'>
+//           <div className='flex items-center gap-3 text-zinc-100'>
 //             <div className='flex flex-col sm:flex-row sm:gap-2'>
 //               <span
-//                 className='max-w-36 truncate text-sm text-black sm:max-w-44 sm:text-base dark:text-white'
+//                 className='max-w-36 truncate text-sm text-zinc-950 sm:max-w-44 sm:text-base dark:text-zinc-100'
 //                 title={username}
 //               >
 //                 @{username}

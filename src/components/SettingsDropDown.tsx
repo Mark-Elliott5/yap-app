@@ -15,7 +15,10 @@ function SettingsDropDown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <FaEllipsis size='1.5rem' className='text-black dark:text-white' />
+        <FaEllipsis
+          size='1.5rem'
+          className='text-zinc-950 dark:text-zinc-100'
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

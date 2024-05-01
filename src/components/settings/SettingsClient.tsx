@@ -102,10 +102,10 @@ function SettingsClient({
             image={updatedUser.image ?? image}
             // self={true}
           >
-            <div className='flex items-center gap-3 text-white'>
+            <div className='flex items-center gap-3 text-zinc-100'>
               <div className='flex flex-col sm:flex-row sm:gap-2'>
                 <span
-                  className='max-w-36 truncate text-sm text-black sm:max-w-44 sm:text-base dark:text-white'
+                  className='max-w-36 truncate text-sm text-zinc-950 sm:max-w-44 sm:text-base dark:text-zinc-100'
                   title={username}
                 >
                   @{username}
@@ -139,12 +139,12 @@ function SettingsClient({
       </nav>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       <div className='m-auto flex w-full max-w-[600px] flex-col gap-6 p-10 sm:w-5/6 md:w-2/3 lg:w-1/2'>
-        <header className='text-3xl font-medium text-black dark:text-white'>
+        <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
           Settings
         </header>
         <div className=''>
           <Select onValueChange={(value: PageValues) => setPage(value)}>
-            <SelectTrigger className='w-full text-black sm:w-[220px] dark:text-white'>
+            <SelectTrigger className='w-full text-zinc-950 sm:w-[220px] dark:text-zinc-100'>
               {/* <Sel>Settings</SelectLabel> */}
               <SelectValue placeholder='Modify...' />
             </SelectTrigger>
@@ -178,13 +178,13 @@ function SettingsClient({
         <main className=''>{currentPage}</main>
       </div>
       <LogoutButton
-        className='fixed bottom-8 right-8 max-w-44 rounded-md border-1 border-gray-300 bg-black px-2 font-medium text-white dark:bg-white dark:text-black'
+        className='fixed bottom-8 right-8 max-w-44 rounded-md border-1 border-gray-300 bg-black px-2 font-medium text-zinc-100 dark:bg-zinc-100 dark:text-zinc-950'
         // username={username}
       />
     </div>
   );
-  //     {/* <div className='text-white'>{JSON.stringify(session)}</div> */}
-  // // <LogoutButton className='text-white' />
+  //     {/* <div className='text-zinc-100'>{JSON.stringify(session)}</div> */}
+  // // <LogoutButton className='text-zinc-100' />
   // {/* <UploadButton endpoint='avatarUploader' /> */}
 }
 

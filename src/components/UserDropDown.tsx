@@ -7,8 +7,8 @@
 //   return menuVisible ? (
 //     <
 //   ) : (
-//     <div className='flex items-center gap-2 text-white'>
-//       {/* <div className='rounded-full bg-white'> */}
+//     <div className='flex items-center gap-2 text-zinc-100'>
+//       {/* <div className='rounded-full bg-zinc-100'> */}
 //       {/* eslint-disable-next-line @next/next/no-img-element */}
 //       <img
 //         className='w-6 rounded-sm'

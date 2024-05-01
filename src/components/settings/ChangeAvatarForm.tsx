@@ -76,7 +76,7 @@ function ChangeAvatarForm({
                     onChange={(event) =>
                       onChange(event.target.files && event.target.files[0])
                     }
-                    className='text-black dark:text-white dark:placeholder:text-black'
+                    className='text-zinc-950 dark:text-zinc-100 dark:placeholder:text-zinc-950'
                   />
                 </FormControl>
                 <FormMessage />
@@ -103,7 +103,7 @@ action={changeAvatar}
 onSubmit={(e) => handleChange(new FormData(e.currentTarget))}
 >
 <input type='file' name='avatar' id='avatar' />
-<button className='bg-white p-10' type='submit'>
+<button className='bg-zinc-100 p-10' type='submit'>
   SUBMIT
 </button>
 </form> */
