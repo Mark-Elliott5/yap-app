@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { IoIosClose } from 'react-icons/io';
 
-import CreatePostForm from '@/src/components/app/CreatePostForm';
-import ReplyPostForm from '@/src/components/app/ReplyPostForm';
 import { Button } from '@/src/components/ui/button';
+import CreatePostForm from '@/src/components/yap/CreatePostForm';
+import ReplyPostForm from '@/src/components/yap/ReplyPostForm';
 import { Yap } from '@prisma/client';
 
 function PostPopup({

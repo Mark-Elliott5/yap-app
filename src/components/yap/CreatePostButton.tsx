@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import PostPopup from '@/src/components/app/PostPopup';
+import PostPopup from '@/src/components/yap/PostPopup';
 
 function CreatePostButton() {
   const [postVisible, setPostVisible] = useState(false);
