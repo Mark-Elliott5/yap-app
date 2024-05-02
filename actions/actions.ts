@@ -516,13 +516,29 @@ const getLatestYaps = async (skip: number | 0 = 0) => {
   try {
     await getSession('Access denied.');
 
-    const yaps = db.yap.findMany({
+    const yaps = await db.yap.findMany({
       skip,
       take: 10,
       include: {
-        author: true,
-        likes: true,
-        echos: true,
+        author: {
+          omit: {
+            password: true,
+            id: true,
+            email: true,
+            emailVerified: true,
+            role: true,
+            imageKey: true,
+            private: true,
+            bio: true,
+            OAuth: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            echos: true,
+          },
+        },
       },
     });
 
