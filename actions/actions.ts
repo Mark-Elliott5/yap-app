@@ -18,7 +18,7 @@ import {
   DEFAULT_LOGIN_REDIRECT,
   DEFAULT_REGISTER_REDIRECT,
 } from '@/src/routes';
-import { Prisma } from '@prisma/client';
+import { Prisma, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import {
@@ -512,13 +512,51 @@ const createPost = async (data: FormData) => {
   // redirect(`/post/${postId}`, RedirectType.push);
 };
 
-const getLatestYaps = async (skip: number | 0 = 0) => {
+const getLatestYaps = async (id: Yap['id'] | undefined) => {
   try {
     await getSession('Access denied.');
 
+    if (!id) {
+      const yaps = await db.yap.findMany({
+        take: 10,
+        orderBy: {
+          date: 'desc',
+        },
+        include: {
+          author: {
+            omit: {
+              password: true,
+              id: true,
+              email: true,
+              emailVerified: true,
+              role: true,
+              imageKey: true,
+              private: true,
+              bio: true,
+              OAuth: true,
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              echos: true,
+            },
+          },
+        },
+      });
+
+      return { yaps };
+    }
+
     const yaps = await db.yap.findMany({
-      skip,
+      skip: 1,
       take: 10,
+      cursor: {
+        id,
+      },
+      orderBy: {
+        date: 'desc',
+      },
       include: {
         author: {
           omit: {
