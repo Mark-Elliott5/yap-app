@@ -512,7 +512,7 @@ const createPost = async (data: FormData) => {
   // redirect(`/post/${postId}`, RedirectType.push);
 };
 
-const getLatestYaps = async (id: Yap['id'] | undefined) => {
+const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
   try {
     await getSession('Access denied.');
 
@@ -524,16 +524,28 @@ const getLatestYaps = async (id: Yap['id'] | undefined) => {
         },
         include: {
           author: {
+            select: {
+              username: true,
+              displayName: true,
+              image: true,
+              joinDate: true,
+            },
+          },
+          parentYap: {
             omit: {
-              password: true,
-              id: true,
-              email: true,
-              emailVerified: true,
-              role: true,
-              imageKey: true,
-              private: true,
-              bio: true,
-              OAuth: true,
+              text: true,
+              image: true,
+              date: true,
+            },
+            include: {
+              author: {
+                select: {
+                  username: true,
+                  displayName: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
             },
           },
           _count: {
@@ -559,16 +571,28 @@ const getLatestYaps = async (id: Yap['id'] | undefined) => {
       },
       include: {
         author: {
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            joinDate: true,
+          },
+        },
+        parentYap: {
           omit: {
-            password: true,
-            id: true,
-            email: true,
-            emailVerified: true,
-            role: true,
-            imageKey: true,
-            private: true,
-            bio: true,
-            OAuth: true,
+            text: true,
+            image: true,
+            date: true,
+          },
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                image: true,
+                joinDate: true,
+              },
+            },
           },
         },
         _count: {
