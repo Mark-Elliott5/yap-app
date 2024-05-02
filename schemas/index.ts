@@ -252,6 +252,43 @@ const CreatePostSchema = zfd
     }
   });
 
+const CreateReplySchema = zfd
+  .formData({
+    id: zfd.text(z.string()),
+    text: zfd.text(
+      z
+        .string()
+        .max(144, {
+          message: 'Content cannot be longer than 32 characters.',
+        })
+        .optional()
+    ),
+    image: zfd
+      .file(z.instanceof(File, { message: 'Please add an image file.' }))
+      .refine((file) => file && file.size <= MAX_FILE_SIZE, {
+        message: `Image size must be less than 5MB.`,
+      })
+      .refine((file) => file && ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: 'Only .jpg, .jpeg, .png and .webp files are accepted.',
+      })
+      .optional()
+      .or(z.string().refine((val) => (val === '' ? undefined : val))),
+  })
+  .superRefine(({ text, image }, ctx) => {
+    if (!text && !image) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Please add text or an image to make a post.',
+        path: ['text'],
+      });
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Please add text or an image to make a post.',
+        path: ['image'],
+      });
+    }
+  });
+
 export {
   ChangeAvatarSchema,
   ChangeBioSchema,
@@ -259,6 +296,7 @@ export {
   ChangeEmailSchema,
   ChangePasswordSchema,
   CreatePostSchema,
+  CreateReplySchema,
   DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
