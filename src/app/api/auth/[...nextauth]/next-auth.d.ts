@@ -16,7 +16,7 @@ declare module 'next-auth/jwt' {
       emailVerified: Date | null;
       name: string | null;
       // serializes Date from prisma as string
-      joinDate: Date | null;
+      joinDate: Date;
       bio: string | null;
       private: boolean;
     };
@@ -33,7 +33,7 @@ declare module 'next-auth' {
       image: string | null;
       imageKey: string | null;
       // should be string after deserialized from jwt
-      joinDate: Date | null;
+      joinDate: Date;
       bio: string | null;
       private: boolean;
     } & DefaultSession['user'];

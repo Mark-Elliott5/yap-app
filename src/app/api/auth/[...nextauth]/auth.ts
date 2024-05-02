@@ -79,7 +79,7 @@ export const {
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date(), OAuth: true, joinDate: new Date() },
+        data: { emailVerified: new Date(), OAuth: true },
       });
     },
     // async signIn({ user, isNewUser }) {
@@ -93,7 +93,6 @@ export const {
     Github({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      // profile: () => {},
     }),
     Credentials({
       async authorize(credentials) {

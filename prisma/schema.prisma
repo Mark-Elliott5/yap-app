@@ -49,7 +49,7 @@ enum UserRole {
 model Yap {
   id          String   @id @default(cuid())
   text        String?
-  date        DateTime
+  date        DateTime @default(now())
   image       String?
   likes       User[]   @relation(name: "LikedYaps")
   author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id])
@@ -70,7 +70,7 @@ model User {
   password      String?
   image         String?
   imageKey      String?
-  joinDate      DateTime?
+  joinDate      DateTime  @default(now())
   role          UserRole  @default(USER)
   OAuth         Boolean   @default(false)
   private       Boolean   @default(false)
