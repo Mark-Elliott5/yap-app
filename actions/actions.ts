@@ -25,15 +25,14 @@ import {
   ChangeAvatarSchema,
   ChangeBioSchema,
   ChangeDisplayNameSchema,
-  // ChangeAvatarSchema,
   ChangeEmailSchema,
   ChangePasswordSchema,
   CreatePostSchema,
+  CreateReplySchema,
   DeleteAccountSchema,
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,
-  // ServerChangeAvatarSchema,
 } from '../schemas';
 
 class ActionError extends Error {}
@@ -512,6 +511,70 @@ const createPost = async (data: FormData) => {
   // redirect(`/post/${postId}`, RedirectType.push);
 };
 
+const createReply = async (data: FormData) => {
+  let postId = '';
+  try {
+    const session = await getSession('Access denied.');
+
+    const { text, image, id } = await CreateReplySchema.parseAsync(data);
+
+    let response = null;
+    if (image instanceof File) {
+      const formattedFile = new File([image], `image`, {
+        type: image.type,
+      });
+      response = await utapi.uploadFiles(formattedFile);
+      if (response.error !== null) {
+        console.log('UPLOADTHING ERR (CHANGEIMAGE):', response.error);
+        throw new ActionError('Image upload failed, please try again.');
+      }
+    }
+
+    const yapObj: Prisma.YapCreateInput = {
+      text,
+      date: new Date(),
+      author: {
+        connect: {
+          id: session.user.id,
+        },
+      },
+      parentYap: {
+        connect: {
+          id,
+        },
+      },
+      image: response?.data.url ?? null,
+    };
+
+    const yap = await db.yap.create({ data: yapObj });
+    postId = yap.id;
+    console.log(postId);
+
+    return { success: 'Post created successfully.' };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof ZodError) {
+      return { error: err.issues[0].message };
+    }
+
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+
+  //uncomment when /post/* is created
+  // redirect(`/post/${postId}`, RedirectType.push);
+};
+
 const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
   try {
     await getSession('Access denied.');
@@ -521,6 +584,10 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
         take: 10,
         orderBy: {
           date: 'desc',
+        },
+        omit: {
+          parentYapId: true,
+          authorId: true,
         },
         include: {
           author: {
@@ -551,7 +618,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
           _count: {
             select: {
               likes: true,
-              echos: true,
+              echoes: true,
             },
           },
         },
@@ -598,7 +665,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
         _count: {
           select: {
             likes: true,
-            echos: true,
+            echoes: true,
           },
         },
       },
@@ -628,6 +695,7 @@ export {
   changeEmail,
   changePassword,
   createPost,
+  createReply,
   deleteAccount,
   getLatestYaps,
   login,

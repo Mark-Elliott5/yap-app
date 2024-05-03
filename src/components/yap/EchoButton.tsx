@@ -6,12 +6,12 @@ import { Button } from '@/src/components/ui/button';
 
 function EchoButton({
   className,
-  liked,
+  echoed,
 }: {
   className?: string;
-  liked: boolean;
+  echoed: boolean;
 }) {
-  const [on, setOn] = useState(liked);
+  const [on, setOn] = useState(echoed);
 
   // implement server action here later
 

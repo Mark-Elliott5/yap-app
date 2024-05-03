@@ -54,7 +54,7 @@ model Yap {
   likes       User[]   @relation(name: "LikedYaps")
   author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id])
   authorId    String
-  echos       User[]   @relation(name: "Echos")
+  echoes      User[]   @relation(name: "Echoes")
   replies     Yap[]    @relation("ParentYap")
   parentYap   Yap?     @relation("ParentYap", fields: [parentYapId], references: [id])
   parentYapId String?
@@ -77,7 +77,7 @@ model User {
   bio           String?
   yaps          Yap[]     @relation(name: "AuthoredYaps")
   likedYaps     Yap[]     @relation(name: "LikedYaps")
-  echos         Yap[]     @relation(name: "Echos")
+  echoes        Yap[]     @relation(name: "Echoes")
   accounts      Account[]
   sessions      Session[]
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { createPost } from '@/actions/actions';
+import { createReply } from '@/actions/actions';
 import { CreateReplySchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
@@ -33,7 +33,7 @@ function ReplyPostForm({ id }: { id: Yap['id'] }) {
   const { isSubmitting } = form.formState;
 
   const handleChange = async (data: FormData) => {
-    setChangeTry(await createPost(data));
+    setChangeTry(await createReply(data));
   };
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function ReplyPostForm({ id }: { id: Yap['id'] }) {
   return (
     <FormProvider {...form}>
       <Form
-        // action={createPost}
+        // action={createReply}
         onSubmit={({ formData }) => handleChange(formData)}
         className='margin-auto self-center'
       >

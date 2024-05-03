@@ -11,10 +11,10 @@ const archivoBlack = Archivo_Black({
 import { Suspense } from 'react';
 import Link from 'next/link';
 
-import CreatePostButton from '@/src/components/app/CreatePostButton';
 import NavBarUserInfo from '@/src/components/NavBarUserInfo';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
+import CreatePostButton from '@/src/components/yap/CreatePostButton';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
