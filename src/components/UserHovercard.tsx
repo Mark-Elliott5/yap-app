@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
 import {
@@ -29,48 +30,47 @@ export function UserHovercard({
 }) {
   return (
     <HoverCard>
-      <HoverCardTrigger>{children}</HoverCardTrigger>
+      <HoverCardTrigger href={`/user/${username}`}>{children}</HoverCardTrigger>
       <HoverCardContent className='w-80 sm:w-96'>
-        <a href={`/${username}`}>
-          <div
-            className={
-              self
-                ? 'flex flex-col gap-2'
-                : 'flex flex-col items-center justify-center gap-2'
-            }
-          >
-            <Avatar>
-              <AvatarImage src={image ?? ''} height={'1.5rem'} />
-              <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={`${displayName ?? username}'s avatar`}
-                  src={'/defaultavatar.svg'}
-                />
-              </AvatarFallback>
-            </Avatar>
+        <Link
+          href={`/user/${username}`}
+          className={
+            self
+              ? 'flex flex-col gap-2'
+              : 'flex flex-col items-center justify-center gap-2'
+          }
+        >
+          <Avatar>
+            <AvatarImage src={image ?? ''} height={'1.5rem'} />
+            <AvatarFallback>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={`${displayName ?? username}'s avatar`}
+                src={'/defaultavatar.svg'}
+              />
+            </AvatarFallback>
+          </Avatar>
+          {displayName && (
             <span
               className='text-sm text-zinc-950 sm:text-base dark:text-zinc-100'
-              title={username}
+              title={displayName}
             >
-              @{username}
+              {displayName}
             </span>
-            {displayName && (
-              <span
-                className='text-sm font-light text-zinc-500 sm:text-base dark:text-zinc-400'
-                title={displayName}
-              >
-                {displayName}
-              </span>
-            )}
-            <div className='flex items-center gap-2'>
-              <FaRegCalendarAlt className='h-4 w-4 opacity-70' />{' '}
-              <span className='text-muted-foreground text-xs'>
-                Joined {new Date(joinDate).toLocaleDateString()}
-              </span>
-            </div>
+          )}
+          <span
+            className={`text-sm font-light ${displayName ? 'text-zinc-600' : 'text-zinc-950 dark:text-zinc-100'} sm:text-base`}
+            title={username}
+          >
+            @{username}
+          </span>
+          <div className='flex items-center gap-2'>
+            <FaRegCalendarAlt className='h-4 w-4 opacity-70' />{' '}
+            <span className='text-muted-foreground text-xs'>
+              Joined {new Date(joinDate).toLocaleDateString()}
+            </span>
           </div>
-        </a>
+        </Link>
         {self && <Separator orientation='vertical' />}
       </HoverCardContent>
     </HoverCard>

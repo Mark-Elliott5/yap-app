@@ -10,7 +10,11 @@ async function Home() {
   }
 
   if (error) {
-    return <span>Something went wrong! Please reload the page.</span>;
+    return (
+      <span className='text-zinc-950 dark:text-zinc-100'>
+        Something went wrong! Please reload the page.
+      </span>
+    );
   }
 }
 

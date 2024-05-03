@@ -75,7 +75,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div
           id='middle latest-yaps profiles specific-yaps etc'
-          className='col-span-1 col-start-2 border-1 border-zinc-700 bg-zinc-950'
+          className='col-span-1 col-start-2 flex flex-col border-1 border-zinc-700 bg-zinc-950'
         >
           {children}
         </div>
