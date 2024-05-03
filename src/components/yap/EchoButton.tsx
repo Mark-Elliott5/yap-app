@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import { HiSignal } from 'react-icons/hi2';
 
-import { Button } from '@/src/components/ui/button';
-
 function EchoButton({
   className,
   echoed,
@@ -16,9 +14,11 @@ function EchoButton({
   // implement server action here later
 
   return (
-    <Button className={className} onClick={() => setOn((prev) => !prev)}>
-      <HiSignal className={on ? 'text-yap-green-500' : 'text-zinc-600'} />
-    </Button>
+    <button className={className} onClick={() => setOn((prev) => !prev)}>
+      <HiSignal
+        className={`hover:text-yap-green-500 ${on ? 'text-yap-green-500' : 'text-zinc-600'}`}
+      />
+    </button>
   );
 }
 

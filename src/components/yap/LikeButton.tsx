@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 
-import { Button } from '@/src/components/ui/button';
-
 function LikeButton({
   className,
   liked,
@@ -16,17 +14,17 @@ function LikeButton({
   // implement server action here later
 
   return (
-    <Button
-      variant='ghost'
-      className={className}
-      onClick={() => setOn((prev) => !prev)}
-    >
+    <button className={className} onClick={() => setOn((prev) => !prev)}>
       {on ? (
-        <IoMdHeart className='text-yap-red-500' />
+        <IoMdHeart
+          className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'}`}
+        />
       ) : (
-        <IoMdHeartEmpty className='text-zinc-600' />
+        <IoMdHeartEmpty
+          className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'}`}
+        />
       )}
-    </Button>
+    </button>
   );
 }
 
