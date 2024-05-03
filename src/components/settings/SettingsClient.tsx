@@ -180,7 +180,7 @@ function SettingsClient({
         <main className=''>{currentPage}</main>
       </div>
       <LogoutButton
-        className='fixed bottom-8 right-8 max-w-44 rounded-md border-1 border-gray-300 bg-black px-2 font-medium text-zinc-100 dark:bg-zinc-100 dark:text-zinc-950'
+        className='fixed bottom-8 right-8 max-w-44 rounded-md border-1 border-gray-300 bg-zinc-950 px-2 font-medium text-zinc-100 dark:bg-zinc-100 dark:text-zinc-950'
         // username={username}
       />
     </div>

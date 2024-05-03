@@ -52,7 +52,7 @@ model Yap {
   date        DateTime @default(now())
   image       String?
   likes       User[]   @relation(name: "LikedYaps")
-  author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id])
+  author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
   echoes      User[]   @relation(name: "Echoes")
   replies     Yap[]    @relation("ParentYap")
