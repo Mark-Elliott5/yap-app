@@ -8,13 +8,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
+import abbreviateNum from '@/src/lib/abbreviateNum';
 
 function EchoButton({
-  className,
   echoed,
+  echoes,
 }: {
   className?: string;
   echoed: boolean;
+  echoes: number;
 }) {
   const [on, setOn] = useState(echoed);
 
@@ -24,10 +26,17 @@ function EchoButton({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button className={className} onClick={() => setOn((prev) => !prev)}>
+          <button
+            className={`hover:text-yap-green-500 ${on ? 'text-yap-green-500' : 'text-zinc-600'} flex items-center gap-1`}
+            onClick={() => setOn((prev) => !prev)}
+          >
             <HiSignal
-              className={`hover:text-yap-green-500 ${on ? 'text-yap-green-500' : 'text-zinc-600'}`}
+              size='1.5rem'
+              className='text-inherit hover:text-yap-green-500'
             />
+            <span className='font-light text-inherit'>
+              {abbreviateNum(echoes)}
+            </span>
           </button>
         </TooltipTrigger>
         <TooltipContent>

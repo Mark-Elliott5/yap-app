@@ -8,14 +8,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
+import abbreviateNum from '@/src/lib/abbreviateNum';
 
-function LikeButton({
-  className,
-  liked,
-}: {
-  className?: string;
-  liked: boolean;
-}) {
+function LikeButton({ liked, likes }: { liked: boolean; likes: number }) {
   const [on, setOn] = useState(liked);
 
   // implement server action here later
@@ -24,16 +19,18 @@ function LikeButton({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button className={className} onClick={() => setOn((prev) => !prev)}>
+          <button
+            className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'} flex items-center gap-1`}
+            onClick={() => setOn((prev) => !prev)}
+          >
             {on ? (
-              <IoMdHeart
-                className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'}`}
-              />
+              <IoMdHeart size='1.5rem' className='text-inherit' />
             ) : (
-              <IoMdHeartEmpty
-                className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'}`}
-              />
+              <IoMdHeartEmpty size='1.5rem' className='text-inherit' />
             )}
+            <span className='font-light text-inherit'>
+              {abbreviateNum(likes)}
+            </span>
           </button>
         </TooltipTrigger>
         <TooltipContent>

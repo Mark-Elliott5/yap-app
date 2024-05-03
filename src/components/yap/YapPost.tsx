@@ -10,10 +10,10 @@ import UserHovercard from '@/src/components/UserHovercard';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ReplyButton from '@/src/components/yap/ReplyButton';
-import abbreviateNum from '@/src/lib/abbreviateNum';
 import { User, Yap } from '@prisma/client';
 
-interface YapProps extends Pick<Yap, 'text' | 'image' | 'date' | 'id'> {
+interface YapProps
+  extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
   author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
   parentYap:
     | ({
@@ -39,6 +39,7 @@ function YapPost({
   date,
   _count,
   parentYap,
+  isReply,
   id,
 }: YapProps) {
   return (
@@ -91,6 +92,9 @@ function YapPost({
           in reply to @{parentYap.author.username}
         </Link>
       )}
+      {isReply && !parentYap && (
+        <span className='text-sm text-zinc-600'>in reply to a deleted yap</span>
+      )}
       <div className='py-2'>
         {text && <p className='text-zinc-950 dark:text-zinc-100'>{text}</p>}
 
@@ -101,12 +105,10 @@ function YapPost({
       </div>
       <div className='flex items-center gap-16'>
         <div className='flex cursor-default items-center gap-1 text-zinc-950 dark:text-zinc-100'>
-          <LikeButton liked={false} />
-          <span>{abbreviateNum(_count.likes)}</span>
+          <LikeButton liked={false} likes={_count.likes} />
         </div>
         <div className='flex cursor-default items-center gap-1 text-zinc-950 dark:text-zinc-100'>
-          <EchoButton echoed={false} />
-          <span>{abbreviateNum(_count.echoes)}</span>
+          <EchoButton echoed={false} echoes={_count.echoes} />
         </div>
         <ReplyButton id={id} />
       </div>
