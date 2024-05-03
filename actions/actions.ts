@@ -479,6 +479,7 @@ const createPost = async (data: FormData) => {
           id: session.user.id,
         },
       },
+      isReply: false,
       image: response?.data.url ?? null,
     };
 
@@ -543,6 +544,7 @@ const createReply = async (data: FormData) => {
           id,
         },
       },
+      isReply: true,
       image: response?.data.url ?? null,
     };
 

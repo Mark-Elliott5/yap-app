@@ -56,6 +56,7 @@ model Yap {
   authorId    String
   echoes      User[]   @relation(name: "Echoes")
   replies     Yap[]    @relation("ParentYap")
+  isReply     Boolean
   parentYap   Yap?     @relation("ParentYap", fields: [parentYapId], references: [id])
   parentYapId String?
 }
