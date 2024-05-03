@@ -225,6 +225,9 @@ const CreatePostSchema = zfd
           message: 'Content cannot be longer than 32 characters.',
         })
         .optional()
+        .transform((val) =>
+          val === '' || val === 'undefined' ? undefined : val
+        )
     ),
     image: zfd
       .file(z.instanceof(File, { message: 'Please add an image file.' }))
@@ -262,6 +265,9 @@ const CreateReplySchema = zfd
           message: 'Content cannot be longer than 32 characters.',
         })
         .optional()
+        .transform((val) =>
+          val === '' || val === 'undefined' ? undefined : val
+        )
     ),
     image: zfd
       .file(z.instanceof(File, { message: 'Please add an image file.' }))

@@ -95,12 +95,16 @@ function YapPost({
       {isReply && !parentYap && (
         <span className='text-sm text-zinc-600'>in reply to a deleted yap</span>
       )}
-      <div className='py-2'>
+      <div className='flex flex-col gap-2 py-2'>
         {text && <p className='text-zinc-950 dark:text-zinc-100'>{text}</p>}
 
         {image && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={image} alt='post image' />
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            alt='post image'
+            className='h-[250px] w-full rounded-md object-cover'
+          />
         )}
       </div>
       <div className='flex items-center gap-16'>
