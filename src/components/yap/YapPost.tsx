@@ -26,11 +26,9 @@ interface YapProps
   };
 }
 
-{
-  /* in practice, author.username will never actually be null, because users 
+/* in practice, author.username will never actually be null, because users 
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
-}
 
 function YapPost({
   author,
@@ -43,7 +41,7 @@ function YapPost({
   id,
 }: YapProps) {
   return (
-    <div className='flex flex-col gap-2 border-b-1 border-zinc-600 px-5 py-4'>
+    <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
       <div className='flex items-center gap-2'>
         <UserHovercard
           username={author.username!}

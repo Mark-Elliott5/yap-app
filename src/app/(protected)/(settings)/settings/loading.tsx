@@ -11,7 +11,7 @@ const archivoBlack = Archivo_Black({
 
 function Loading() {
   return (
-    <div className='h-full'>
+    <div className='h-dvh'>
       <div className='sticky flex items-center justify-between px-4 py-2'>
         <a
           href='/'
