@@ -49,9 +49,12 @@ function CreatePostForm() {
       <Form
         // action={createPost}
         onSubmit={({ formData }) => handleChange(formData)}
-        className='margin-auto self-center'
+        className='h-dvh p-10'
       >
         <div className='flex flex-col gap-2 pb-6'>
+          <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
+            Yap something!
+          </header>
           <FormField
             // control={form.control}
             name='text'

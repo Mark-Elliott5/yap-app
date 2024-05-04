@@ -14,7 +14,7 @@ import Link from 'next/link';
 import NavBarUserInfo from '@/src/components/NavBarUserInfo';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
-import CreatePostButton from '@/src/components/yap/CreatePostButton';
+// import CreatePostButton from '@/src/components/yap/CreatePostButton';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -73,13 +73,13 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             Profile
           </Link>
-          {/* <Link
+          <Link
             href='/post'
             className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
           >
             Post
-          </Link> */}
-          <CreatePostButton />
+          </Link>
+          {/* <CreatePostButton /> */}
         </div>
         <div
           id='middle latest-yaps profiles specific-yaps etc'
