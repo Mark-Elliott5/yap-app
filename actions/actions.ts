@@ -690,6 +690,90 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
   }
 };
 
+const getYap = async (id: Yap['id']) => {
+  try {
+    await getSession('Access denied.');
+
+    if (!id) {
+      throw new ActionError('No post ID was received by the server.');
+    }
+
+    const yap = await db.yap.findUnique({
+      where: {
+        id,
+      },
+      omit: {
+        parentYapId: true,
+        authorId: true,
+      },
+      include: {
+        replies: {
+          omit: {
+            authorId: true,
+            parentYapId: true,
+          },
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                image: true,
+                joinDate: true,
+              },
+            },
+          },
+        },
+        author: {
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            joinDate: true,
+          },
+        },
+        parentYap: {
+          omit: {
+            text: true,
+            image: true,
+            date: true,
+          },
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                image: true,
+                joinDate: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            echoes: true,
+          },
+        },
+      },
+    });
+
+    return { yap };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   changeAvatar,
   changeBio,
@@ -700,6 +784,7 @@ export {
   createReply,
   deleteAccount,
   getLatestYaps,
+  getYap,
   login,
   logout,
   onboarding,
