@@ -509,7 +509,7 @@ const createPost = async (data: FormData) => {
   }
 
   //uncomment when /post/* is created
-  // redirect(`/post/${postId}`, RedirectType.push);
+  // redirect(`/${session.user.username}/post/${postId}`, RedirectType.push);
 };
 
 const createReply = async (data: FormData) => {
@@ -574,7 +574,7 @@ const createReply = async (data: FormData) => {
   }
 
   //uncomment when /post/* is created
-  // redirect(`/post/${postId}`, RedirectType.push);
+  // redirect(`/${session.user.username}/post/${postId}`, RedirectType.push);
 };
 
 const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {

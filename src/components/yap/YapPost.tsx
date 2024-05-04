@@ -79,14 +79,20 @@ function YapPost({
             )}
           </div>
         </UserHovercard>
-        <Link href={`/post/${id}`} className='text-xs text-zinc-600'>
+        <Link
+          href={`/user/${author.username}/post/${id}`}
+          className='text-xs text-zinc-600'
+        >
           {new Date(date).toLocaleDateString() +
             ' ' +
             new Date(date).toLocaleTimeString()}
         </Link>
       </div>
       {parentYap && (
-        <Link href={`/post/${parentYap.id}`} className='text-sm text-zinc-600'>
+        <Link
+          href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
+          className='text-sm text-zinc-600'
+        >
           in reply to @{parentYap.author.username}
         </Link>
       )}
