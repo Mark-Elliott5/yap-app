@@ -1,3 +1,5 @@
+import { getUserByUsername } from '@/src/lib/database/getUser';
+
 async function Profile({
   params,
   children,
@@ -5,7 +7,7 @@ async function Profile({
   params: { username: string };
   children: React.ReactNode;
 }>) {
-  // const profile = await getProfile(params.username);
+  const profile = await getUserByUsername(params.username);
   return (
     <div>
       <p>{params.username}</p>

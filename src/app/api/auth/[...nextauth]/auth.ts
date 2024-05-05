@@ -1,10 +1,8 @@
-// import type { NextAuthConfig } from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 
-// import authConfig from '@/src/app/api/auth/[...nextauth]/auth.config';
 import db from '@/src/lib/database/db';
 import { getUserByEmail, getUserById } from '@/src/lib/database/getUser';
 import { LoginSchema } from '@/src/schemas';
@@ -57,7 +55,6 @@ export const {
         // console.log('FAILED TO GET EXISTING USER');
         return token;
       }
-      const { password, ...user } = existingUser;
       // const tokenUserObj = {
       //   role,
       //   OAuth,
@@ -68,7 +65,7 @@ export const {
       //   email,
       //   emailVerified,
       // };
-      token.user = user;
+      token.user = existingUser;
       // console.log('TOKEN:', token);
       return token;
     },
@@ -96,14 +93,15 @@ export const {
       async authorize(credentials) {
         const result = await LoginSchema.safeParseAsync(credentials);
         if (!result.success) return null;
-        const { email, password } = result.data;
-        const user = await getUserByEmail(email);
+        const { data } = result;
+        const user = await getUserByEmail(data.email);
         if (!user || !user.password) return null;
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(data.password, user.password);
         if (!match) {
           return null;
         }
-        return user;
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
       },
     }),
   ],

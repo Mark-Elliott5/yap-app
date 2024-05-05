@@ -8,7 +8,7 @@ import { ZodError } from 'zod';
 import { auth, signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/database/db';
 import {
-  getCurrentUser,
+  getCurrentUserPassword,
   getUserByEmail,
   getUserByUsername,
 } from '@/src/lib/database/getUser';
@@ -263,7 +263,7 @@ const changePassword = async (data: FormData) => {
     const { oldPassword, newPassword } =
       await ChangePasswordSchema.parseAsync(data);
 
-    const currentUser = await getCurrentUser();
+    const currentUser = await getCurrentUserPassword();
     if (!currentUser) {
       throw new ActionError('User not found when attempting to update user.');
     }

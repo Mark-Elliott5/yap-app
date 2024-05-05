@@ -27,6 +27,9 @@ const getUserById = async (id: string) => {
       where: {
         id,
       },
+      omit: {
+        password: true,
+      },
     });
     return user;
   } catch (err) {
@@ -41,6 +44,9 @@ const getUserByUsername = async (username: string) => {
       where: {
         username,
       },
+      omit: {
+        password: true,
+      },
     });
     return user;
   } catch (err) {
@@ -49,13 +55,18 @@ const getUserByUsername = async (username: string) => {
   }
 };
 
-const getCurrentUser = async () => {
+const getCurrentUserPassword = async () => {
   try {
     const session = await auth();
     if (!session) return null;
     const user = await db.user.findUnique({
       where: {
         id: session.user.id,
+      },
+      select: {
+        id: true,
+        password: true,
+        OAuth: true,
       },
     });
     return user;
@@ -91,4 +102,9 @@ const getCurrentUser = async () => {
 //   }
 // };
 
-export { getCurrentUser, getUserByEmail, getUserById, getUserByUsername };
+export {
+  getCurrentUserPassword,
+  getUserByEmail,
+  getUserById,
+  getUserByUsername,
+};
