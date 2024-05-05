@@ -1,4 +1,11 @@
 import { Archivo_Black } from 'next/font/google';
+import {
+  TbClock,
+  TbNews,
+  TbNotification,
+  TbSpeakerphone,
+  TbUserSquare,
+} from 'react-icons/tb';
 
 import SettingsDropDown from '@/src/components/SettingsDropDown';
 import { cn } from '@/src/lib/utils';
@@ -51,34 +58,39 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
         >
           <Link
-            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/home'
             prefetch={false}
           >
+            <TbClock />
             Latest
           </Link>
           <Link
-            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/notifications'
           >
+            <TbNotification />
             Notifications
           </Link>
           <Link
-            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
-            href='/favorites'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            href='/news'
           >
-            Favorites
+            <TbNews />
+            News
           </Link>
           <Link
-            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/profile'
           >
+            <TbUserSquare />
             Profile
           </Link>
           <Link
             href='/post'
-            className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
           >
+            <TbSpeakerphone />
             Post
           </Link>
           {/* <CreatePostButton /> */}
