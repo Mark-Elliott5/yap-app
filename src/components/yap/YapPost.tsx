@@ -93,11 +93,13 @@ function YapPost({
           href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
           className='text-sm text-zinc-600'
         >
-          in reply to @{parentYap.author.username}
+          ╰ in reply to @{parentYap.author.username}
         </Link>
       )}
       {isReply && !parentYap && (
-        <span className='text-sm text-zinc-600'>in reply to a deleted yap</span>
+        <span className='text-sm text-zinc-600'>
+          ╰ in reply to a deleted yap
+        </span>
       )}
       <div className='flex flex-col gap-2 py-2'>
         {text && <p className='text-zinc-950 dark:text-zinc-100'>{text}</p>}
