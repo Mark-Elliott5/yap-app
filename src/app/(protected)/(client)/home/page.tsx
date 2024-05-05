@@ -1,5 +1,5 @@
-import { getLatestYaps } from '@/actions/actions';
 import YapPost from '@/src/components/yap/YapPost';
+import { getLatestYaps } from '@/src/lib/database/fetch';
 
 async function Home() {
   // get latest yaps, return fragment of yaps

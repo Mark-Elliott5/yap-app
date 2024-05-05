@@ -5,22 +5,18 @@ import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
+import { auth, signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
+import db from '@/src/lib/database/db';
 import {
   getCurrentUser,
   getUserByEmail,
   getUserByUsername,
-  updateUser,
-} from '@/data-utils';
-import { utapi } from '@/server/uploadthing';
-import { auth, signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
-import db from '@/src/lib/db';
+} from '@/src/lib/database/getUser';
+import { utapi } from '@/src/lib/uploadthing';
 import {
   DEFAULT_LOGIN_REDIRECT,
   DEFAULT_REGISTER_REDIRECT,
 } from '@/src/routes';
-import { Prisma, Yap } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-
 import {
   ChangeAvatarSchema,
   ChangeBioSchema,
@@ -33,7 +29,9 @@ import {
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,
-} from '../schemas';
+} from '@/src/schemas';
+import { Prisma, Yap } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
 
@@ -225,10 +223,14 @@ const changeEmail = async (data: FormData) => {
       );
     }
 
-    const success = await updateUser(session.user.id!, { email });
-    if (!success) {
-      throw new ActionError('Email update failed.');
-    }
+    await db.user.update({
+      where: { id: session.user.id },
+      data: {
+        email,
+      },
+    });
+
+    return { success: 'Email updated.' };
   } catch (err) {
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
@@ -254,8 +256,6 @@ const changeEmail = async (data: FormData) => {
 
     return { error: 'Something went wrong!' };
   }
-
-  return { success: 'Email updated.' };
 };
 
 const changePassword = async (data: FormData) => {
@@ -280,10 +280,15 @@ const changePassword = async (data: FormData) => {
     // if (newPassword !== confirmPassword) {
     //   throw new ActionError('New passwords must match.');
     // }
-    const success = await updateUser(currentUser.id, { password: newPassword });
-    if (!success) {
-      throw new ActionError('Password update failed.');
-    }
+
+    await db.user.update({
+      where: { id: currentUser.id },
+      data: {
+        password: newPassword,
+      },
+    });
+
+    return { success: 'Password updated.' };
   } catch (err) {
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
@@ -296,8 +301,6 @@ const changePassword = async (data: FormData) => {
 
     return { error: 'Something went wrong!' };
   }
-
-  return { success: 'Password updated.' };
 };
 
 const changeAvatar = async (data: FormData) => {

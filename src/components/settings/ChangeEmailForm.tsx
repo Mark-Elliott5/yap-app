@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { changeEmail } from '@/actions/actions';
-import { ChangeEmailSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -19,6 +17,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { changeEmail } from '@/src/lib/database/actions';
+import { ChangeEmailSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function ChangeEmailForm({ OAuth, email }: { OAuth: boolean; email: string }) {

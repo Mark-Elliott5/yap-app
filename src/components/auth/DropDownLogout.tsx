@@ -1,4 +1,4 @@
-import { logout } from '@/actions/actions';
+import { logout } from '@/src/lib/database/actions';
 
 function DropDownLogout() {
   return (

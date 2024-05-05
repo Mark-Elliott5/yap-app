@@ -1,13 +1,11 @@
 import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
-import db from '@/src/lib/db';
+import db from '@/src/lib/database/db';
 
-interface updateableFields {
-  email?: string;
-  password?: string;
-  avatar?: string;
-  displayName?: string;
-  username?: string;
-}
+// cannot use this here, referencing it will break the app. I suspect with 99%
+// certainty, when auth is called in middleware, which runs on edge without
+// option for node, this causes the typeerror cannot read properties of
+// undefined (reading exec()) error.
+// import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 const getUserByEmail = async (email: string) => {
   try {
@@ -78,25 +76,19 @@ const getCurrentUser = async () => {
 //   }
 // };
 
-const updateUser = async (id: string, data: updateableFields) => {
-  try {
-    const user = await db.user.update({
-      where: {
-        id,
-      },
-      data,
-    });
-    return user;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
+// const updateUser = async (id: string, data: updateableFields) => {
+//   try {
+//     const user = await db.user.update({
+//       where: {
+//         id,
+//       },
+//       data,
+//     });
+//     return user;
+//   } catch (err) {
+//     console.log(err);
+//     return null;
+//   }
+// };
 
-export {
-  getCurrentUser,
-  getUserByEmail,
-  getUserById,
-  getUserByUsername,
-  updateUser,
-};
+export { getCurrentUser, getUserByEmail, getUserById, getUserByUsername };

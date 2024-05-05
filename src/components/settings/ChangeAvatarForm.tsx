@@ -4,8 +4,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { changeAvatar } from '@/actions/actions';
-import { ChangeAvatarSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -18,6 +16,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { changeAvatar } from '@/src/lib/database/actions';
+import { ChangeAvatarSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function ChangeAvatarForm({

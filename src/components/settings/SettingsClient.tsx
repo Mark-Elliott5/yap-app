@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Archivo_Black } from 'next/font/google';
+import Link from 'next/link';
 
 // import { useMediaQuery } from 'react-responsive';
 import LogoutButton from '@/src/components/auth/LogoutButton';
@@ -90,12 +91,13 @@ function SettingsClient({
   return (
     <div className='h-dvh'>
       <nav className='sticky flex items-center justify-between px-4 py-2'>
-        <a
+        <Link
           href='/home'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
+          prefetch={false}
         >
           yap
-        </a>
+        </Link>
         <div className='flex gap-3'>
           <UserHovercard
             username={username}

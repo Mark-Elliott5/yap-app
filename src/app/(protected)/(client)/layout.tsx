@@ -24,6 +24,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           <Link
             href='/home'
             className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
+            prefetch={false}
           >
             yap
           </Link>
@@ -52,6 +53,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           <Link
             className='px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
             href='/home'
+            prefetch={false}
           >
             Latest
           </Link>
@@ -83,7 +85,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div
           id='middle latest-yaps profiles specific-yaps etc'
-          className='z-10 col-span-1 col-start-2 flex flex-col bg-white shadow-2xl dark:bg-zinc-900 dark:shadow-xl'
+          className='z-10 col-span-1 col-start-2 flex min-h-dvh flex-col bg-white shadow-2xl dark:bg-zinc-900 dark:shadow-xl'
         >
           {children}
         </div>

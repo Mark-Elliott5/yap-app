@@ -93,7 +93,10 @@ function YapPost({
           href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
           className='text-sm text-zinc-600'
         >
-          ╰ in reply to @{parentYap.author.username}
+          ╰{' '}
+          <span className='hover:underline'>
+            in reply to @{parentYap.author.username}
+          </span>
         </Link>
       )}
       {isReply && !parentYap && (
@@ -109,7 +112,7 @@ function YapPost({
           <img
             src={image}
             alt='post image'
-            className='h-[250px] w-full rounded-md object-cover'
+            className='max-h-[500px] w-full rounded-md object-cover'
           />
         )}
       </div>

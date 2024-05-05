@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { deleteAccount } from '@/actions/actions';
-import { DeleteAccountSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import {
@@ -18,6 +16,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { deleteAccount } from '@/src/lib/database/actions';
+import { DeleteAccountSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function DeleteAccountForm() {

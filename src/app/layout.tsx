@@ -18,13 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang='en'
-      className='bg-gradient-to-b from-white from-20% to-zinc-50 dark:from-zinc-900 dark:from-0% dark:to-zinc-950'
-    >
+    <html lang='en'>
       <body
         className={cn(
-          'bg-gradient-to-b from-white from-20% to-zinc-50 dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
+          'min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
           inter.className
         )}
       >

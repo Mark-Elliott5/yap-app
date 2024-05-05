@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { login } from '@/actions/actions';
-import { LoginSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 // import FormSuccess from '@/src/components/FormSuccess';
@@ -18,6 +16,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { login } from '@/src/lib/database/actions';
+import { LoginSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function LoginForm() {

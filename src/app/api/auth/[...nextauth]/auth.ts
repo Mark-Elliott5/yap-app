@@ -3,12 +3,11 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
-import { z } from 'zod';
 
-import { getUserByEmail, getUserById } from '@/data-utils';
-import { LoginSchema } from '@/schemas';
 // import authConfig from '@/src/app/api/auth/[...nextauth]/auth.config';
-import db from '@/src/lib/db';
+import db from '@/src/lib/database/db';
+import { getUserByEmail, getUserById } from '@/src/lib/database/getUser';
+import { LoginSchema } from '@/src/schemas';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
 export const {
@@ -16,7 +15,6 @@ export const {
   auth,
   signIn,
   signOut,
-  unstable_update,
 } = NextAuth({
   debug: process.env.NODE_ENV === 'development',
   pages: {
@@ -96,9 +94,10 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
-        const { email, password } = credentials as z.infer<typeof LoginSchema>;
+        const result = await LoginSchema.safeParseAsync(credentials);
+        if (!result.success) return null;
+        const { email, password } = result.data;
         const user = await getUserByEmail(email);
-        // if (!user) console.log('user not found');
         if (!user || !user.password) return null;
         const match = await bcrypt.compare(password, user.password);
         if (!match) {

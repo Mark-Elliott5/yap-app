@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { onboarding } from '@/actions/actions';
-import { OnboardingSchema } from '@/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -19,6 +17,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { onboarding } from '@/src/lib/database/actions';
+import { OnboardingSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 function OnboardingForm() {
