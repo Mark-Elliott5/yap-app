@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { HiReply } from 'react-icons/hi';
+import { TbMessage } from 'react-icons/tb';
 
 import {
   Tooltip,
@@ -9,9 +9,10 @@ import {
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
 import PostPopup from '@/src/components/yap/PostPopup';
+import abbreviateNum from '@/src/lib/abbreviateNum';
 import { Yap } from '@prisma/client';
 
-function ReplyButton({ id }: { id: Yap['id'] }) {
+function ReplyButton({ id, replies }: { id: Yap['id']; replies: number }) {
   const [postVisible, setPostVisible] = useState(false);
 
   return (
@@ -20,12 +21,13 @@ function ReplyButton({ id }: { id: Yap['id'] }) {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className='w-unset p-0 text-left text-2xl text-zinc-950 dark:text-zinc-100'
+              className={`hover:drop-shadow-reply transition-all hover:scale-[1.1] hover:text-yap-blue-500 ${postVisible ? 'drop-shadow-reply text-yap-blue-500' : 'text-zinc-600'} flex items-center gap-1`}
               onClick={() => setPostVisible((prev) => !prev)}
             >
-              <HiReply
-                className={`hover:text-yap-blue-500 ${postVisible ? 'text-yap-blue-500' : 'text-zinc-600'}`}
-              />
+              <TbMessage size='1.25rem' />
+              <span className='font-light text-inherit'>
+                {abbreviateNum(replies)}
+              </span>
             </button>
           </TooltipTrigger>
           <TooltipContent>

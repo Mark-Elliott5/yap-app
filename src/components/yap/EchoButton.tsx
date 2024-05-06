@@ -27,13 +27,10 @@ function EchoButton({
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className={`hover:text-yap-green-500 ${on ? 'text-yap-green-500' : 'text-zinc-600'} flex items-center gap-1`}
+            className={`hover:drop-shadow-echo transition-all hover:scale-[1.1] hover:text-yap-green-500 ${on ? 'drop-shadow-echo text-yap-green-500' : 'text-zinc-600'} flex items-center gap-1`}
             onClick={() => setOn((prev) => !prev)}
           >
-            <HiSignal
-              size='1.5rem'
-              className='text-inherit hover:text-yap-green-500'
-            />
+            <HiSignal size='1.25rem' />
             <span className='font-light text-inherit'>
               {abbreviateNum(echoes)}
             </span>

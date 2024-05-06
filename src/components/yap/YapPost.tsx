@@ -23,6 +23,7 @@ interface YapProps
   _count: {
     likes: number;
     echoes: number;
+    replies: number;
   };
 }
 
@@ -117,13 +118,9 @@ function YapPost({
         )}
       </div>
       <div className='flex items-center gap-16'>
-        <div className='flex cursor-default items-center gap-1 text-zinc-950 dark:text-zinc-100'>
-          <LikeButton liked={false} likes={_count.likes} />
-        </div>
-        <div className='flex cursor-default items-center gap-1 text-zinc-950 dark:text-zinc-100'>
-          <EchoButton echoed={false} echoes={_count.echoes} />
-        </div>
-        <ReplyButton id={id} />
+        <LikeButton liked={false} likes={_count.likes} />
+        <EchoButton echoed={false} echoes={_count.echoes} />
+        <ReplyButton id={id} replies={_count.replies} />
       </div>
     </div>
   );

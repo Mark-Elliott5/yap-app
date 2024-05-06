@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
+import { TbHeart, TbHeartFilled } from 'react-icons/tb';
 
 import {
   Tooltip,
@@ -20,14 +20,10 @@ function LikeButton({ liked, likes }: { liked: boolean; likes: number }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className={`hover:text-yap-red-500 ${on ? 'text-yap-red-500' : 'text-zinc-600'} flex items-center gap-1`}
+            className={`hover:drop-shadow-heart transition-all hover:scale-[1.1] hover:text-yap-red-500 ${on ? 'drop-shadow-heart text-yap-red-500' : 'text-zinc-600'} flex items-center gap-1`}
             onClick={() => setOn((prev) => !prev)}
           >
-            {on ? (
-              <IoMdHeart size='1.5rem' className='text-inherit' />
-            ) : (
-              <IoMdHeartEmpty size='1.5rem' className='text-inherit' />
-            )}
+            {on ? <TbHeartFilled size='1.25rem' /> : <TbHeart size='1.25rem' />}
             <span className='font-light text-inherit'>
               {abbreviateNum(likes)}
             </span>
