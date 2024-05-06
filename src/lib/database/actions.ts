@@ -619,6 +619,44 @@ const heartYap = async (data: FormData) => {
   }
 };
 
+const echoYap = async (data: FormData) => {
+  console.log('echoing');
+  try {
+    const { user } = await getSession('Access denied.');
+
+    const { id, state } = await AddHeartOrEchoSchema.parseAsync(data);
+
+    await db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        echoes: {
+          [state ? 'connect' : 'disconnect']: {
+            id,
+          },
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.log(err);
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   changeAvatar,
   changeBio,
@@ -628,6 +666,7 @@ export {
   createPost,
   createReply,
   deleteAccount,
+  echoYap,
   heartYap,
   login,
   logout,

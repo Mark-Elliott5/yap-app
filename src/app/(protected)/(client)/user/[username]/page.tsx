@@ -5,15 +5,15 @@ import {
   getUserProfile,
   getUserProfileYapsAndEchoes,
 } from '@/src/lib/database/fetch';
-import { getCurrentUserId } from '@/src/lib/database/getUser';
+import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function UserProfileYapsAndEchoesPage({
   params,
 }: {
   params: { username: string };
 }) {
-  const userId = await getCurrentUserId();
-  if (!userId) return null;
+  const username = await getCurrentUsername();
+  if (!username) return null;
 
   const child = (async () => {
     const userResponse = await getUserProfile(params.username);
@@ -58,19 +58,26 @@ async function UserProfileYapsAndEchoesPage({
     }
 
     const yaps = (() => {
-      const temp = [...yapsAndEchoes.yaps, ...yapsAndEchoes.echoes];
-      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
+      const echoes = (() => {
+        const arr = [];
+        for (let i = 0; i < yapsAndEchoes.echoes.length; i++) {
+          arr.push({ ...yapsAndEchoes.echoes[i], isEcho: true });
+        }
+        return arr;
+      })();
+      const temp = [...yapsAndEchoes.yaps, ...echoes];
+      temp.sort((a, b) => {
+        // necessary to make echoes appear after original tweet,
+        // incase author is the one echoing
+        const time = b.date.getTime() - a.date.getTime();
+        return time === 0 ? -1 : time;
+      });
       return temp;
     })();
 
     return yaps.map((yap) => (
       // don't know I have to put non null assertion operator
-      <YapPost
-        key={yap.id}
-        userId={userId}
-        author={userResponse.user!}
-        {...yap}
-      />
+      <YapPost key={yap.id} username={username} {...yap} />
     ));
   })();
 

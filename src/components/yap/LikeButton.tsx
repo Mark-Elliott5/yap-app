@@ -42,7 +42,6 @@ function LikeButton({
             <input hidden value={id} readOnly name='id' />
             <input hidden value={on ? 0 : 1} readOnly name='state' />
             <button
-              type='submit'
               className={`transition-all ease-linear hover:scale-[1.2] hover:animate-spin hover:text-yap-red-500 hover:drop-shadow-heart active:scale-[0.85] active:animate-none ${on ? 'text-yap-red-500 drop-shadow-heart' : 'text-zinc-600'} flex items-center gap-1`}
             >
               {on ? (

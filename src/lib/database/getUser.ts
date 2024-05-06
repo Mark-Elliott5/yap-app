@@ -95,6 +95,17 @@ const getCurrentUserId = async () => {
   }
 };
 
+const getCurrentUsername = async () => {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.username) return null;
+    return session.user.username;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
 // const getSession = async () => {
 //   try {
 //     const session = await auth();
@@ -123,6 +134,7 @@ const getCurrentUserId = async () => {
 
 export {
   getCurrentUserId,
+  getCurrentUsername,
   getCurrentUserPassword,
   getUserByEmail,
   getUserById,

@@ -2,15 +2,15 @@ import Link from 'next/link';
 
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfile, getUserProfileMedia } from '@/src/lib/database/fetch';
-import { getCurrentUserId } from '@/src/lib/database/getUser';
+import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function UserProfileMediaPage({
   params,
 }: {
   params: { username: string; media: string };
 }) {
-  const userId = await getCurrentUserId();
-  if (!userId) return null;
+  const username = await getCurrentUsername();
+  if (!username) return null;
 
   const child = (async () => {
     const userResponse = await getUserProfile(params.username);
@@ -51,7 +51,7 @@ async function UserProfileMediaPage({
       // don't know I have to put non null assertion operator
       <YapPost
         key={yap.id}
-        userId={userId}
+        username={username}
         author={userResponse.user!}
         {...yap}
       />

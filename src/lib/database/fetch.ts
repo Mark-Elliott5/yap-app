@@ -421,6 +421,14 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
       include: {
         yaps: {
           include: {
+            author: {
+              select: {
+                displayName: true,
+                username: true,
+                image: true,
+                joinDate: true,
+              },
+            },
             parentYap: {
               include: {
                 author: {
@@ -447,6 +455,14 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
         },
         echoes: {
           include: {
+            author: {
+              select: {
+                displayName: true,
+                username: true,
+                image: true,
+                joinDate: true,
+              },
+            },
             parentYap: {
               include: {
                 author: {
@@ -492,7 +508,7 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
   }
 };
 
-const getLiked = async (id: Yap['id'], userId: User['id']) => {
+const getLiked = async (id: Yap['id'], username: User['username']) => {
   try {
     if (!id) {
       throw new ActionError('No id was received by the server.');
@@ -503,7 +519,43 @@ const getLiked = async (id: Yap['id'], userId: User['id']) => {
         id,
         likes: {
           some: {
-            id: userId,
+            username,
+          },
+        },
+      },
+    });
+
+    return !!yap;
+  } catch (err) {
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   console.log('Prisma error:', err);
+    //   return { error: 'Something went wrong! Please try again.' };
+    // }
+
+    // if (err instanceof ActionError) {
+    //   return { error: err.message };
+    // }
+    // // if (err instanceof PrismaClientKnownRequestError) {
+    // //   return { error: 'Database error!' };
+    // // }
+    // console.log(err);
+    // return { error: 'Unknown error occured.' };
+    return false;
+  }
+};
+
+const getEchoed = async (id: Yap['id'], username: User['username']) => {
+  try {
+    if (!id) {
+      throw new ActionError('No id was received by the server.');
+    }
+
+    const yap = await db.yap.findUnique({
+      where: {
+        id,
+        echoes: {
+          some: {
+            username,
           },
         },
       },
@@ -529,6 +581,7 @@ const getLiked = async (id: Yap['id'], userId: User['id']) => {
 };
 
 export {
+  getEchoed,
   getLatestYaps,
   getLiked,
   getUserProfile,
