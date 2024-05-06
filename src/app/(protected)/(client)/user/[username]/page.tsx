@@ -84,7 +84,10 @@ async function UserProfileYapsAndEchoesPage({
   return (
     <>
       <div className='flex bg-zinc-200 text-xl text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100'>
-        <Link href={``} className='rounded-tr-md bg-zinc-900 px-4 py-2'>
+        <Link
+          href={``}
+          className='rounded-tr-md bg-white px-4 py-2 dark:bg-zinc-900'
+        >
           Yaps & Echoes
         </Link>
         <Link

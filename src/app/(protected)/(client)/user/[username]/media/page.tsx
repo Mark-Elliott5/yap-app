@@ -67,7 +67,10 @@ async function UserProfileMediaPage({
         <Link href={`./yaps`} className='px-4 py-2 hover:opacity-70'>
           Yaps
         </Link>
-        <Link href={``} className='rounded-t-md bg-zinc-900 px-4 py-2'>
+        <Link
+          href={``}
+          className='rounded-t-md bg-white  px-4 py-2 dark:bg-zinc-900'
+        >
           Media
         </Link>
       </div>
