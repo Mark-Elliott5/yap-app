@@ -1,5 +1,5 @@
 import db from '@/src/lib/database/db';
-import { Yap } from '@prisma/client';
+import { User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -49,6 +49,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
             select: {
               likes: true,
               echoes: true,
+              replies: true,
             },
           },
         },
@@ -96,6 +97,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
           select: {
             likes: true,
             echoes: true,
+            replies: true,
           },
         },
       },
@@ -200,4 +202,77 @@ const getYap = async (id: Yap['id']) => {
   }
 };
 
-export { getLatestYaps, getYap };
+const getUserProfile = async (username: User['username']) => {
+  try {
+    if (!username) {
+      throw new ActionError('No post USERNAME was received by the server.');
+    }
+
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      omit: {
+        password: true,
+        OAuth: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        imageKey: true,
+        role: true,
+      },
+      include: {
+        yaps: {
+          include: {
+            parentYap: {
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    displayName: true,
+                    joinDate: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
+          },
+          orderBy: {
+            date: 'desc',
+          },
+        },
+        _count: {
+          select: {
+            yaps: true,
+            echoes: true,
+          },
+        },
+      },
+    });
+
+    return { user };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
+export { getLatestYaps, getUserProfile, getYap };
