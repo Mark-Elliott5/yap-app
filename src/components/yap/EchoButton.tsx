@@ -27,7 +27,7 @@ function EchoButton({
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className={`transition-all hover:scale-[1.1] hover:text-yap-green-500 hover:drop-shadow-echo ${on ? 'text-yap-green-500 drop-shadow-echo' : 'text-zinc-600'} flex items-center gap-1`}
+            className={`transition-all hover:scale-[1.1] hover:text-yap-green-500 hover:drop-shadow-echo active:scale-[0.85] ${on ? 'text-yap-green-500 drop-shadow-echo' : 'text-zinc-600'} flex items-center gap-1`}
             onClick={() => setOn((prev) => !prev)}
           >
             <HiSignal size='1.25rem' />

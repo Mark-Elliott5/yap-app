@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { CreateReplySchema } from '@/src/schemas';
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
 import FormSuccess from '@/src/components/FormSuccess';
@@ -16,6 +15,7 @@ import {
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { createReply } from '@/src/lib/database/actions';
+import { CreateReplySchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Yap } from '@prisma/client';
 

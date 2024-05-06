@@ -115,7 +115,7 @@ function YapPost({
         )}
       </div>
       <div className='flex items-center gap-16'>
-        <LikeButton liked={false} likes={_count.likes} />
+        <LikeButton id={id} liked={false} likes={_count.likes} />
         <EchoButton echoed={false} echoes={_count.echoes} />
         <ReplyButton id={id} replies={_count.replies} />
       </div>

@@ -21,7 +21,7 @@ function ReplyButton({ id, replies }: { id: Yap['id']; replies: number }) {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`transition-all hover:scale-[1.1] hover:text-yap-blue-500 hover:drop-shadow-reply ${postVisible ? 'text-yap-blue-500 drop-shadow-reply' : 'text-zinc-600'} flex items-center gap-1`}
+              className={`transition-all hover:scale-[1.1] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.85] ${postVisible ? 'text-yap-blue-500 drop-shadow-reply' : 'text-zinc-600'} flex items-center gap-1`}
               onClick={() => setPostVisible((prev) => !prev)}
             >
               <TbMessage size='1.25rem' />

@@ -9,9 +9,24 @@ import {
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
 import abbreviateNum from '@/src/lib/abbreviateNum';
+import { heartYap } from '@/src/lib/database/actions';
+import { Yap } from '@prisma/client';
 
-function LikeButton({ liked, likes }: { liked: boolean; likes: number }) {
+function LikeButton({
+  id,
+  liked,
+  likes,
+}: {
+  id: Yap['id'];
+  liked: boolean;
+  likes: number;
+}) {
   const [on, setOn] = useState(liked);
+
+  const handleChange = async (data: FormData) => {
+    setOn((prev) => !prev);
+    await heartYap(data);
+  };
 
   // implement server action here later
 
@@ -19,15 +34,29 @@ function LikeButton({ liked, likes }: { liked: boolean; likes: number }) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
-            className={`transition-all hover:scale-[1.1] hover:text-yap-red-500 hover:drop-shadow-heart ${on ? 'text-yap-red-500 drop-shadow-heart' : 'text-zinc-600'} flex items-center gap-1`}
-            onClick={() => setOn((prev) => !prev)}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleChange(new FormData(e.currentTarget));
+            }}
+            id='form'
           >
-            {on ? <TbHeartFilled size='1.25rem' /> : <TbHeart size='1.25rem' />}
-            <span className='font-light text-inherit'>
-              {abbreviateNum(likes)}
-            </span>
-          </button>
+            <input hidden value={id} readOnly name='id' />
+            <input hidden value={on ? 0 : 1} readOnly name='state' />
+            <button
+              type='submit'
+              className={`transition-all hover:scale-[1.1] hover:text-yap-red-500 hover:drop-shadow-heart active:scale-[0.85] ${on ? 'text-yap-red-500 drop-shadow-heart' : 'text-zinc-600'} flex items-center gap-1`}
+            >
+              {on ? (
+                <TbHeartFilled size='1.25rem' />
+              ) : (
+                <TbHeart size='1.25rem' />
+              )}
+              <span className='font-light text-inherit'>
+                {abbreviateNum(likes + (on ? 1 : 0))}
+              </span>
+            </button>
+          </form>
         </TooltipTrigger>
         <TooltipContent>
           <p className='bg-zinc-100 dark:bg-zinc-950'>Like</p>

@@ -1,5 +1,6 @@
 import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/database/db';
+import { User } from '@prisma/client';
 
 // cannot use this here, referencing it will break the app. I suspect with 99%
 // certainty, when auth is called in middleware, which runs on edge without
@@ -7,7 +8,7 @@ import db from '@/src/lib/database/db';
 // undefined (reading exec()) error.
 // import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
-const getUserByEmail = async (email: string) => {
+const getUserByEmail = async (email: User['email']) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -21,7 +22,7 @@ const getUserByEmail = async (email: string) => {
   }
 };
 
-const getUserById = async (id: string) => {
+const getUserById = async (id: User['id']) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -38,8 +39,11 @@ const getUserById = async (id: string) => {
   }
 };
 
-const getUserByUsername = async (username: string) => {
+const getUserByUsername = async (username: User['username']) => {
   try {
+    if (!username) {
+      return null;
+    }
     const user = await db.user.findUnique({
       where: {
         username,
@@ -58,7 +62,7 @@ const getUserByUsername = async (username: string) => {
 const getCurrentUserPassword = async () => {
   try {
     const session = await auth();
-    if (!session) return null;
+    if (!session || !session.user) return null;
     const user = await db.user.findUnique({
       where: {
         id: session.user.id,

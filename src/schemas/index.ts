@@ -295,7 +295,19 @@ const CreateReplySchema = zfd
     }
   });
 
+const AddHeartOrEchoSchema = zfd.formData({
+  id: zfd.text(z.string().min(1, 'ID is required.')),
+  state: zfd.numeric(
+    z
+      .number()
+      .int()
+      .min(0, { message: 'State must be 0 or 1.' })
+      .max(1, { message: 'State must be 0 or 1.' })
+  ),
+});
+
 export {
+  AddHeartOrEchoSchema,
   ChangeAvatarSchema,
   ChangeBioSchema,
   ChangeDisplayNameSchema,
