@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import {
   Avatar,
   AvatarFallback,
@@ -47,9 +45,8 @@ async function Profile({
           >
             {user.username}
           </p>
+          <p>Joined {new Date(user.joinDate).toLocaleDateString()}</p>
         </div>
-        <Link href='/'>Yaps</Link>
-        <Link href='/media'>Media</Link>
       </div>
       {children}
     </div>
