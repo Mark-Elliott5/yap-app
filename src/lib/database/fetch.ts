@@ -251,4 +251,73 @@ const getUserProfile = cache(async (username: User['username']) => {
   }
 });
 
-export { getLatestYaps, getUserProfile, getYap };
+const getUserProfileYaps = async (username: User['username']) => {
+  try {
+    if (!username) {
+      throw new ActionError('No post USERNAME was received by the server.');
+    }
+
+    const yaps = await db.yap.findMany({
+      where: {
+        author: {
+          username,
+        },
+      },
+      omit: {
+        parentYapId: true,
+        authorId: true,
+      },
+      include: {
+        parentYap: {
+          omit: {
+            id: true,
+            text: true,
+            date: true,
+            image: true,
+            authorId: true,
+            isReply: true,
+            parentYapId: true,
+          },
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                joinDate: true,
+                image: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            echoes: true,
+            replies: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    return { yaps };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
+export { getLatestYaps, getUserProfile, getUserProfileYaps, getYap };
