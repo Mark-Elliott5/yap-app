@@ -19,9 +19,10 @@ async function UserProfileMediaPage({
     }
     if (!userResponse.user || !userResponse) {
       return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Try again.
-        </p>
+        // <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
+        //   Something went wrong! Try again.
+        // </p>
+        <></>
       );
     }
     const { yaps, error } = await getUserProfileMedia(params.username);
@@ -52,9 +53,12 @@ async function UserProfileMediaPage({
     <>
       <div className='flex bg-zinc-200 text-xl text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100'>
         <Link href={`.`} className='px-4 py-2 hover:opacity-70'>
+          Yaps & Echoes
+        </Link>
+        <Link href={`./yaps`} className='px-4 py-2 hover:opacity-70'>
           Yaps
         </Link>
-        <Link href={`media`} className='rounded-t-md bg-zinc-900 px-4 py-2'>
+        <Link href={``} className='rounded-t-md bg-zinc-900 px-4 py-2'>
           Media
         </Link>
       </div>

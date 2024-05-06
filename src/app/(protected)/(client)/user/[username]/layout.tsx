@@ -40,12 +40,14 @@ async function Profile({
             className={
               !user.displayName
                 ? 'text-4xl text-zinc-950 dark:text-zinc-100'
-                : 'text-xl text-zinc-600'
+                : 'text-xl text-zinc-400'
             }
           >
             {user.username}
           </p>
-          <p>Joined {new Date(user.joinDate).toLocaleDateString()}</p>
+          <p className='text-zinc-500'>
+            Joined {user.joinDate.toLocaleDateString()}
+          </p>
         </div>
       </div>
       {children}

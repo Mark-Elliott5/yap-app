@@ -1,4 +1,3 @@
-// import LocaleDateString from '@/src/components/LocaleDateString';
 import Link from 'next/link';
 
 import {
@@ -84,9 +83,7 @@ function YapPost({
           href={`/user/${author.username}/post/${id}`}
           className='text-xs text-zinc-600'
         >
-          {new Date(date).toLocaleDateString() +
-            ' ' +
-            new Date(date).toLocaleTimeString()}
+          {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
         </Link>
       </div>
       {parentYap && (

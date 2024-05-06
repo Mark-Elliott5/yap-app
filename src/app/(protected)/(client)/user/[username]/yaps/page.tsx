@@ -1,12 +1,9 @@
 import Link from 'next/link';
 
 import YapPost from '@/src/components/yap/YapPost';
-import {
-  getUserProfile,
-  getUserProfileYapsAndEchoes,
-} from '@/src/lib/database/fetch';
+import { getUserProfile, getUserProfileYaps } from '@/src/lib/database/fetch';
 
-async function UserProfileYapsAndEchoesPage({
+async function UserProfileYapsPage({
   params,
 }: {
   params: { username: string };
@@ -28,9 +25,7 @@ async function UserProfileYapsAndEchoesPage({
         <></>
       );
     }
-    const { yapsAndEchoes, error } = await getUserProfileYapsAndEchoes(
-      params.username
-    );
+    const { yaps, error } = await getUserProfileYaps(params.username);
 
     if (error) {
       return (
@@ -40,24 +35,13 @@ async function UserProfileYapsAndEchoesPage({
       );
     }
 
-    if (
-      !yapsAndEchoes ||
-      !yapsAndEchoes.echoes ||
-      !yapsAndEchoes.yaps ||
-      (!yapsAndEchoes.echoes.length && !yapsAndEchoes.yaps.length)
-    ) {
+    if (!yaps || !yaps.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
           No media yet!
         </p>
       );
     }
-
-    const yaps = (() => {
-      const temp = [...yapsAndEchoes.yaps, ...yapsAndEchoes.echoes];
-      temp.sort((a, b) => a.date.getMilliseconds() - b.date.getMilliseconds());
-      return temp;
-    })();
 
     return yaps.map((yap) => (
       // don't know I have to put non null assertion operator
@@ -68,19 +52,13 @@ async function UserProfileYapsAndEchoesPage({
   return (
     <>
       <div className='flex bg-zinc-200 text-xl text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100'>
-        <Link href={``} className='rounded-tr-md bg-zinc-900 px-4 py-2'>
+        <Link href={`.`} className='px-4 py-2 hover:opacity-70'>
           Yaps & Echoes
         </Link>
-        <Link
-          href={`${params.username}/yaps`}
-          className='px-4 py-2 hover:opacity-70'
-        >
+        <Link href={``} className='rounded-t-md bg-zinc-900 px-4 py-2'>
           Yaps
         </Link>
-        <Link
-          href={`${params.username}/media`}
-          className='px-4 py-2 hover:opacity-70'
-        >
+        <Link href={`./media`} className='px-4 py-2 hover:opacity-70'>
           Media
         </Link>
       </div>
@@ -89,4 +67,4 @@ async function UserProfileYapsAndEchoesPage({
   );
 }
 
-export default UserProfileYapsAndEchoesPage;
+export default UserProfileYapsPage;

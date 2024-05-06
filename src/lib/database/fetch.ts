@@ -392,10 +392,111 @@ const getUserProfileMedia = async (username: User['username']) => {
   }
 };
 
+const getUserProfileYapsAndEchoes = async (username: User['username']) => {
+  try {
+    if (!username) {
+      throw new ActionError('No username was received by the server.');
+    }
+
+    const yapsAndEchoes = await db.user.findUnique({
+      where: {
+        username,
+      },
+      omit: {
+        password: true,
+        OAuth: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        imageKey: true,
+        role: true,
+        bio: true,
+        displayName: true,
+        joinDate: true,
+        id: true,
+        private: true,
+        image: true,
+        username: true,
+      },
+      include: {
+        yaps: {
+          include: {
+            parentYap: {
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    displayName: true,
+                    joinDate: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
+          },
+          orderBy: {
+            date: 'desc',
+          },
+        },
+        echoes: {
+          include: {
+            parentYap: {
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    displayName: true,
+                    joinDate: true,
+                    image: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
+          },
+          orderBy: {
+            date: 'desc',
+          },
+        },
+      },
+    });
+
+    return { yapsAndEchoes };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   getLatestYaps,
   getUserProfile,
   getUserProfileMedia,
   getUserProfileYaps,
+  getUserProfileYapsAndEchoes,
   getYap,
 };
