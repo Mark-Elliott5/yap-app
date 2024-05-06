@@ -20,7 +20,7 @@ function LikeButton({ liked, likes }: { liked: boolean; likes: number }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className={`hover:drop-shadow-heart transition-all hover:scale-[1.1] hover:text-yap-red-500 ${on ? 'drop-shadow-heart text-yap-red-500' : 'text-zinc-600'} flex items-center gap-1`}
+            className={`transition-all hover:scale-[1.1] hover:text-yap-red-500 hover:drop-shadow-heart ${on ? 'text-yap-red-500 drop-shadow-heart' : 'text-zinc-600'} flex items-center gap-1`}
             onClick={() => setOn((prev) => !prev)}
           >
             {on ? <TbHeartFilled size='1.25rem' /> : <TbHeart size='1.25rem' />}

@@ -1,3 +1,5 @@
+import { cache } from 'react';
+
 import db from '@/src/lib/database/db';
 import { User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -202,7 +204,7 @@ const getYap = async (id: Yap['id']) => {
   }
 };
 
-const getUserProfile = async (username: User['username']) => {
+const getUserProfile = cache(async (username: User['username']) => {
   try {
     if (!username) {
       throw new ActionError('No post USERNAME was received by the server.');
@@ -222,32 +224,6 @@ const getUserProfile = async (username: User['username']) => {
         role: true,
       },
       include: {
-        yaps: {
-          include: {
-            parentYap: {
-              include: {
-                author: {
-                  select: {
-                    username: true,
-                    displayName: true,
-                    joinDate: true,
-                    image: true,
-                  },
-                },
-              },
-            },
-            _count: {
-              select: {
-                likes: true,
-                echoes: true,
-                replies: true,
-              },
-            },
-          },
-          orderBy: {
-            date: 'desc',
-          },
-        },
         _count: {
           select: {
             yaps: true,
@@ -273,6 +249,6 @@ const getUserProfile = async (username: User['username']) => {
     console.log(err);
     return { error: 'Unknown error occured.' };
   }
-};
+});
 
 export { getLatestYaps, getUserProfile, getYap };
