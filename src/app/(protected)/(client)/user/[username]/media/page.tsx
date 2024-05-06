@@ -1,10 +1,10 @@
 import YapPost from '@/src/components/yap/YapPost';
-import { getUserProfile, getUserProfileYaps } from '@/src/lib/database/fetch';
+import { getUserProfile, getUserProfileMedia } from '@/src/lib/database/fetch';
 
-async function UserProfileYapsPage({
+async function UserProfileMediaPage({
   params,
 }: {
-  params: { username: string };
+  params: { username: string; media: string };
 }) {
   const userResponse = await getUserProfile(params.username);
   if (userResponse.error) {
@@ -21,8 +21,7 @@ async function UserProfileYapsPage({
       </p>
     );
   }
-
-  const { yaps, error } = await getUserProfileYaps(params.username);
+  const { yaps, error } = await getUserProfileMedia(params.username);
 
   if (error) {
     return (
@@ -35,7 +34,7 @@ async function UserProfileYapsPage({
   if (!yaps || !yaps.length) {
     return (
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        No yaps yet!
+        No media yet!
       </p>
     );
   }
@@ -45,4 +44,4 @@ async function UserProfileYapsPage({
   ));
 }
 
-export default UserProfileYapsPage;
+export default UserProfileMediaPage;

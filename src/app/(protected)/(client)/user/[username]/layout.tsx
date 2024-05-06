@@ -15,13 +15,12 @@ async function Profile({
   children: React.ReactNode;
 }>) {
   const { user } = await getUserProfile(params.username);
-  console.log(user);
   if (!user) {
     return <span>{`This account doesn't exist`}</span>;
   }
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex min-h-full flex-col'>
       <div className='flex gap-6 bg-zinc-200 p-10 dark:bg-zinc-950'>
         <Avatar className='h-[200px] w-[200px] border-[6px] border-black'>
           <AvatarImage src={user.image ?? ''} height={'1.5rem'} />
