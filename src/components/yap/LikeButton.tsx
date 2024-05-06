@@ -28,8 +28,6 @@ function LikeButton({
     await heartYap(data);
   };
 
-  // implement server action here later
-
   return (
     <TooltipProvider>
       <Tooltip>
@@ -53,7 +51,9 @@ function LikeButton({
                 <TbHeart size='1.25rem' />
               )}
               <span className='font-light text-inherit'>
-                {abbreviateNum(likes + (on ? 1 : 0))}
+                {abbreviateNum(
+                  likes + (!liked && on ? 1 : liked && !on ? -1 : 0)
+                )}
               </span>
             </button>
           </form>

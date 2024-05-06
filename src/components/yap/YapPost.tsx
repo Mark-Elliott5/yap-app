@@ -9,6 +9,7 @@ import UserHovercard from '@/src/components/UserHovercard';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ReplyButton from '@/src/components/yap/ReplyButton';
+import { getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
 interface YapProps
@@ -24,13 +25,14 @@ interface YapProps
     echoes: number;
     replies: number;
   };
+  userId: string;
 }
 
 /* in practice, author.username will never actually be null, because users 
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
 
-function YapPost({
+async function YapPost({
   author,
   text,
   image,
@@ -39,7 +41,9 @@ function YapPost({
   parentYap,
   isReply,
   id,
+  userId,
 }: YapProps) {
+  const liked = await getLiked(id, userId);
   return (
     <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
       <div className='flex items-center gap-2'>
@@ -115,7 +119,7 @@ function YapPost({
         )}
       </div>
       <div className='flex items-center gap-16'>
-        <LikeButton id={id} liked={false} likes={_count.likes} />
+        <LikeButton id={id} liked={liked} likes={_count.likes} />
         <EchoButton echoed={false} echoes={_count.echoes} />
         <ReplyButton id={id} replies={_count.replies} />
       </div>

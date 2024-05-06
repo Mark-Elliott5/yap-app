@@ -8,6 +8,10 @@ import { User } from '@prisma/client';
 // undefined (reading exec()) error.
 // import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
+// this also means cache() will not work here. Maybe duplicate auth() dependent
+// functions to a new file, and only import those functions into middleware,
+// then we can use cache() here if necessary.
+
 const getUserByEmail = async (email: User['email']) => {
   try {
     const user = await db.user.findUnique({
@@ -80,6 +84,17 @@ const getCurrentUserPassword = async () => {
   }
 };
 
+const getCurrentUserId = async () => {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) return null;
+    return session.user.id;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
 // const getSession = async () => {
 //   try {
 //     const session = await auth();
@@ -107,6 +122,7 @@ const getCurrentUserPassword = async () => {
 // };
 
 export {
+  getCurrentUserId,
   getCurrentUserPassword,
   getUserByEmail,
   getUserById,

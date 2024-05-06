@@ -492,8 +492,45 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
   }
 };
 
+const getLiked = async (id: Yap['id'], userId: User['id']) => {
+  try {
+    if (!id) {
+      throw new ActionError('No id was received by the server.');
+    }
+
+    const yap = await db.yap.findUnique({
+      where: {
+        id,
+        likes: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return !!yap;
+  } catch (err) {
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   console.log('Prisma error:', err);
+    //   return { error: 'Something went wrong! Please try again.' };
+    // }
+
+    // if (err instanceof ActionError) {
+    //   return { error: err.message };
+    // }
+    // // if (err instanceof PrismaClientKnownRequestError) {
+    // //   return { error: 'Database error!' };
+    // // }
+    // console.log(err);
+    // return { error: 'Unknown error occured.' };
+    return false;
+  }
+};
+
 export {
   getLatestYaps,
+  getLiked,
   getUserProfile,
   getUserProfileMedia,
   getUserProfileYaps,

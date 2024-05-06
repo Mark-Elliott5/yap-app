@@ -2,12 +2,16 @@ import Link from 'next/link';
 
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfile, getUserProfileYaps } from '@/src/lib/database/fetch';
+import { getCurrentUserId } from '@/src/lib/database/getUser';
 
 async function UserProfileYapsPage({
   params,
 }: {
   params: { username: string };
 }) {
+  const userId = await getCurrentUserId();
+  if (!userId) return null;
+
   const child = (async () => {
     const userResponse = await getUserProfile(params.username);
     if (userResponse.error) {
@@ -45,7 +49,12 @@ async function UserProfileYapsPage({
 
     return yaps.map((yap) => (
       // don't know I have to put non null assertion operator
-      <YapPost key={yap.id} author={userResponse.user!} {...yap} />
+      <YapPost
+        key={yap.id}
+        userId={userId}
+        author={userResponse.user!}
+        {...yap}
+      />
     ));
   })();
 
