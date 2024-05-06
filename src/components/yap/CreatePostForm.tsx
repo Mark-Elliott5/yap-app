@@ -67,7 +67,7 @@ function CreatePostForm() {
                     placeholder='Yappity yap'
                     type='text'
                     minLength={0}
-                    maxLength={32}
+                    maxLength={144}
                     className='placeholder:italic'
                   />
                 </FormControl>

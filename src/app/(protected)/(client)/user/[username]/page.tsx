@@ -59,7 +59,7 @@ async function UserProfileYapsAndEchoesPage({
 
     const yaps = (() => {
       const temp = [...yapsAndEchoes.yaps, ...yapsAndEchoes.echoes];
-      temp.sort((a, b) => a.date.getMilliseconds() - b.date.getMilliseconds());
+      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
       return temp;
     })();
 
