@@ -44,9 +44,15 @@ async function EchoYapPost({
   const echoed = await getEchoed(yap.id, currentUsername);
   return (
     <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
-      <p className='text-sm text-zinc-600'>
-        ╭ <span className='text-xs'>@{username} echoed...</span>
-      </p>
+      <Link href={`/user/${username}/`} className='text-sm text-zinc-600'>
+        ╭{' '}
+        <span className='text-xs'>
+          @{username} echoed...{' '}
+          <span className='text-zinc-600/60'>
+            {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+          </span>
+        </span>
+      </Link>
       <div className='flex items-center gap-2'>
         <UserHovercard
           username={yap.author.username!}
@@ -88,7 +94,7 @@ async function EchoYapPost({
           href={`/user/${yap.author.username}/post/${id}`}
           className='text-xs text-zinc-600'
         >
-          {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+          {yap.date.toLocaleDateString() + ' ' + yap.date.toLocaleTimeString()}
         </Link>
       </div>
       {yap.parentYap && (
