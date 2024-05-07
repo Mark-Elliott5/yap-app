@@ -13,6 +13,7 @@ async function Profile({
   children: React.ReactNode;
 }>) {
   const { user } = await getUserProfile(params.username);
+  console.log(params);
   if (!user) {
     return <span>{`This account doesn't exist`}</span>;
   }

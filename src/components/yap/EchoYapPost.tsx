@@ -130,7 +130,11 @@ async function EchoYapPost({
       <div className='flex items-center gap-16'>
         <LikeButton id={yap.id} liked={liked} likes={yap._count.likes} />
         <EchoButton id={yap.id} echoed={echoed} echoes={yap._count.echoes} />
-        <ReplyButton id={yap.id} replies={yap._count.replies} />
+        <ReplyButton
+          id={yap.id}
+          user={yap.author.username}
+          replies={yap._count.replies}
+        />
       </div>
     </div>
   );

@@ -122,7 +122,7 @@ async function YapPost({
       <div className='flex items-center gap-16'>
         <LikeButton id={id} liked={liked} likes={_count.likes} />
         <EchoButton id={id} echoed={echoed} echoes={_count.echoes} />
-        <ReplyButton id={id} replies={_count.replies} />
+        <ReplyButton id={id} user={author.username} replies={_count.replies} />
       </div>
     </div>
   );
