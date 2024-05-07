@@ -15,8 +15,8 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id                String  @id @default(cuid()) @db.VarChar(30)
+  userId            String  @db.VarChar(30)
   type              String
   provider          String
   providerAccountId String
@@ -34,9 +34,9 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @db.VarChar(30)
   sessionToken String   @unique
-  userId       String
+  userId       String   @db.VarChar(30)
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -47,22 +47,31 @@ enum UserRole {
 }
 
 model Yap {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @db.VarChar(30)
   text        String?
   date        DateTime @default(now())
   image       String?
   likes       User[]   @relation(name: "LikedYaps")
   author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    String
-  echoes      User[]   @relation(name: "Echoes")
+  authorId    String   @db.VarChar(30)
+  echoes      Echo[]   @relation(name: "YapEchoes")
   replies     Yap[]    @relation("ParentYap")
   isReply     Boolean
-  parentYap   Yap?     @relation("ParentYap", fields: [parentYapId], references: [id])
-  parentYapId String?
+  parentYap   Yap?     @relation("ParentYap", fields: [parentYapId], references: [id], onDelete: SetNull)
+  parentYapId String?  @db.VarChar(30)
+}
+
+model Echo {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(name: "UserEchoes", fields: [username], references: [username], onDelete: Cascade)
+  username String   @db.VarChar(30)
+  date     DateTime @default(now())
+  yapId    String   @db.VarChar(30)
+  yap      Yap      @relation(name: "YapEchoes", fields: [yapId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(cuid()) @db.VarChar(30)
   name          String?
   displayName   String?
   username      String?   @unique
@@ -78,7 +87,7 @@ model User {
   bio           String?
   yaps          Yap[]     @relation(name: "AuthoredYaps")
   likedYaps     Yap[]     @relation(name: "LikedYaps")
-  echoes        Yap[]     @relation(name: "Echoes")
+  echoes        Echo[]    @relation(name: "UserEchoes")
   accounts      Account[]
   sessions      Session[]
 }
