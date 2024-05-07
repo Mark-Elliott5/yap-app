@@ -14,6 +14,7 @@ import { Yap } from '@prisma/client';
 
 function ReplyButton({ id, replies }: { id: Yap['id']; replies: number }) {
   const [postVisible, setPostVisible] = useState(false);
+  const [wobble, setWobble] = useState(false);
 
   return (
     <>
@@ -21,10 +22,15 @@ function ReplyButton({ id, replies }: { id: Yap['id']; replies: number }) {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`transition-all hover:scale-[1.1] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.85] ${postVisible ? 'text-yap-blue-500 drop-shadow-reply' : 'text-zinc-600'} flex items-center gap-1`}
+              className={`transition-all hover:scale-[1.2] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.85] ${postVisible ? 'text-yap-blue-500 drop-shadow-reply' : 'text-zinc-600'} flex items-center gap-1`}
               onClick={() => setPostVisible((prev) => !prev)}
+              onMouseOver={() => setWobble(true)}
+              onMouseLeave={() => setWobble(false)}
             >
-              <TbMessage size='1.25rem' />
+              <TbMessage
+                size='1.25rem'
+                className={wobble ? 'animate-wiggle-more animate-infinite' : ''}
+              />
               <span className='font-light text-inherit'>
                 {abbreviateNum(replies)}
               </span>

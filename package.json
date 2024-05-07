@@ -39,6 +39,7 @@
     "react-responsive": "^10.0.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-animated": "^1.0.1",
     "uploadthing": "^6.9.0",
     "zod": "^3.22.4",
     "zod-form-data": "^2.0.2"
