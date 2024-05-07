@@ -5,13 +5,13 @@ import { getCurrentUsername } from '@/src/lib/database/getUser';
 async function Home() {
   // get latest yaps, return fragment of yaps
   // return <></>;
-  const username = await getCurrentUsername();
-  if (!username) return null;
+  const currentUsername = await getCurrentUsername();
+  if (!currentUsername) return null;
 
   const { yaps, error } = await getLatestYaps();
   if (yaps && yaps.length) {
     return yaps.map((yap) => (
-      <YapPost key={yap.id} username={username} {...yap} />
+      <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
     ));
   }
 

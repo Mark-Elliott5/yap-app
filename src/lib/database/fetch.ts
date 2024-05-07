@@ -430,6 +430,14 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
               },
             },
             parentYap: {
+              omit: {
+                text: true,
+                date: true,
+                image: true,
+                authorId: true,
+                isReply: true,
+                parentYapId: true,
+              },
               include: {
                 author: {
                   select: {
@@ -455,31 +463,43 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
         },
         echoes: {
           include: {
-            author: {
-              select: {
-                displayName: true,
-                username: true,
-                image: true,
-                joinDate: true,
-              },
-            },
-            parentYap: {
+            yap: {
               include: {
                 author: {
                   select: {
-                    username: true,
                     displayName: true,
-                    joinDate: true,
+                    username: true,
                     image: true,
+                    joinDate: true,
                   },
                 },
-              },
-            },
-            _count: {
-              select: {
-                likes: true,
-                echoes: true,
-                replies: true,
+                parentYap: {
+                  omit: {
+                    text: true,
+                    date: true,
+                    image: true,
+                    authorId: true,
+                    isReply: true,
+                    parentYapId: true,
+                  },
+                  include: {
+                    author: {
+                      select: {
+                        username: true,
+                        // displayName: true,
+                        // joinDate: true,
+                        // image: true,
+                      },
+                    },
+                  },
+                },
+                _count: {
+                  select: {
+                    likes: true,
+                    echoes: true,
+                    replies: true,
+                  },
+                },
               },
             },
           },
@@ -555,7 +575,7 @@ const getEchoed = async (id: Yap['id'], username: User['username']) => {
         id,
         echoes: {
           some: {
-            username,
+            username: username!,
           },
         },
       },

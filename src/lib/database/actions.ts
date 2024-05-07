@@ -18,7 +18,8 @@ import {
   DEFAULT_REGISTER_REDIRECT,
 } from '@/src/routes';
 import {
-  AddHeartOrEchoSchema,
+  AddEchoSchema,
+  AddHeartSchema,
   ChangeAvatarSchema,
   ChangeBioSchema,
   ChangeDisplayNameSchema,
@@ -586,7 +587,7 @@ const heartYap = async (data: FormData) => {
   try {
     const { user } = await getSession('Access denied.');
 
-    const { id, state } = await AddHeartOrEchoSchema.parseAsync(data);
+    const { id, state } = await AddHeartSchema.parseAsync(data);
 
     await db.user.update({
       where: {
@@ -624,22 +625,73 @@ const echoYap = async (data: FormData) => {
   try {
     const { user } = await getSession('Access denied.');
 
-    const { id, state } = await AddHeartOrEchoSchema.parseAsync(data);
+    const { id } = await AddEchoSchema.parseAsync(data);
 
-    await db.user.update({
+    const yap = await db.yap.findUnique({
       where: {
-        id: user.id,
-      },
-      data: {
-        echoes: {
-          [state ? 'connect' : 'disconnect']: {
-            id,
+        id,
+        AND: {
+          echoes: {
+            some: {
+              username: user.username!,
+            },
           },
+        },
+      },
+      include: {
+        echoes: {
+          where: {
+            username: user.username!,
+          },
+          take: 1,
         },
       },
     });
 
+    if (!yap) {
+      await db.echo.create({
+        data: {
+          user: {
+            connect: {
+              username: user.username!,
+            },
+          },
+          yap: {
+            connect: {
+              id,
+            },
+          },
+        },
+      });
+    } else {
+      await db.echo.delete({
+        where: {
+          id: yap.echoes[0].id,
+          AND: {
+            username: user.username!,
+          },
+        },
+      });
+    }
+
     return { success: true };
+    // } else {
+    //   await db.echo.delete({
+    //     where: {
+    //       id: echoId,
+    //     },
+    //   });
+    //   return { deleted: true };
+    // }
+    // [state ? 'connect' : 'disconnect']: {
+    //   id,
+    // },
+
+    // start: redirect reply button click to post pages. that post page should have a children prop
+    // the url should be /user/[username]/post/[postId]/reply(or post).
+
+    // then you can work on reply button automatic coloring, which will be different from
+    // the like and echo button
   } catch (err) {
     console.log(err);
     if (err instanceof PrismaClientKnownRequestError) {

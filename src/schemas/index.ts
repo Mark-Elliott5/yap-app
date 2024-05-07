@@ -295,7 +295,7 @@ const CreateReplySchema = zfd
     }
   });
 
-const AddHeartOrEchoSchema = zfd.formData({
+const AddHeartSchema = zfd.formData({
   id: zfd.text(z.string().min(1, 'ID is required.')),
   state: zfd.numeric(
     z
@@ -306,8 +306,13 @@ const AddHeartOrEchoSchema = zfd.formData({
   ),
 });
 
+const AddEchoSchema = zfd.formData({
+  id: zfd.text(z.string().min(1, 'ID is required.')),
+});
+
 export {
-  AddHeartOrEchoSchema,
+  AddEchoSchema,
+  AddHeartSchema,
   ChangeAvatarSchema,
   ChangeBioSchema,
   ChangeDisplayNameSchema,

@@ -12,15 +12,13 @@ import abbreviateNum from '@/src/lib/abbreviateNum';
 import { echoYap } from '@/src/lib/database/actions';
 import { Yap } from '@prisma/client';
 
-function EchoButton({
-  id,
-  echoed,
-  echoes,
-}: {
+interface EchoButtonProps {
   id: Yap['id'];
   echoed: boolean;
   echoes: number;
-}) {
+}
+
+function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
   const [on, setOn] = useState(echoed);
   const [spin, setSpin] = useState(false);
 
@@ -41,7 +39,6 @@ function EchoButton({
             id='form'
           >
             <input hidden value={id} readOnly name='id' />
-            <input hidden value={on ? 0 : 1} readOnly name='state' />
             <button
               className={`transition-all hover:scale-[1.1] hover:text-yap-peri-500 hover:drop-shadow-echo active:scale-[0.85] ${on ? 'text-yap-peri-500 drop-shadow-echo' : 'text-zinc-600'} flex items-center gap-1`}
               onMouseOver={() => setSpin(true)}

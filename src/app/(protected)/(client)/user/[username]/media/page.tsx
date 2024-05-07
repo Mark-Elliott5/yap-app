@@ -9,8 +9,8 @@ async function UserProfileMediaPage({
 }: {
   params: { username: string; media: string };
 }) {
-  const username = await getCurrentUsername();
-  if (!username) return null;
+  const currentUsername = await getCurrentUsername();
+  if (!currentUsername) return null;
 
   const child = (async () => {
     const userResponse = await getUserProfile(params.username);
@@ -51,7 +51,7 @@ async function UserProfileMediaPage({
       // don't know I have to put non null assertion operator
       <YapPost
         key={yap.id}
-        username={username}
+        currentUsername={currentUsername}
         author={userResponse.user!}
         {...yap}
       />

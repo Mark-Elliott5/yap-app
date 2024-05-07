@@ -12,12 +12,12 @@ import ReplyButton from '@/src/components/yap/ReplyButton';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
-interface YapProps
+interface EchoYapProps
   extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
   author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
   parentYap:
     | ({
-        author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
+        author: Pick<User, 'username'>;
       } & Pick<Yap, 'id'>)
     | null;
   _count: {
@@ -26,13 +26,15 @@ interface YapProps
     replies: number;
   };
   currentUsername: string;
+  echoUsername: string;
+  echoId: number;
 }
 
 /* in practice, author.username will never actually be null, because users 
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
 
-async function YapPost({
+async function EchoYapPost({
   author,
   text,
   image,
@@ -42,11 +44,15 @@ async function YapPost({
   isReply,
   id,
   currentUsername,
-}: YapProps) {
+  echoUsername,
+}: EchoYapProps) {
   const liked = await getLiked(id, currentUsername);
   const echoed = await getEchoed(id, currentUsername);
   return (
     <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
+      <p className='text-sm text-zinc-600'>
+        ╭ <span className='text-xs'>@{echoUsername} echoed...</span>
+      </p>
       <div className='flex items-center gap-2'>
         <UserHovercard
           username={author.username!}
@@ -128,4 +134,4 @@ async function YapPost({
   );
 }
 
-export default YapPost;
+export default EchoYapPost;
