@@ -24,7 +24,8 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
 
   const handleChange = async (data: FormData) => {
     setOn((prev) => !prev);
-    await echoYap(data);
+    const { error } = await echoYap(data);
+    if (error) setOn(on);
   };
 
   return (
