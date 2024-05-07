@@ -26,7 +26,8 @@ function LikeButton({
 
   const handleChange = async (data: FormData) => {
     setOn((prev) => !prev);
-    await heartYap(data);
+    const { error } = await heartYap(data);
+    if (error) setOn(on);
   };
 
   return (
