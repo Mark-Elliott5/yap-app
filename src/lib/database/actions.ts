@@ -675,23 +675,6 @@ const echoYap = async (data: FormData) => {
     }
 
     return { success: true };
-    // } else {
-    //   await db.echo.delete({
-    //     where: {
-    //       id: echoId,
-    //     },
-    //   });
-    //   return { deleted: true };
-    // }
-    // [state ? 'connect' : 'disconnect']: {
-    //   id,
-    // },
-
-    // start: redirect reply button click to post pages. that post page should have a children prop
-    // the url should be /user/[username]/post/[postId]/reply(or post).
-
-    // then you can work on reply button automatic coloring, which will be different from
-    // the like and echo button
   } catch (err) {
     console.log(err);
     if (err instanceof PrismaClientKnownRequestError) {

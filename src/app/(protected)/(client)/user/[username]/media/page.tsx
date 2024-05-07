@@ -34,7 +34,7 @@ async function UserProfileMediaPage({
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {error}
+          Something went wrong! Please try again.
         </p>
       );
     }

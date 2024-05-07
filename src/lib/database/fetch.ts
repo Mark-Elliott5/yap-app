@@ -182,6 +182,7 @@ const getYap = async (id: Yap['id']) => {
           select: {
             likes: true,
             echoes: true,
+            replies: true,
           },
         },
       },
