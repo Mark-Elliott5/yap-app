@@ -10,24 +10,23 @@ import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
-import { User, Yap } from '@prisma/client';
+import { Echo, User, Yap } from '@prisma/client';
 
-interface EchoYapProps
-  extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
-  author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-  parentYap:
-    | ({
-        author: Pick<User, 'username'>;
-      } & Pick<Yap, 'id'>)
-    | null;
-  _count: {
-    likes: number;
-    echoes: number;
-    replies: number;
-  };
+interface EchoYapProps extends Pick<Echo, 'date' | 'id' | 'username'> {
+  yap: {
+    author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
+    parentYap:
+      | ({
+          author: Pick<User, 'username'>;
+        } & Pick<Yap, 'id'>)
+      | null;
+    _count: {
+      likes: number;
+      echoes: number;
+      replies: number;
+    };
+  } & Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'>;
   currentUsername: string;
-  echoUsername: string;
-  echoId: number;
 }
 
 /* in practice, author.username will never actually be null, because users 
@@ -35,100 +34,97 @@ interface EchoYapProps
   use server actions either (can't post, etc.) */
 
 async function EchoYapPost({
-  author,
-  text,
-  image,
-  date,
-  _count,
-  parentYap,
-  isReply,
-  id,
+  yap,
   currentUsername,
-  echoUsername,
+  date,
+  id,
+  username,
 }: EchoYapProps) {
-  const liked = await getLiked(id, currentUsername);
-  const echoed = await getEchoed(id, currentUsername);
+  const liked = await getLiked(yap.id, currentUsername);
+  const echoed = await getEchoed(yap.id, currentUsername);
   return (
     <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
       <p className='text-sm text-zinc-600'>
-        ╭ <span className='text-xs'>@{echoUsername} echoed...</span>
+        ╭ <span className='text-xs'>@{username} echoed...</span>
       </p>
       <div className='flex items-center gap-2'>
         <UserHovercard
-          username={author.username!}
-          joinDate={author.joinDate}
-          displayName={author.displayName}
-          image={author.image}
+          username={yap.author.username!}
+          joinDate={yap.author.joinDate}
+          displayName={yap.author.displayName}
+          image={yap.author.image}
           // self={true}
         >
           <div className='flex items-center gap-2'>
             <Avatar>
-              <AvatarImage src={author.image ?? ''} height={'1.5rem'} />
+              <AvatarImage src={yap.author.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt={`${author.displayName ?? author.username}'s avatar`}
+                  alt={`${yap.author.displayName ?? yap.author.username}'s avatar`}
                   src={'/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>
-            {author.displayName && (
+            {yap.author.displayName && (
               <span className='text-zinc-950 dark:text-zinc-100'>
-                {author.displayName}
+                {yap.author.displayName}
               </span>
             )}
-            {author.username && (
+            {yap.author.username && (
               <span
                 className={
-                  author.displayName
+                  yap.author.displayName
                     ? 'text-zinc-600'
                     : 'text-zinc-950 dark:text-zinc-100'
                 }
               >
-                @{author.username}
+                @{yap.author.username}
               </span>
             )}
           </div>
         </UserHovercard>
         <Link
-          href={`/user/${author.username}/post/${id}`}
+          href={`/user/${yap.author.username}/post/${id}`}
           className='text-xs text-zinc-600'
         >
           {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
         </Link>
       </div>
-      {parentYap && (
+      {yap.parentYap && (
         <Link
-          href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
+          href={`/user/${yap.parentYap.author.username}/post/${yap.parentYap.id}`}
           className='text-sm text-zinc-600'
         >
           ╰{' '}
           <span className='hover:underline'>
-            in reply to @{parentYap.author.username}
+            in reply to @{yap.parentYap.author.username}
           </span>
         </Link>
       )}
-      {isReply && !parentYap && (
+      {yap.isReply && !yap.parentYap && (
         <span className='text-sm text-zinc-600'>
           ╰ in reply to a deleted yap
         </span>
       )}
       <div className='flex flex-col gap-2 py-2'>
-        {text && <p className='text-zinc-950 dark:text-zinc-100'>{text}</p>}
+        {yap.text && (
+          <p className='text-zinc-950 dark:text-zinc-100'>{yap.text}</p>
+        )}
 
-        {image && (
+        {yap.image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={image}
+            src={yap.image}
             alt='post image'
             className='max-h-[500px] w-full rounded-md object-cover'
           />
         )}
       </div>
       <div className='flex items-center gap-16'>
-        <LikeButton id={id} liked={liked} likes={_count.likes} />
-        <EchoButton id={id} echoed={echoed} echoes={_count.echoes} />
-        <ReplyButton id={id} replies={_count.replies} />
+        <LikeButton id={yap.id} liked={liked} likes={yap._count.likes} />
+        <EchoButton id={yap.id} echoed={echoed} echoes={yap._count.echoes} />
+        <ReplyButton id={yap.id} replies={yap._count.replies} />
       </div>
     </div>
   );

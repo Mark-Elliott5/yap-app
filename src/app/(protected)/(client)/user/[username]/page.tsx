@@ -70,10 +70,8 @@ async function UserProfileYapsAndEchoesPage({
         return (
           <EchoYapPost
             key={yap.id}
-            echoUsername={yap.username}
             currentUsername={currentUsername}
-            echoId={yap.id}
-            {...yap.yap}
+            {...yap}
           />
         );
       }
