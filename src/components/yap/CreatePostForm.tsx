@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
-import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
@@ -19,37 +19,34 @@ import { Input } from '@/src/components/ui/input';
 import { createPost } from '@/src/lib/database/actions';
 import { CreatePostSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { User } from '@prisma/client';
 
-function CreatePostForm() {
-  const [changeTry, setChangeTry] = useState<{
+function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
+  const [actionResponse, setActionResponse] = useState<{
     error?: string;
-    success?: string;
   }>({});
+  const router = useRouter();
   const form = useForm<z.infer<typeof CreatePostSchema>>({
     resolver: zodResolver(CreatePostSchema),
   });
-  const { isSubmitting } = form.formState;
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = async (data: FormData) => {
-    setChangeTry(await createPost(data));
-  };
-
-  useEffect(() => {
-    if (changeTry.success) {
-      const timeout = setTimeout(() => {
-        setChangeTry({});
-      }, 3000);
-
-      return () => clearTimeout(timeout);
+    setSubmitting(true);
+    const { postId, error } = await createPost(data);
+    if (postId) return router.push(`/user/${currentUser}/post/${postId}`);
+    if (error) {
+      setActionResponse({ error });
+      setSubmitting(true);
     }
-  }, [changeTry]);
+  };
 
   return (
     <FormProvider {...form}>
       <Form
         // action={createPost}
         onSubmit={({ formData }) => handleChange(formData)}
-        className='h-dvh p-10'
+        className='h-dvh rounded-lg bg-white p-10 shadow-xl dark:bg-zinc-900'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
@@ -100,10 +97,11 @@ function CreatePostForm() {
           />
         </div>
         <div className='flex flex-col gap-y-6'>
-          {changeTry?.error && <FormError message={changeTry.error} />}
-          {changeTry?.success && <FormSuccess message={changeTry.success} />}
-          <FormButton disabled={isSubmitting}>
-            {isSubmitting ? 'Posting...' : 'Post'}
+          {actionResponse?.error && (
+            <FormError message={actionResponse.error} />
+          )}
+          <FormButton disabled={submitting}>
+            {submitting ? 'Posting...' : 'Post'}
           </FormButton>
         </div>
       </Form>

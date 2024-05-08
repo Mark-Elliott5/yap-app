@@ -1,7 +1,9 @@
 import CreatePostForm from '@/src/components/yap/CreatePostForm';
+import { getCurrentUsername } from '@/src/lib/database/getUser';
 
-function PostPage() {
-  return <CreatePostForm />;
+async function PostPage() {
+  const currentUsername = await getCurrentUsername();
+  return <CreatePostForm currentUser={currentUsername} />;
 }
 
 export default PostPage;
