@@ -1,7 +1,7 @@
 import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
-import { User, Yap } from '@prisma/client';
+import { Echo, User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -58,7 +58,55 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
         },
       });
 
-      return { yaps };
+      const echoes = await db.echo.findMany({
+        take: 10,
+        include: {
+          yap: {
+            include: {
+              author: {
+                select: {
+                  displayName: true,
+                  username: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
+              parentYap: {
+                omit: {
+                  text: true,
+                  date: true,
+                  image: true,
+                  authorId: true,
+                  isReply: true,
+                  parentYapId: true,
+                },
+                include: {
+                  author: {
+                    select: {
+                      username: true,
+                      // displayName: true,
+                      // joinDate: true,
+                      // image: true,
+                    },
+                  },
+                },
+              },
+              _count: {
+                select: {
+                  likes: true,
+                  echoes: true,
+                  replies: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      return { yaps, echoes };
     }
 
     const yaps = await db.yap.findMany({
@@ -126,7 +174,8 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
 
 const getFollowingYaps = async (
   currentUsername: string,
-  id: Yap['id'] | undefined = undefined
+  yapId: Yap['id'] | undefined = undefined,
+  echoId: Echo['id'] | undefined = undefined
 ) => {
   try {
     console.log('Getting following yaps');
@@ -140,7 +189,7 @@ const getFollowingYaps = async (
         following: {
           take: 100,
           select: {
-            id: true,
+            username: true,
           },
         },
       },
@@ -152,13 +201,13 @@ const getFollowingYaps = async (
 
     const { following } = user;
 
-    if (!id) {
+    if (!yapId) {
       const yaps = await db.yap.findMany({
         take: 10,
         where: {
           author: {
-            id: {
-              in: [...following.map(({ id }) => id)],
+            username: {
+              in: [...following.map(({ username }) => username!)],
             },
           },
         },
@@ -201,21 +250,72 @@ const getFollowingYaps = async (
           },
         },
       });
-      console.log(yaps);
+      const echoes = await db.echo.findMany({
+        take: 10,
+        where: {
+          username: {
+            in: [...following.map(({ username }) => username!)],
+          },
+        },
+        include: {
+          yap: {
+            include: {
+              author: {
+                select: {
+                  displayName: true,
+                  username: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
+              parentYap: {
+                omit: {
+                  text: true,
+                  date: true,
+                  image: true,
+                  authorId: true,
+                  isReply: true,
+                  parentYapId: true,
+                },
+                include: {
+                  author: {
+                    select: {
+                      username: true,
+                      // displayName: true,
+                      // joinDate: true,
+                      // image: true,
+                    },
+                  },
+                },
+              },
+              _count: {
+                select: {
+                  likes: true,
+                  echoes: true,
+                  replies: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
 
-      return { yaps };
+      return { yaps, echoes };
     }
 
     const yaps = await db.yap.findMany({
       skip: 1,
       take: 10,
       cursor: {
-        id,
+        id: yapId,
       },
       where: {
         author: {
-          id: {
-            in: [...following.map(({ id }) => id)],
+          username: {
+            in: [...following.map(({ username }) => username!)],
           },
         },
       },
@@ -259,7 +359,64 @@ const getFollowingYaps = async (
       },
     });
 
-    return { yaps };
+    const echoes = await db.echo.findMany({
+      skip: 1,
+      take: 10,
+      cursor: {
+        id: echoId,
+      },
+      where: {
+        username: {
+          in: [...following.map(({ username }) => username!)],
+        },
+      },
+      include: {
+        yap: {
+          include: {
+            author: {
+              select: {
+                displayName: true,
+                username: true,
+                image: true,
+                joinDate: true,
+              },
+            },
+            parentYap: {
+              omit: {
+                text: true,
+                date: true,
+                image: true,
+                authorId: true,
+                isReply: true,
+                parentYapId: true,
+              },
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    // displayName: true,
+                    // joinDate: true,
+                    // image: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    return { yaps, echoes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);

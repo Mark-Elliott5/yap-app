@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -8,8 +9,44 @@ async function Home() {
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const { yaps, error } = await getLatestYaps();
-  if (yaps && yaps.length) {
+  const { yaps, error, echoes } = await getLatestYaps();
+
+  const child = (() => {
+    if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
+      return (
+        <>
+          <p className='text-center text-zinc-600'>*dust settles*</p>
+          <p className='text-center text-zinc-950 dark:text-zinc-50'>
+            Sure is quiet in here...
+          </p>
+        </>
+      );
+    }
+
+    const posts = (() => {
+      const temp = [...yaps, ...echoes];
+      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
+      return temp;
+    })();
+
+    return posts.map((yap) => {
+      if ('yap' in yap) {
+        return (
+          <EchoYapPost
+            key={yap.id}
+            currentUsername={currentUsername}
+            {...yap}
+          />
+        );
+      }
+
+      return (
+        <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+      );
+    });
+  })();
+
+  if (yaps) {
     return (
       <>
         <div className='mt-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
@@ -26,9 +63,7 @@ async function Home() {
             Following
           </Link>
         </div>
-        {yaps.map((yap) => (
-          <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-        ))}
+        {child}
       </>
     );
   }

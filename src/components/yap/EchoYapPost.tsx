@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { TbAccessPoint } from 'react-icons/tb';
 
 import {
   Avatar,
@@ -45,14 +46,20 @@ async function EchoYapPost({
     <div
       className={`flex flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800  dark:bg-zinc-900`}
     >
-      <Link href={`/user/${username}/`} className='text-sm text-zinc-600'>
-        ╭{' '}
-        <span className='text-xs'>
-          @{username} echoed...{' '}
-          <span className='text-zinc-600/60'>
-            {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+      <Link
+        href={`/user/${username}/`}
+        className='flex justify-between text-sm text-zinc-600'
+      >
+        <div>
+          <span>╭ </span>
+          <span className='text-xs'>
+            @{username} echoed...{' '}
+            <span className='text-zinc-600/60'>
+              {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+            </span>
           </span>
-        </span>
+        </div>
+        <TbAccessPoint size='1.25rem' className={''} />
       </Link>
       <div className='flex items-center gap-2'>
         <UserHovercard

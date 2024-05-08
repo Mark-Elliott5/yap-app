@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import YapPost from '@/src/components/yap/YapPost';
 import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -8,8 +9,45 @@ async function Following() {
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const { yaps, error } = await getFollowingYaps(currentUsername);
-  console.log(yaps);
+  const { yaps, error, echoes } = await getFollowingYaps(currentUsername);
+
+  const child = (() => {
+    if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
+      return (
+        <div className='mt-4 flex flex-col gap-2'>
+          <p className='text-center text-zinc-600'>*dust settles*</p>
+          <p className='text-center text-zinc-950 dark:text-zinc-50'>
+            {`It appears you aren't following anyone.`}
+          </p>
+          <p className='text-center text-zinc-950 dark:text-zinc-50'>
+            Go follow some yappers then come back here!
+          </p>
+        </div>
+      );
+    }
+
+    const posts = (() => {
+      const temp = [...yaps, ...echoes];
+      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
+      return temp;
+    })();
+
+    return posts.map((yap) => {
+      if ('yap' in yap) {
+        return (
+          <EchoYapPost
+            key={yap.id}
+            currentUsername={currentUsername}
+            {...yap}
+          />
+        );
+      }
+
+      return (
+        <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+      );
+    });
+  })();
   if (yaps) {
     return (
       <>
@@ -27,21 +65,7 @@ async function Following() {
             Following
           </Link>
         </div>
-        {yaps.length ? (
-          yaps.map((yap) => (
-            <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-          ))
-        ) : (
-          <div className='mt-4 flex flex-col gap-2'>
-            <p className='text-center text-zinc-600'>*dust settles*</p>
-            <p className='text-center text-zinc-950 dark:text-zinc-50'>
-              {`It appears you aren't following anyone.`}
-            </p>
-            <p className='text-center text-zinc-950 dark:text-zinc-50'>
-              Go follow some yappers then come back here!
-            </p>
-          </div>
-        )}
+        {child}
       </>
     );
   }
