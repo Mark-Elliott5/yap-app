@@ -11,22 +11,19 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/src/components/ui/hover-card';
-import { Separator } from '@/src/components/ui/separator';
 
-export function UserHovercard({
+async function UserHovercard({
   children,
   username,
   image,
   displayName,
   joinDate,
-  self,
 }: {
   children: React.ReactNode;
   username: string;
   image: string | null;
   displayName: string | null;
   joinDate: Date;
-  self?: boolean;
 }) {
   return (
     <HoverCard>
@@ -34,11 +31,7 @@ export function UserHovercard({
       <HoverCardContent className='w-80 sm:w-96'>
         <Link
           href={`/user/${username}`}
-          className={
-            self
-              ? 'flex flex-col gap-2'
-              : 'flex flex-col items-center justify-center gap-2'
-          }
+          className={'flex flex-col items-center justify-center gap-2'}
         >
           <Avatar>
             <AvatarImage src={image ?? ''} height={'1.5rem'} />
@@ -71,7 +64,6 @@ export function UserHovercard({
             </span>
           </div>
         </Link>
-        {self && <Separator orientation='vertical' />}
       </HoverCardContent>
     </HoverCard>
   );

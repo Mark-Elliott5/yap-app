@@ -310,6 +310,10 @@ const AddEchoSchema = zfd.formData({
   id: zfd.text(z.string().min(1, 'ID is required.')),
 });
 
+const FollowUserSchema = zfd.formData({
+  username: zfd.text(z.string().min(1, 'Username is required.')),
+});
+
 export {
   AddEchoSchema,
   AddHeartSchema,
@@ -321,6 +325,7 @@ export {
   CreatePostSchema,
   CreateReplySchema,
   DeleteAccountSchema,
+  FollowUserSchema,
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,

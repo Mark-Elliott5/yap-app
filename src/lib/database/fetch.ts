@@ -28,6 +28,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
               displayName: true,
               image: true,
               joinDate: true,
+              // id: true,
             },
           },
           parentYap: {
@@ -76,7 +77,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
             displayName: true,
             image: true,
             joinDate: true,
-            id: true,
+            // id: true,
           },
         },
         parentYap: {
@@ -284,7 +285,7 @@ const getUserProfileYaps = async (username: User['username']) => {
             username: true,
             image: true,
             joinDate: true,
-            id: true,
+            // id: true,
           },
         },
         parentYap: {
@@ -364,7 +365,7 @@ const getUserProfileMedia = async (username: User['username']) => {
             username: true,
             image: true,
             joinDate: true,
-            id: true,
+            // id: true,
           },
         },
         parentYap: {
@@ -453,7 +454,7 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
                 username: true,
                 image: true,
                 joinDate: true,
-                id: true,
+                // id: true,
               },
             },
             parentYap: {
@@ -555,7 +556,7 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
   }
 };
 
-const getLiked = async (id: Yap['id'], username: User['username']) => {
+const getLiked = cache(async (id: Yap['id'], username: User['username']) => {
   try {
     if (!id) {
       throw new ActionError('No id was received by the server.');
@@ -591,9 +592,9 @@ const getLiked = async (id: Yap['id'], username: User['username']) => {
     // return { error: 'Unknown error occured.' };
     return false;
   }
-};
+});
 
-const getEchoed = async (id: Yap['id'], username: User['username']) => {
+const getEchoed = cache(async (id: Yap['id'], username: User['username']) => {
   try {
     if (!id) {
       throw new ActionError('No id was received by the server.');
@@ -629,48 +630,50 @@ const getEchoed = async (id: Yap['id'], username: User['username']) => {
     // return { error: 'Unknown error occured.' };
     return false;
   }
-};
+});
 
-const getIsFollowing = async (userId: string, followerUsername: string) => {
-  try {
-    if (!userId) {
-      throw new ActionError('No userId was received by the server.');
-    }
-    if (!followerUsername) {
-      throw new ActionError('No username was received by the server.');
-    }
+const getIsFollowing = cache(
+  async (username: string, currentUsername: string) => {
+    try {
+      if (!username) {
+        throw new ActionError('No username was received by the server.');
+      }
+      if (!currentUsername) {
+        throw new ActionError('No username was received by the server.');
+      }
 
-    const isFollowing = await db.user.findUnique({
-      where: {
-        id: userId,
-        AND: {
-          followers: {
-            some: {
-              username: followerUsername,
+      const isFollowing = await db.user.findUnique({
+        where: {
+          username,
+          AND: {
+            followers: {
+              some: {
+                username: currentUsername,
+              },
             },
           },
         },
-      },
-    });
+      });
 
-    return !!isFollowing;
-  } catch (err) {
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   console.log('Prisma error:', err);
-    //   return { error: 'Something went wrong! Please try again.' };
-    // }
+      return !!isFollowing;
+    } catch (err) {
+      // if (err instanceof PrismaClientKnownRequestError) {
+      //   console.log('Prisma error:', err);
+      //   return { error: 'Something went wrong! Please try again.' };
+      // }
 
-    // if (err instanceof ActionError) {
-    //   return { error: err.message };
-    // }
-    // // if (err instanceof PrismaClientKnownRequestError) {
-    // //   return { error: 'Database error!' };
-    // // }
-    // console.log(err);
-    // return { error: 'Unknown error occured.' };
-    return false;
+      // if (err instanceof ActionError) {
+      //   return { error: err.message };
+      // }
+      // // if (err instanceof PrismaClientKnownRequestError) {
+      // //   return { error: 'Database error!' };
+      // // }
+      // console.log(err);
+      // return { error: 'Unknown error occured.' };
+      return false;
+    }
   }
-};
+);
 
 export {
   getEchoed,

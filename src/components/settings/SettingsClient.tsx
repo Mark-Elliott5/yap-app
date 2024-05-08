@@ -28,7 +28,6 @@ import {
 } from '@/src/components/ui/select';
 import { Separator } from '@/src/components/ui/separator';
 import SettingsDropDown from '@/src/components/yap/SettingsDropDown';
-import UserHovercard from '@/src/components/yap/UserHovercard';
 import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({
@@ -51,14 +50,14 @@ function SettingsClient({
   displayName,
   image,
   OAuth,
-  joinDate,
+  // joinDate,
 }: {
   email: string;
   username: string;
   displayName: string | null;
   image: string | null;
   OAuth: boolean;
-  joinDate: Date;
+  // joinDate: Date;
 }) {
   const [updatedUser, setUser] = useState<{
     displayName: string | null;
@@ -98,48 +97,40 @@ function SettingsClient({
         >
           yap
         </Link>
-        <div className='flex gap-3'>
-          <UserHovercard
-            username={username}
-            joinDate={joinDate}
-            displayName={updatedUser.displayName ?? displayName}
-            image={updatedUser.image ?? image}
-            // self={true}
-          >
-            <div className='flex items-center gap-3 text-zinc-100'>
-              <div className='flex flex-col sm:flex-row sm:gap-2'>
+        <Link href={`/user/${username}`} className='flex gap-3'>
+          <div className='flex items-center gap-3 text-zinc-100'>
+            <div className='flex flex-col sm:flex-row sm:gap-2'>
+              <span
+                className='max-w-36 truncate text-sm text-zinc-950 sm:max-w-44 sm:text-base dark:text-zinc-100'
+                title={username}
+              >
+                @{username}
+              </span>
+              {(updatedUser?.displayName ?? displayName) && (
                 <span
-                  className='max-w-36 truncate text-sm text-zinc-950 sm:max-w-44 sm:text-base dark:text-zinc-100'
-                  title={username}
+                  className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
+                  title={updatedUser?.displayName ?? displayName!}
                 >
-                  @{username}
+                  {updatedUser?.displayName ?? displayName}
                 </span>
-                {(updatedUser?.displayName ?? displayName) && (
-                  <span
-                    className='max-w-36 truncate text-sm font-light text-zinc-500 sm:max-w-44 sm:text-base dark:text-zinc-400'
-                    title={updatedUser?.displayName ?? displayName!}
-                  >
-                    {updatedUser?.displayName ?? displayName}
-                  </span>
-                )}
-              </div>
-              <Avatar>
-                <AvatarImage
-                  src={updatedUser.image ?? image ?? ''}
-                  height={'1.5rem'}
-                />
-                <AvatarFallback>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
-                    src={'/defaultavatar.svg'}
-                  />
-                </AvatarFallback>
-              </Avatar>
+              )}
             </div>
-          </UserHovercard>
+            <Avatar>
+              <AvatarImage
+                src={updatedUser.image ?? image ?? ''}
+                height={'1.5rem'}
+              />
+              <AvatarFallback>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
+                  src={'/defaultavatar.svg'}
+                />
+              </AvatarFallback>
+            </Avatar>
+          </div>
           <SettingsDropDown />
-        </div>
+        </Link>
       </nav>
       <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       <div className='m-auto flex w-full max-w-[600px] flex-col gap-6 p-10 sm:w-5/6 md:w-2/3 lg:w-1/2'>

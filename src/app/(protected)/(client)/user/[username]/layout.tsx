@@ -5,7 +5,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import { getUserProfile } from '@/src/lib/database/fetch';
+import FollowButton from '@/src/components/yap/FollowButton';
+import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
+import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function Profile({
   params,
@@ -15,6 +17,10 @@ async function Profile({
   children: React.ReactNode;
 }>) {
   const { user } = await getUserProfile(params.username);
+  const currentUsername = await getCurrentUsername();
+  if (!currentUsername) return null;
+
+  const isFollowing = await getIsFollowing(params.username, currentUsername);
   if (user) {
     return (
       <div className='flex min-h-full flex-col gap-4'>
@@ -47,6 +53,12 @@ async function Profile({
                 Joined {new Date(user.joinDate).toLocaleDateString()}
               </span>
             </div>
+            {params.username !== currentUsername && (
+              <FollowButton
+                isFollowing={isFollowing}
+                userToFollow={params.username}
+              />
+            )}
           </div>
         </div>
         {children}

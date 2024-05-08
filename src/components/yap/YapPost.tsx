@@ -56,7 +56,6 @@ async function YapPost({
           joinDate={author.joinDate}
           displayName={author.displayName}
           image={author.image}
-          // self={true}
         >
           <div className='top-0 flex items-center gap-2'>
             <Avatar>

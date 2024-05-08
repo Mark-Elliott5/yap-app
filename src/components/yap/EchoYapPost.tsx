@@ -60,7 +60,6 @@ async function EchoYapPost({
           joinDate={yap.author.joinDate}
           displayName={yap.author.displayName}
           image={yap.author.image}
-          // self={true}
         >
           <div className='flex items-center gap-2'>
             <Avatar>

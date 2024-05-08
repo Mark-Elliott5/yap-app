@@ -28,6 +28,7 @@ import {
   CreatePostSchema,
   CreateReplySchema,
   DeleteAccountSchema,
+  FollowUserSchema,
   LoginSchema,
   OnboardingSchema,
   RegisterSchema,
@@ -510,9 +511,6 @@ const createPost = async (data: FormData) => {
     // }
     return { error: 'Unknown error occured.' };
   }
-
-  //uncomment when /post/* is created
-  // redirect(`/home`, RedirectType.push);
 };
 
 const createReply = async (data: FormData) => {
@@ -573,13 +571,9 @@ const createReply = async (data: FormData) => {
     // }
     return { error: 'Unknown error occured.' };
   }
-
-  //uncomment when /post/* is created
-  // redirect(`/user/${session.user.username}/post/${postId}`, RedirectType.push);
 };
 
 const heartYap = async (data: FormData) => {
-  console.log('hearting');
   try {
     const { user } = await getSession('Access denied.');
 
@@ -600,7 +594,6 @@ const heartYap = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
-    console.log(err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
@@ -672,6 +665,59 @@ const echoYap = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
+const followUser = async (data: FormData) => {
+  try {
+    const { user } = await getSession('Access denied.');
+
+    const { username } = await FollowUserSchema.parseAsync(data);
+
+    if (user.username === username) {
+      throw new ActionError('Users cannot follow themselves.');
+    }
+
+    const isUserFollowing = await db.user.findUnique({
+      where: {
+        username,
+        AND: {
+          followers: {
+            some: {
+              username: user.username!,
+            },
+          },
+        },
+      },
+    });
+
+    await db.user.update({
+      where: {
+        username,
+      },
+      data: {
+        followers: {
+          [isUserFollowing ? 'disconnect' : 'connect']: {
+            id: user.id,
+          },
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (err) {
     console.log(err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
@@ -698,6 +744,7 @@ export {
   createReply,
   deleteAccount,
   echoYap,
+  followUser,
   heartYap,
   login,
   logout,

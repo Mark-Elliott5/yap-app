@@ -85,6 +85,8 @@ model User {
   OAuth         Boolean   @default(false)
   private       Boolean   @default(false)
   bio           String?
+  following     User[]    @relation("Following")
+  followers     User[]    @relation("Following")
   yaps          Yap[]     @relation(name: "AuthoredYaps")
   likedYaps     Yap[]     @relation(name: "LikedYaps")
   echoes        Echo[]    @relation(name: "UserEchoes")
