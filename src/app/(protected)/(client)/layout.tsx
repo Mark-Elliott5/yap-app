@@ -1,6 +1,6 @@
 import { Archivo_Black } from 'next/font/google';
 import {
-  TbClock,
+  TbHome,
   TbNews,
   TbNotification,
   TbSpeakerphone,
@@ -31,7 +31,6 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           <Link
             href='/home'
             className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
-            prefetch={false}
           >
             yap
           </Link>
@@ -58,29 +57,28 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
         >
           <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/home'
-            prefetch={false}
           >
-            <TbClock />
-            Latest
+            <TbHome />
+            Home
           </Link>
           <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/notifications'
           >
             <TbNotification />
             Notifications
           </Link>
           <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/news'
           >
             <TbNews />
             News
           </Link>
           <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/profile'
           >
             <TbUserSquare />
@@ -88,7 +86,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <Link
             href='/post'
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 dark:text-zinc-100'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
           >
             <TbSpeakerphone />
             Post

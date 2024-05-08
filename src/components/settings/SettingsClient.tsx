@@ -94,7 +94,7 @@ function SettingsClient({
         <Link
           href='/home'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
-          prefetch={false}
+          // prefetch={false}
         >
           yap
         </Link>

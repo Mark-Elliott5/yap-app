@@ -54,7 +54,7 @@ async function UserProfileYapsPage({
 
   return (
     <>
-      <div className='flex text-xl text-zinc-950 dark:text-zinc-100'>
+      <div className='flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
         <Link
           href={`.`}
           className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
@@ -63,7 +63,7 @@ async function UserProfileYapsPage({
         </Link>
         <Link
           href={``}
-          className='rounded-md bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:bg-zinc-900'
+          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Yaps
         </Link>

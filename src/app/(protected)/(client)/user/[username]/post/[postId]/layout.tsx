@@ -27,8 +27,7 @@ async function YapPostLayout({
   if (!yap) {
     return (
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        <span className='text-zinc-600'>*crickets*</span>
-        {` There's nothing here.`}
+        {`*crickets* There's nothing here.`}
       </p>
     );
   }

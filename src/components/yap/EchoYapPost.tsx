@@ -12,7 +12,7 @@ import ReplyButton from '@/src/components/yap/ReplyButton';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { Echo, User, Yap } from '@prisma/client';
 
-interface EchoYapProps extends Pick<Echo, 'date' | 'id' | 'username'> {
+interface EchoYapProps extends Pick<Echo, 'date' | 'username'> {
   yap: {
     author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
     parentYap:
@@ -37,14 +37,13 @@ async function EchoYapPost({
   yap,
   currentUsername,
   date,
-  id,
   username,
 }: EchoYapProps) {
   const liked = await getLiked(yap.id, currentUsername);
   const echoed = await getEchoed(yap.id, currentUsername);
   return (
     <div
-      className={`flex flex-col gap-2 rounded-lg border-b-1 border-zinc-400 bg-white px-5 py-4 shadow-xl dark:border-zinc-950 dark:bg-zinc-900`}
+      className={`flex flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800  dark:bg-zinc-900`}
     >
       <Link href={`/user/${username}/`} className='text-sm text-zinc-600'>
         ╭{' '}
@@ -93,7 +92,7 @@ async function EchoYapPost({
           </div>
         </UserHovercard>
         <Link
-          href={`/user/${yap.author.username}/post/${id}`}
+          href={`/user/${yap.author.username}/post/${yap.id}`}
           className='text-xs text-zinc-600'
         >
           {yap.date.toLocaleDateString() + ' ' + yap.date.toLocaleTimeString()}

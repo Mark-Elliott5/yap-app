@@ -4,7 +4,7 @@ import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
-async function Home() {
+async function Following() {
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
@@ -15,13 +15,13 @@ async function Home() {
         <div className='mt-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
           <Link
             href='/home'
-            className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+            className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
           >
             Latest
           </Link>
           <Link
             href='/following'
-            className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
+            className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
           >
             Following
           </Link>
@@ -40,12 +40,6 @@ async function Home() {
       </span>
     );
   }
-
-  return (
-    <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-      {`*crickets* There's nothing here.`}
-    </p>
-  );
 }
 
-export default Home;
+export default Following;
