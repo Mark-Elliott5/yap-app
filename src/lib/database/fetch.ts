@@ -124,6 +124,158 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
   }
 };
 
+const getFollowingYaps = async (
+  currentUsername: string,
+  id: Yap['id'] | undefined = undefined
+) => {
+  try {
+    console.log('Getting following yaps');
+    // await getSession('Access denied.');
+
+    const user = await db.user.findUnique({
+      where: {
+        username: currentUsername,
+      },
+      select: {
+        following: {
+          take: 100,
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    console.log(user);
+    if (!user) {
+      return { failure: 'No user or no followers found.' };
+    }
+
+    const { following } = user;
+
+    if (!id) {
+      const yaps = await db.yap.findMany({
+        take: 10,
+        where: {
+          author: {
+            id: {
+              in: [...following.map(({ id }) => id)],
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+        include: {
+          author: {
+            select: {
+              username: true,
+              displayName: true,
+              image: true,
+              joinDate: true,
+              // id: true,
+            },
+          },
+          parentYap: {
+            omit: {
+              text: true,
+              image: true,
+              date: true,
+            },
+            include: {
+              author: {
+                select: {
+                  username: true,
+                  displayName: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              echoes: true,
+              replies: true,
+            },
+          },
+        },
+      });
+      console.log(yaps);
+
+      return { yaps };
+    }
+
+    const yaps = await db.yap.findMany({
+      skip: 1,
+      take: 10,
+      cursor: {
+        id,
+      },
+      where: {
+        author: {
+          id: {
+            in: [...following.map(({ id }) => id)],
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            joinDate: true,
+            // id: true,
+          },
+        },
+        parentYap: {
+          omit: {
+            text: true,
+            image: true,
+            date: true,
+          },
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                image: true,
+                joinDate: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            echoes: true,
+            replies: true,
+          },
+        },
+      },
+    });
+
+    return { yaps };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 const getYap = async (id: Yap['id']) => {
   try {
     if (!id) {
@@ -677,6 +829,7 @@ const getIsFollowing = cache(
 
 export {
   getEchoed,
+  getFollowingYaps,
   getIsFollowing,
   getLatestYaps,
   getLiked,

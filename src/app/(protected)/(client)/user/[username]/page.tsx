@@ -23,17 +23,12 @@ async function UserProfileYapsAndEchoesPage({
     if (userResponse.error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {userResponse.error}
+          Something went wrong! Try again.
         </p>
       );
     }
     if (!userResponse.user || !userResponse) {
-      return (
-        // <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        //   Something went wrong! Try again.
-        // </p>
-        <></>
-      );
+      return null;
     }
     const { yapsAndEchoes, error } = await getUserProfileYapsAndEchoes(
       params.username

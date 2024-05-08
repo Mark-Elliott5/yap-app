@@ -1,15 +1,16 @@
 import Link from 'next/link';
 
 import YapPost from '@/src/components/yap/YapPost';
-import { getLatestYaps } from '@/src/lib/database/fetch';
+import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function Following() {
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const { yaps, error } = await getLatestYaps();
-  if (yaps && yaps.length) {
+  const { yaps, error } = await getFollowingYaps(currentUsername);
+  console.log(yaps);
+  if (yaps) {
     return (
       <>
         <div className='mt-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
@@ -26,9 +27,21 @@ async function Following() {
             Following
           </Link>
         </div>
-        {yaps.map((yap) => (
-          <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-        ))}
+        {yaps.length ? (
+          yaps.map((yap) => (
+            <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+          ))
+        ) : (
+          <div className='mt-4 flex flex-col gap-2'>
+            <p className='text-center text-zinc-600'>*dust settles*</p>
+            <p className='text-center text-zinc-950 dark:text-zinc-50'>
+              {`It appears you aren't following anyone.`}
+            </p>
+            <p className='text-center text-zinc-950 dark:text-zinc-50'>
+              Go follow some yappers then come back here!
+            </p>
+          </div>
+        )}
       </>
     );
   }
