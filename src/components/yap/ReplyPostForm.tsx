@@ -54,7 +54,9 @@ function ReplyPostForm({
     <FormProvider {...form}>
       <Form
         // action={createReply}
-        onSubmit={({ formData }) => handleChange(formData)}
+        onSubmit={({ formData }) => {
+          !submitting ? handleChange(formData) : null;
+        }}
         className='margin-auto self-center'
       >
         <div className='flex flex-col gap-2 pb-6'>

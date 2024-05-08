@@ -45,7 +45,9 @@ function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
     <FormProvider {...form}>
       <Form
         // action={createPost}
-        onSubmit={({ formData }) => handleChange(formData)}
+        onSubmit={({ formData }) => {
+          !submitting ? handleChange(formData) : null;
+        }}
         className='h-dvh rounded-lg bg-white p-10 shadow-xl dark:bg-zinc-900'
       >
         <div className='flex flex-col gap-2 pb-6'>
