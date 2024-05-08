@@ -984,6 +984,53 @@ const getIsFollowing = cache(
   }
 );
 
+const getUsers = async (id: User['id'] | undefined = undefined) => {
+  try {
+    if (!id) {
+      const users = await db.user.findMany({
+        take: 30,
+        select: {
+          displayName: true,
+          username: true,
+          image: true,
+          joinDate: true,
+        },
+      });
+
+      return { users };
+    }
+    const users = await db.user.findMany({
+      take: 30,
+      skip: 1,
+      cursor: {
+        id,
+      },
+      select: {
+        displayName: true,
+        username: true,
+        image: true,
+        joinDate: true,
+      },
+    });
+
+    return { users };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   getEchoed,
   getFollowingYaps,
@@ -994,5 +1041,6 @@ export {
   getUserProfileMedia,
   getUserProfileYaps,
   getUserProfileYapsAndEchoes,
+  getUsers,
   getYap,
 };

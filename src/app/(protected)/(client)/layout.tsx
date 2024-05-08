@@ -4,6 +4,7 @@ import {
   TbNews,
   TbNotification,
   TbSpeakerphone,
+  TbUsers,
   TbUserSquare,
 } from 'react-icons/tb';
 
@@ -76,6 +77,13 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             <TbNews />
             News
+          </Link>
+          <Link
+            href='/users'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
+          >
+            <TbUsers />
+            Users
           </Link>
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
