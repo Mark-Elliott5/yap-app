@@ -76,6 +76,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
             displayName: true,
             image: true,
             joinDate: true,
+            id: true,
           },
         },
         parentYap: {
@@ -166,6 +167,7 @@ const getYap = async (id: Yap['id']) => {
             displayName: true,
             image: true,
             joinDate: true,
+            id: true,
           },
         },
         parentYap: {
@@ -282,6 +284,7 @@ const getUserProfileYaps = async (username: User['username']) => {
             username: true,
             image: true,
             joinDate: true,
+            id: true,
           },
         },
         parentYap: {
@@ -361,6 +364,7 @@ const getUserProfileMedia = async (username: User['username']) => {
             username: true,
             image: true,
             joinDate: true,
+            id: true,
           },
         },
         parentYap: {
@@ -449,6 +453,7 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
                 username: true,
                 image: true,
                 joinDate: true,
+                id: true,
               },
             },
             parentYap: {
@@ -559,9 +564,11 @@ const getLiked = async (id: Yap['id'], username: User['username']) => {
     const yap = await db.yap.findUnique({
       where: {
         id,
-        likes: {
-          some: {
-            username,
+        AND: {
+          likes: {
+            some: {
+              username,
+            },
           },
         },
       },
@@ -595,9 +602,11 @@ const getEchoed = async (id: Yap['id'], username: User['username']) => {
     const yap = await db.yap.findUnique({
       where: {
         id,
-        echoes: {
-          some: {
-            username: username!,
+        AND: {
+          echoes: {
+            some: {
+              username: username!,
+            },
           },
         },
       },
@@ -622,8 +631,50 @@ const getEchoed = async (id: Yap['id'], username: User['username']) => {
   }
 };
 
+const getIsFollowing = async (userId: string, followerUsername: string) => {
+  try {
+    if (!userId) {
+      throw new ActionError('No userId was received by the server.');
+    }
+    if (!followerUsername) {
+      throw new ActionError('No username was received by the server.');
+    }
+
+    const isFollowing = await db.user.findUnique({
+      where: {
+        id: userId,
+        AND: {
+          followers: {
+            some: {
+              username: followerUsername,
+            },
+          },
+        },
+      },
+    });
+
+    return !!isFollowing;
+  } catch (err) {
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   console.log('Prisma error:', err);
+    //   return { error: 'Something went wrong! Please try again.' };
+    // }
+
+    // if (err instanceof ActionError) {
+    //   return { error: err.message };
+    // }
+    // // if (err instanceof PrismaClientKnownRequestError) {
+    // //   return { error: 'Database error!' };
+    // // }
+    // console.log(err);
+    // return { error: 'Unknown error occured.' };
+    return false;
+  }
+};
+
 export {
   getEchoed,
+  getIsFollowing,
   getLatestYaps,
   getLiked,
   getUserProfile,
