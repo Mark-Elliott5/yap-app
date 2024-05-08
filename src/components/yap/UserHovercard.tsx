@@ -64,7 +64,7 @@ export function UserHovercard({
           >
             @{username}
           </span>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-1'>
             <TbCalendarMonth className='inline-block h-4 w-4 text-black dark:text-white' />{' '}
             <span className='text-xs'>
               Joined {new Date(joinDate).toLocaleDateString()}

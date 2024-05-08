@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaEllipsis } from 'react-icons/fa6';
+import { TbDots } from 'react-icons/tb';
 
 import DropDownLogout from '@/src/components/auth/DropDownLogout';
 import {
@@ -15,10 +15,7 @@ function SettingsDropDown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <FaEllipsis
-          size='1.5rem'
-          className='text-zinc-950 dark:text-zinc-100'
-        />
+        <TbDots size='1.5rem' className='text-zinc-950 dark:text-zinc-100' />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

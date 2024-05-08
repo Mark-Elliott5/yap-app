@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { HiSignal } from 'react-icons/hi2';
+import { TbAccessPoint } from 'react-icons/tb';
 
 import {
   Tooltip,
@@ -45,7 +45,10 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
               onMouseOver={() => setSpin(true)}
               onMouseLeave={() => setSpin(false)}
             >
-              <HiSignal size='1.25rem' className={spin ? 'animate-spin' : ''} />
+              <TbAccessPoint
+                size='1.25rem'
+                className={`${spin ? 'animate-spin' : ''} h-full w-full`}
+              />
               <span className='font-light text-inherit'>
                 {abbreviateNum(
                   echoes + (!echoed && on ? 1 : echoed && !on ? -1 : 0)
