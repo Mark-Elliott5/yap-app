@@ -75,7 +75,7 @@ async function UserProfileYapsAndEchoesPage({
           />
         );
       }
-      // don't know I have to put non null assertion operator
+
       return (
         <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
       );
@@ -84,22 +84,22 @@ async function UserProfileYapsAndEchoesPage({
 
   return (
     <>
-      <div className='flex bg-zinc-200 text-xl text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100'>
+      <div className='flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
         <Link
           href={``}
-          className='rounded-tr-md bg-white px-4 py-2 dark:bg-zinc-900'
+          className='rounded-md bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:bg-zinc-900'
         >
           Yaps & Echoes
         </Link>
         <Link
           href={`${params.username}/yaps`}
-          className='px-4 py-2 hover:opacity-70'
+          className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
         >
           Yaps
         </Link>
         <Link
           href={`${params.username}/media`}
-          className='px-4 py-2 hover:opacity-70'
+          className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
         >
           Media
         </Link>

@@ -37,6 +37,16 @@ async function YapPostLayout({
     <>
       <YapPost currentUsername={currentUsername} {...yap} />
       {children}
+      <div className='mx-6 flex flex-col gap-4'>
+        {yap.replies.map((yap) => (
+          <YapPost
+            key={yap.id}
+            parentYap={'thread'}
+            currentUsername={currentUsername}
+            {...yap}
+          />
+        ))}
+      </div>
     </>
   );
 }

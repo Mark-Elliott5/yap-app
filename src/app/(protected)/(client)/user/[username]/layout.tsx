@@ -19,9 +19,9 @@ async function Profile({
   }
 
   return (
-    <div className='flex min-h-full flex-col'>
-      <div className='flex gap-6 bg-zinc-200 p-10 dark:bg-zinc-950'>
-        <Avatar className='h-[200px] w-[200px] border-[6px] border-black'>
+    <div className='flex min-h-full flex-col gap-4'>
+      <div className='flex gap-6 rounded-lg bg-zinc-100 p-10  dark:bg-zinc-950'>
+        <Avatar className='h-[200px] w-[200px] border-[2px] border-zinc-400 dark:border-zinc-800'>
           <AvatarImage src={user.image ?? ''} height={'1.5rem'} />
           <AvatarFallback>
             {/* eslint-disable-next-line @next/next/no-img-element */}

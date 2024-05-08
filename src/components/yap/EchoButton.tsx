@@ -55,7 +55,7 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
           </form>
         </TooltipTrigger>
         <TooltipContent>
-          <p className='bg-zinc-100 dark:bg-zinc-950'>Echo</p>
+          <p className='bg-white dark:bg-zinc-950'>Echo</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

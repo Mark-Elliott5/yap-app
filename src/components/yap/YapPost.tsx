@@ -19,7 +19,8 @@ interface YapProps
     | ({
         author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
       } & Pick<Yap, 'id'>)
-    | null;
+    | null
+    | 'thread';
   _count: {
     likes: number;
     echoes: number;
@@ -46,7 +47,9 @@ async function YapPost({
   const liked = await getLiked(id, currentUsername);
   const echoed = await getEchoed(id, currentUsername);
   return (
-    <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
+    <div
+      className={`flex flex-col gap-2 rounded-lg border-b-1 border-zinc-400 bg-white px-5 py-4 shadow-xl dark:border-zinc-950 dark:bg-zinc-900`}
+    >
       <div className='flex items-center gap-2'>
         <UserHovercard
           username={author.username!}
@@ -55,7 +58,7 @@ async function YapPost({
           image={author.image}
           // self={true}
         >
-          <div className='flex items-center gap-2'>
+          <div className='top-0 flex items-center gap-2'>
             <Avatar>
               <AvatarImage src={author.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
@@ -91,21 +94,24 @@ async function YapPost({
           {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
         </Link>
       </div>
-      {parentYap && (
-        <Link
-          href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
-          className='text-sm text-zinc-600'
-        >
-          ╰{' '}
-          <span className='hover:underline'>
-            in reply to @{parentYap.author.username}
+      {parentYap ? (
+        parentYap === 'thread' ? null : (
+          <Link
+            href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
+            className='text-sm text-zinc-600'
+          >
+            ╰{' '}
+            <span className='hover:underline'>
+              in reply to @{parentYap.author.username}
+            </span>
+          </Link>
+        )
+      ) : (
+        isReply && (
+          <span className='text-sm text-zinc-600'>
+            ╰ in reply to a deleted yap
           </span>
-        </Link>
-      )}
-      {isReply && !parentYap && (
-        <span className='text-sm text-zinc-600'>
-          ╰ in reply to a deleted yap
-        </span>
+        )
       )}
       <div className='flex flex-col gap-2 py-2'>
         {text && <p className='text-zinc-950 dark:text-zinc-100'>{text}</p>}

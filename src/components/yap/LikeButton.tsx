@@ -68,7 +68,7 @@ function LikeButton({
           </form>
         </TooltipTrigger>
         <TooltipContent>
-          <p className='bg-zinc-100 dark:bg-zinc-950'>Like</p>
+          <p className='bg-white dark:bg-zinc-950'>Like</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

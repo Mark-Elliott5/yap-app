@@ -43,7 +43,9 @@ async function EchoYapPost({
   const liked = await getLiked(yap.id, currentUsername);
   const echoed = await getEchoed(yap.id, currentUsername);
   return (
-    <div className='flex flex-col gap-2 border-b-1 border-zinc-400 px-5 py-4 dark:border-zinc-950'>
+    <div
+      className={`flex flex-col gap-2 rounded-lg border-b-1 border-zinc-400 bg-white px-5 py-4 shadow-xl dark:border-zinc-950 dark:bg-zinc-900`}
+    >
       <Link href={`/user/${username}/`} className='text-sm text-zinc-600'>
         ╭{' '}
         <span className='text-xs'>

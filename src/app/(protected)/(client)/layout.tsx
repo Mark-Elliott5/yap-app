@@ -95,10 +95,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
           {/* <CreatePostButton /> */}
         </div>
-        <div
-          id='middle latest-yaps profiles specific-yaps etc'
-          className='z-10 col-span-1 col-start-2 flex min-h-dvh flex-col bg-white shadow-2xl dark:bg-zinc-900 dark:shadow-xl'
-        >
+        <div className='z-10 col-span-1 col-start-2 flex min-h-dvh flex-col gap-4 pb-4'>
           {children}
         </div>
         <div id='right' className='col-span-1 col-start-3'></div>

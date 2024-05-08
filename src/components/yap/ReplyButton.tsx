@@ -46,7 +46,7 @@ function ReplyButton({
             </Link>
           </TooltipTrigger>
           <TooltipContent>
-            <p className='bg-zinc-100 dark:bg-zinc-950'>Reply</p>
+            <p className='bg-white dark:bg-zinc-950'>Reply</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

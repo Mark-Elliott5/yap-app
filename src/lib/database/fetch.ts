@@ -151,6 +151,13 @@ const getYap = async (id: Yap['id']) => {
                 joinDate: true,
               },
             },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
+              },
+            },
           },
         },
         author: {
@@ -269,9 +276,16 @@ const getUserProfileYaps = async (username: User['username']) => {
         authorId: true,
       },
       include: {
+        author: {
+          select: {
+            displayName: true,
+            username: true,
+            image: true,
+            joinDate: true,
+          },
+        },
         parentYap: {
           omit: {
-            id: true,
             text: true,
             date: true,
             image: true,
@@ -341,9 +355,16 @@ const getUserProfileMedia = async (username: User['username']) => {
         authorId: true,
       },
       include: {
+        author: {
+          select: {
+            displayName: true,
+            username: true,
+            image: true,
+            joinDate: true,
+          },
+        },
         parentYap: {
           omit: {
-            id: true,
             text: true,
             date: true,
             image: true,

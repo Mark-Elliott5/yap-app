@@ -48,29 +48,29 @@ async function UserProfileYapsPage({
     }
 
     return yaps.map((yap) => (
-      // don't know I have to put non null assertion operator
-      <YapPost
-        key={yap.id}
-        currentUsername={currentUsername}
-        author={userResponse.user!}
-        {...yap}
-      />
+      <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
     ));
   })();
 
   return (
     <>
-      <div className='flex bg-zinc-200 text-xl text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100'>
-        <Link href={`.`} className='px-4 py-2 hover:opacity-70'>
+      <div className='flex text-xl text-zinc-950 dark:text-zinc-100'>
+        <Link
+          href={`.`}
+          className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
+        >
           Yaps & Echoes
         </Link>
         <Link
           href={``}
-          className='rounded-t-md bg-white  px-4 py-2 dark:bg-zinc-900'
+          className='rounded-md bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:bg-zinc-900'
         >
           Yaps
         </Link>
-        <Link href={`./media`} className='px-4 py-2 hover:opacity-70'>
+        <Link
+          href={`./media`}
+          className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
+        >
           Media
         </Link>
       </div>
