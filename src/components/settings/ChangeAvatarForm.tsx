@@ -4,9 +4,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import FormButton from '@/src/components/FormButton';
-import FormError from '@/src/components/FormError';
-import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
@@ -16,6 +13,9 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import FormButton from '@/src/components/yap/FormButton';
+import FormError from '@/src/components/yap/FormError';
+import FormSuccess from '@/src/components/yap/FormSuccess';
 import { changeAvatar } from '@/src/lib/database/actions';
 import { ChangeAvatarSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaRegCalendarAlt } from 'react-icons/fa';
+import { TbCalendarMonth } from 'react-icons/tb';
 
 import {
   Avatar,
@@ -65,8 +65,8 @@ export function UserHovercard({
             @{username}
           </span>
           <div className='flex items-center gap-2'>
-            <FaRegCalendarAlt className='h-4 w-4 opacity-70' />{' '}
-            <span className='text-muted-foreground text-xs'>
+            <TbCalendarMonth className='inline-block h-4 w-4 text-black dark:text-white' />{' '}
+            <span className='text-xs'>
               Joined {new Date(joinDate).toLocaleDateString()}
             </span>
           </div>

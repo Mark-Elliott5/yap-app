@@ -7,7 +7,7 @@ import {
   TbUserSquare,
 } from 'react-icons/tb';
 
-import SettingsDropDown from '@/src/components/SettingsDropDown';
+import SettingsDropDown from '@/src/components/yap/SettingsDropDown';
 import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({
@@ -18,9 +18,9 @@ const archivoBlack = Archivo_Black({
 import { Suspense } from 'react';
 import Link from 'next/link';
 
-import NavBarUserInfo from '@/src/components/NavBarUserInfo';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
+import NavBarUserInfo from '@/src/components/yap/NavBarUserInfo';
 // import CreatePostButton from '@/src/components/yap/CreatePostButton';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {

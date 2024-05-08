@@ -5,10 +5,10 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import UserHovercard from '@/src/components/UserHovercard';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ReplyButton from '@/src/components/yap/ReplyButton';
+import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { Echo, User, Yap } from '@prisma/client';
 

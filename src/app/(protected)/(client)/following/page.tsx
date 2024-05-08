@@ -15,7 +15,7 @@ async function Following() {
         <div className='mt-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
           <Link
             href='/home'
-            className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
+            className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
           >
             Latest
           </Link>

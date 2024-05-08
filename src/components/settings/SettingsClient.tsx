@@ -11,7 +11,6 @@ import ChangeDisplayNameForm from '@/src/components/settings/ChangeDisplayNameFo
 import ChangeEmailForm from '@/src/components/settings/ChangeEmailForm';
 import ChangePasswordForm from '@/src/components/settings/ChangePasswordForm';
 import DeleteAccountForm from '@/src/components/settings/DeleteAccountForm';
-import SettingsDropDown from '@/src/components/SettingsDropDown';
 import {
   Avatar,
   AvatarFallback,
@@ -28,7 +27,8 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Separator } from '@/src/components/ui/separator';
-import UserHovercard from '@/src/components/UserHovercard';
+import SettingsDropDown from '@/src/components/yap/SettingsDropDown';
+import UserHovercard from '@/src/components/yap/UserHovercard';
 import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({

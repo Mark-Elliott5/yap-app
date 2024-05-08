@@ -21,7 +21,7 @@ async function Home() {
           </Link>
           <Link
             href='/following'
-            className='px-4 py-2 transition-all hover:scale-[1.2] hover:opacity-70'
+            className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
           >
             Following
           </Link>

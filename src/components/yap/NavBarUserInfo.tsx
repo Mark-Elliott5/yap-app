@@ -4,7 +4,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import UserHovercard from '@/src/components/UserHovercard';
+import UserHovercard from '@/src/components/yap/UserHovercard';
 
 async function NavBarUserInfo() {
   const session = await auth();
