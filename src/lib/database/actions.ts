@@ -458,7 +458,6 @@ const changeBio = async (data: FormData) => {
 };
 
 const createPost = async (data: FormData) => {
-  let postId = '';
   try {
     const session = await getSession('Access denied.');
 
@@ -489,10 +488,9 @@ const createPost = async (data: FormData) => {
     };
 
     const yap = await db.yap.create({ data: yapObj });
-    postId = yap.id;
-    console.log(postId);
+    const postId = yap.id;
 
-    return { success: 'Post created successfully.' };
+    return { postId };
   } catch (err) {
     console.log(err);
     if (err instanceof ZodError) {
@@ -514,11 +512,10 @@ const createPost = async (data: FormData) => {
   }
 
   //uncomment when /post/* is created
-  // redirect(`/${session.user.username}/post/${postId}`, RedirectType.push);
+  // redirect(`/home`, RedirectType.push);
 };
 
 const createReply = async (data: FormData) => {
-  let postId = '';
   try {
     const session = await getSession('Access denied.');
 
@@ -554,10 +551,9 @@ const createReply = async (data: FormData) => {
     };
 
     const yap = await db.yap.create({ data: yapObj });
-    postId = yap.id;
-    console.log(postId);
+    const postId = yap.id;
 
-    return { success: 'Post created successfully.' };
+    return { postId };
   } catch (err) {
     console.log(err);
     if (err instanceof ZodError) {
@@ -579,7 +575,7 @@ const createReply = async (data: FormData) => {
   }
 
   //uncomment when /post/* is created
-  // redirect(`/${session.user.username}/post/${postId}`, RedirectType.push);
+  // redirect(`/user/${session.user.username}/post/${postId}`, RedirectType.push);
 };
 
 const heartYap = async (data: FormData) => {

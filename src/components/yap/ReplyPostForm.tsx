@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import FormButton from '@/src/components/FormButton';
 import FormError from '@/src/components/FormError';
-import FormSuccess from '@/src/components/FormSuccess';
 import {
   Form as FormProvider,
   FormControl,
@@ -19,34 +19,36 @@ import { Input } from '@/src/components/ui/input';
 import { createReply } from '@/src/lib/database/actions';
 import { CreateReplySchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Yap } from '@prisma/client';
+import { User, Yap } from '@prisma/client';
 
-function ReplyPostForm({ id }: { id: Yap['id'] }) {
-  const [changeTry, setChangeTry] = useState<{
+function ReplyPostForm({
+  id,
+  currentUser,
+}: {
+  id: Yap['id'];
+  currentUser: User['username'];
+}) {
+  const [actionResponse, setActionResponse] = useState<{
     error?: string;
-    success?: string;
   }>({});
+  const router = useRouter();
   const form = useForm<z.infer<typeof CreateReplySchema>>({
     resolver: zodResolver(CreateReplySchema),
     defaultValues: {
       id,
     },
   });
-  const { isSubmitting } = form.formState;
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = async (data: FormData) => {
-    setChangeTry(await createReply(data));
-  };
-
-  useEffect(() => {
-    if (changeTry.success) {
-      const timeout = setTimeout(() => {
-        setChangeTry({});
-      }, 3000);
-
-      return () => clearTimeout(timeout);
+    setSubmitting(true);
+    const { postId, error } = await createReply(data);
+    if (postId) return router.push(`/user/${currentUser}/post/${postId}`);
+    if (error) {
+      setActionResponse({ error });
+      setSubmitting(true);
     }
-  }, [changeTry]);
+  };
 
   return (
     <FormProvider {...form}>
@@ -115,10 +117,11 @@ function ReplyPostForm({ id }: { id: Yap['id'] }) {
           />
         </div>
         <div className='flex flex-col gap-y-6'>
-          {changeTry?.error && <FormError message={changeTry.error} />}
-          {changeTry?.success && <FormSuccess message={changeTry.success} />}
-          <FormButton disabled={isSubmitting}>
-            {isSubmitting ? 'Posting...' : 'Post'}
+          {actionResponse?.error && (
+            <FormError message={actionResponse.error} />
+          )}
+          <FormButton disabled={submitting}>
+            {submitting ? 'Posting...' : 'Post'}
           </FormButton>
         </div>
       </Form>
