@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-import YapPost from '@/src/components/yap/YapPost';
-import { getUserProfileYaps } from '@/src/lib/database/fetch';
+import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
-async function UserProfileYapsPage({
+async function UserProfileEchoesPage({
   params,
 }: {
   params: { username: string };
@@ -13,8 +13,7 @@ async function UserProfileYapsPage({
   if (!currentUsername) return null;
 
   const child = (async () => {
-    const { yaps, error } = await getUserProfileYaps(params.username);
-
+    const { echoes, error } = await getUserProfileEchoes(params.username);
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
@@ -23,16 +22,16 @@ async function UserProfileYapsPage({
       );
     }
 
-    if (!yaps || !yaps.length) {
+    if (!echoes || !echoes.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No media yet!
+          No likes yet!
         </p>
       );
     }
 
-    return yaps.map((yap) => (
-      <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+    return echoes.map((echo) => (
+      <EchoYapPost key={echo.id} currentUsername={currentUsername} {...echo} />
     ));
   })();
 
@@ -46,14 +45,14 @@ async function UserProfileYapsPage({
           Latest
         </Link>
         <Link
-          href={``}
-          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+          href={`./yaps`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
         </Link>
         <Link
-          href={`./echoes`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          href={``}
+          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Echoes
         </Link>
@@ -75,4 +74,4 @@ async function UserProfileYapsPage({
   );
 }
 
-export default UserProfileYapsPage;
+export default UserProfileEchoesPage;

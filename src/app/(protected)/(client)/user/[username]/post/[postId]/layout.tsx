@@ -44,13 +44,19 @@ async function YapPostLayout({
           href={`..`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
-          Yaps & Echoes
+          Latest
         </Link>
         <Link
           href={`../yaps`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
+        </Link>
+        <Link
+          href={`./echoes`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Echoes
         </Link>
         <Link
           href={`../media`}

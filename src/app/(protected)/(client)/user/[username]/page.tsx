@@ -70,13 +70,19 @@ async function UserProfileYapsAndEchoesPage({
           href={``}
           className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
-          Yaps & Echoes
+          Latest
         </Link>
         <Link
           href={`${params.username}/yaps`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
+        </Link>
+        <Link
+          href={`./echoes`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Echoes
         </Link>
         <Link
           href={`${params.username}/media`}

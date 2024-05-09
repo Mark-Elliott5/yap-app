@@ -34,7 +34,7 @@ async function Profile({
     return (
       <div className='flex min-h-full flex-col gap-4'>
         <div
-          className='flex gap-6 rounded-lg bg-zinc-100 p-10 text-zinc-950 dark:bg-zinc-950
+          className='flex items-center gap-12 rounded-lg bg-zinc-100 p-10 text-zinc-950 dark:bg-zinc-950
   dark:text-zinc-50'
         >
           <Avatar className='h-[200px] w-[200px] border-[2px] border-zinc-400 dark:border-zinc-800'>
@@ -81,10 +81,13 @@ async function Profile({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger className='w-fit'>
-                  <p className='flex items-center gap-1'>
+                  <Link
+                    href={`/user/${user.username}/echoes`}
+                    className='flex items-center gap-1'
+                  >
                     <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
                     {user._count.echoes}{' '}
-                  </p>
+                  </Link>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className='bg-white dark:bg-zinc-950'>Echoes</p>

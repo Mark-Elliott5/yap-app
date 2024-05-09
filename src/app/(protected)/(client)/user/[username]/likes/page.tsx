@@ -4,7 +4,7 @@ import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileLikes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
-async function UserProfileYapsPage({
+async function UserProfileLikesPage({
   params,
 }: {
   params: { username: string };
@@ -42,13 +42,19 @@ async function UserProfileYapsPage({
           href={`.`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
-          Yaps & Echoes
+          Latest
         </Link>
         <Link
           href={`./yaps`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
+        </Link>
+        <Link
+          href={`./echoes`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Echoes
         </Link>
         <Link
           href={`./media`}
@@ -68,4 +74,4 @@ async function UserProfileYapsPage({
   );
 }
 
-export default UserProfileYapsPage;
+export default UserProfileLikesPage;

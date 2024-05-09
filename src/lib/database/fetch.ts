@@ -880,6 +880,142 @@ const getUserProfileLikes = async (
   }
 };
 
+const getUserProfileEchoes = async (
+  username: User['username'],
+  id: Echo['id'] | undefined = undefined
+) => {
+  try {
+    if (!username) {
+      throw new ActionError('No username was received by the server.');
+    }
+
+    if (!id) {
+      const echoes = await db.echo.findMany({
+        take: 20,
+        where: {
+          username,
+        },
+        include: {
+          yap: {
+            include: {
+              author: {
+                select: {
+                  displayName: true,
+                  username: true,
+                  image: true,
+                  joinDate: true,
+                  // id: true,
+                },
+              },
+              parentYap: {
+                include: {
+                  author: {
+                    select: {
+                      username: true,
+                      displayName: true,
+                      image: true,
+                      joinDate: true,
+                    },
+                  },
+                  _count: {
+                    select: {
+                      echoes: true,
+                      likes: true,
+                      replies: true,
+                    },
+                  },
+                },
+              },
+              _count: {
+                select: {
+                  likes: true,
+                  echoes: true,
+                  replies: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      return { echoes };
+    }
+    const echoes = await db.echo.findMany({
+      take: 20,
+      skip: 1,
+      cursor: {
+        id,
+      },
+      where: {
+        username,
+      },
+      include: {
+        yap: {
+          include: {
+            author: {
+              select: {
+                displayName: true,
+                username: true,
+                image: true,
+                joinDate: true,
+                // id: true,
+              },
+            },
+            parentYap: {
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    displayName: true,
+                    image: true,
+                    joinDate: true,
+                  },
+                },
+                _count: {
+                  select: {
+                    echoes: true,
+                    likes: true,
+                    replies: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    return { echoes };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 const getUserProfileYapsAndEchoes = async (username: User['username']) => {
   try {
     if (!username) {
@@ -1188,6 +1324,7 @@ export {
   getLatestYaps,
   getLiked,
   getUserProfile,
+  getUserProfileEchoes,
   getUserProfileLikes,
   getUserProfileMedia,
   getUserProfileYaps,
