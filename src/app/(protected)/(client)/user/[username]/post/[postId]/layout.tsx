@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { Separator } from '@/src/components/ui/separator';
 import YapPost from '@/src/components/yap/YapPost';
 import { getYap } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -58,15 +59,21 @@ async function YapPostLayout({
       </div>
       <YapPost currentUsername={currentUsername} {...yap} />
       {children}
-      <div className='mx-6 flex flex-col gap-4'>
-        {yap.replies.map((yap) => (
-          <YapPost
-            key={yap.id}
-            parentYap={'thread'}
-            currentUsername={currentUsername}
-            {...yap}
-          />
-        ))}
+      <div className='flex gap-4' key={yap.id}>
+        <Separator
+          orientation='vertical'
+          className='w-[1px] flex-grow-0 bg-gradient-to-t from-zinc-800 to-zinc-600 text-white'
+        />
+        <div className='flex w-full flex-col gap-4'>
+          {yap.replies.map((yap) => (
+            <YapPost
+              key={yap.id}
+              parentYap={'thread'}
+              currentUsername={currentUsername}
+              {...yap}
+            />
+          ))}
+        </div>
       </div>
     </>
   );
