@@ -73,6 +73,12 @@ async function UserProfileMediaPage({
         >
           Media
         </Link>
+        <Link
+          href={`./likes`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Likes
+        </Link>
       </div>
       {child}
     </>
