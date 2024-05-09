@@ -458,6 +458,9 @@ const getYap = async (id: Yap['id']) => {
             authorId: true,
             parentYapId: true,
           },
+          orderBy: {
+            date: 'asc',
+          },
           include: {
             author: {
               select: {
