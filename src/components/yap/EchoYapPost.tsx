@@ -6,6 +6,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+import AutoMention from '@/src/components/yap/AutoMention';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ReplyButton from '@/src/components/yap/ReplyButton';
@@ -122,7 +123,9 @@ async function EchoYapPost({
       )}
       <div className='flex flex-col gap-2 py-2'>
         {yap.text && (
-          <p className='text-zinc-950 dark:text-zinc-100'>{yap.text}</p>
+          <p className='text-zinc-950 dark:text-zinc-100'>
+            <AutoMention text={yap.text} />
+          </p>
         )}
 
         {yap.image && (

@@ -89,6 +89,9 @@ dependencies:
   react-responsive:
     specifier: ^10.0.0
     version: 10.0.0(react@18.2.0)
+  react-string-replace:
+    specifier: ^1.1.1
+    version: 1.1.1
   tailwind-merge:
     specifier: ^2.2.2
     version: 2.2.2
@@ -4186,6 +4189,11 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       shallow-equal: 3.1.0
+    dev: false
+
+  /react-string-replace@1.1.1:
+    resolution: {integrity: sha512-26TUbLzLfHQ5jO5N7y3Mx88eeKo0Ml0UjCQuX4BMfOd/JX+enQqlKpL1CZnmjeBRvQE8TR+ds9j1rqx9CxhKHQ==}
+    engines: {node: '>=0.12.0'}
     dev: false
 
   /react-style-singleton@2.2.1(@types/react@18.2.68)(react@18.2.0):
