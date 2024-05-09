@@ -68,6 +68,7 @@ function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
                     minLength={0}
                     maxLength={144}
                     className='placeholder:italic'
+                    autoFocus
                   />
                 </FormControl>
                 <FormMessage />

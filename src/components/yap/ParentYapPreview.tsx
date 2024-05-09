@@ -8,26 +8,14 @@ import {
 import AutoMention from '@/src/components/yap/AutoMention';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
-interface YapProps
+interface ParentYapPreviewProps
   extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
   author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-  parentYap:
-    | ({
-        author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-        _count: {
-          likes: number;
-          echoes: number;
-          replies: number;
-        };
-      } & Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'>)
-    | 'thread'
-    | null;
   _count: {
     likes: number;
     echoes: number;
@@ -40,22 +28,20 @@ interface YapProps
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
 
-async function YapPost({
+async function ParentYapPreview({
   author,
   text,
   image,
   date,
   _count,
-  parentYap,
-  isReply,
   id,
   currentUsername,
-}: YapProps) {
+}: ParentYapPreviewProps) {
   const liked = await getLiked(id, currentUsername);
   const echoed = await getEchoed(id, currentUsername);
   return (
     <div
-      className={`flex flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
+      className={`flex flex-col gap-2 rounded-lg border-1 border-zinc-100 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900`}
     >
       <div className='flex items-center gap-2'>
         <UserHovercard
@@ -100,31 +86,6 @@ async function YapPost({
           {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
         </Link>
       </div>
-      {parentYap ? (
-        parentYap === 'thread' ? null : (
-          <>
-            <ParentYapPreview
-              {...parentYap}
-              currentUsername={currentUsername}
-            />
-            <Link
-              href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
-              className='text-sm text-zinc-600'
-            >
-              ╰{' '}
-              <span className='hover:underline'>
-                in reply to @{parentYap.author.username}
-              </span>
-            </Link>
-          </>
-        )
-      ) : (
-        isReply && (
-          <span className='text-sm text-zinc-600'>
-            ╰ in reply to a deleted yap
-          </span>
-        )
-      )}
       <div className='flex flex-col gap-2 py-2'>
         {text && (
           <p className='text-zinc-950 dark:text-zinc-100'>
@@ -150,4 +111,4 @@ async function YapPost({
   );
 }
 
-export default YapPost;
+export default ParentYapPreview;

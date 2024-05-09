@@ -74,6 +74,7 @@ function ReplyPostForm({
                     minLength={0}
                     maxLength={32}
                     className='placeholder:italic'
+                    autoFocus
                   />
                 </FormControl>
                 <FormMessage />

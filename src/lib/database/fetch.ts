@@ -32,11 +32,6 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
             },
           },
           parentYap: {
-            omit: {
-              text: true,
-              image: true,
-              date: true,
-            },
             include: {
               author: {
                 select: {
@@ -44,6 +39,13 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                   displayName: true,
                   image: true,
                   joinDate: true,
+                },
+              },
+              _count: {
+                select: {
+                  echoes: true,
+                  likes: true,
+                  replies: true,
                 },
               },
             },
@@ -72,21 +74,20 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                 },
               },
               parentYap: {
-                omit: {
-                  text: true,
-                  date: true,
-                  image: true,
-                  authorId: true,
-                  isReply: true,
-                  parentYapId: true,
-                },
                 include: {
                   author: {
                     select: {
                       username: true,
-                      // displayName: true,
-                      // joinDate: true,
-                      // image: true,
+                      displayName: true,
+                      image: true,
+                      joinDate: true,
+                    },
+                  },
+                  _count: {
+                    select: {
+                      echoes: true,
+                      likes: true,
+                      replies: true,
                     },
                   },
                 },
@@ -129,11 +130,6 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
           },
         },
         parentYap: {
-          omit: {
-            text: true,
-            image: true,
-            date: true,
-          },
           include: {
             author: {
               select: {
@@ -141,6 +137,13 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                 displayName: true,
                 image: true,
                 joinDate: true,
+              },
+            },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
               },
             },
           },
@@ -225,11 +228,6 @@ const getFollowingYaps = async (
             },
           },
           parentYap: {
-            omit: {
-              text: true,
-              image: true,
-              date: true,
-            },
             include: {
               author: {
                 select: {
@@ -237,6 +235,13 @@ const getFollowingYaps = async (
                   displayName: true,
                   image: true,
                   joinDate: true,
+                },
+              },
+              _count: {
+                select: {
+                  echoes: true,
+                  likes: true,
+                  replies: true,
                 },
               },
             },
@@ -269,21 +274,20 @@ const getFollowingYaps = async (
                 },
               },
               parentYap: {
-                omit: {
-                  text: true,
-                  date: true,
-                  image: true,
-                  authorId: true,
-                  isReply: true,
-                  parentYapId: true,
-                },
                 include: {
                   author: {
                     select: {
                       username: true,
-                      // displayName: true,
-                      // joinDate: true,
-                      // image: true,
+                      displayName: true,
+                      image: true,
+                      joinDate: true,
+                    },
+                  },
+                  _count: {
+                    select: {
+                      echoes: true,
+                      likes: true,
+                      replies: true,
                     },
                   },
                 },
@@ -333,11 +337,6 @@ const getFollowingYaps = async (
           },
         },
         parentYap: {
-          omit: {
-            text: true,
-            image: true,
-            date: true,
-          },
           include: {
             author: {
               select: {
@@ -345,6 +344,13 @@ const getFollowingYaps = async (
                 displayName: true,
                 image: true,
                 joinDate: true,
+              },
+            },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
               },
             },
           },
@@ -382,21 +388,20 @@ const getFollowingYaps = async (
               },
             },
             parentYap: {
-              omit: {
-                text: true,
-                date: true,
-                image: true,
-                authorId: true,
-                isReply: true,
-                parentYapId: true,
-              },
               include: {
                 author: {
                   select: {
                     username: true,
-                    // displayName: true,
-                    // joinDate: true,
-                    // image: true,
+                    displayName: true,
+                    image: true,
+                    joinDate: true,
+                  },
+                },
+                _count: {
+                  select: {
+                    echoes: true,
+                    likes: true,
+                    replies: true,
                   },
                 },
               },
@@ -481,11 +486,6 @@ const getYap = async (id: Yap['id']) => {
           },
         },
         parentYap: {
-          omit: {
-            text: true,
-            image: true,
-            date: true,
-          },
           include: {
             author: {
               select: {
@@ -493,6 +493,13 @@ const getYap = async (id: Yap['id']) => {
                 displayName: true,
                 image: true,
                 joinDate: true,
+              },
+            },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
               },
             },
           },
@@ -598,21 +605,20 @@ const getUserProfileYaps = async (username: User['username']) => {
           },
         },
         parentYap: {
-          omit: {
-            text: true,
-            date: true,
-            image: true,
-            authorId: true,
-            isReply: true,
-            parentYapId: true,
-          },
           include: {
             author: {
               select: {
                 username: true,
                 displayName: true,
-                joinDate: true,
                 image: true,
+                joinDate: true,
+              },
+            },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
               },
             },
           },
@@ -678,21 +684,20 @@ const getUserProfileMedia = async (username: User['username']) => {
           },
         },
         parentYap: {
-          omit: {
-            text: true,
-            date: true,
-            image: true,
-            authorId: true,
-            isReply: true,
-            parentYapId: true,
-          },
           include: {
             author: {
               select: {
                 username: true,
                 displayName: true,
-                joinDate: true,
                 image: true,
+                joinDate: true,
+              },
+            },
+            _count: {
+              select: {
+                echoes: true,
+                likes: true,
+                replies: true,
               },
             },
           },
@@ -767,21 +772,20 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
               },
             },
             parentYap: {
-              omit: {
-                text: true,
-                date: true,
-                image: true,
-                authorId: true,
-                isReply: true,
-                parentYapId: true,
-              },
               include: {
                 author: {
                   select: {
                     username: true,
                     displayName: true,
-                    joinDate: true,
                     image: true,
+                    joinDate: true,
+                  },
+                },
+                _count: {
+                  select: {
+                    echoes: true,
+                    likes: true,
+                    replies: true,
                   },
                 },
               },
@@ -811,21 +815,20 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
                   },
                 },
                 parentYap: {
-                  omit: {
-                    text: true,
-                    date: true,
-                    image: true,
-                    authorId: true,
-                    isReply: true,
-                    parentYapId: true,
-                  },
                   include: {
                     author: {
                       select: {
                         username: true,
-                        // displayName: true,
-                        // joinDate: true,
-                        // image: true,
+                        displayName: true,
+                        image: true,
+                        joinDate: true,
+                      },
+                    },
+                    _count: {
+                      select: {
+                        echoes: true,
+                        likes: true,
+                        replies: true,
                       },
                     },
                   },
