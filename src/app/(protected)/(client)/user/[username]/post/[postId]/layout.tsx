@@ -19,6 +19,7 @@ async function YapPostLayout({
   if (!currentUsername) return null;
 
   const { yap, error } = await getYap(params.postId);
+
   if (error) {
     console.log('ERROR', error);
     return (
@@ -27,6 +28,7 @@ async function YapPostLayout({
       </p>
     );
   }
+
   if (!yap) {
     return (
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>

@@ -2,10 +2,7 @@ import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import YapPost from '@/src/components/yap/YapPost';
-import {
-  getUserProfile,
-  getUserProfileYapsAndEchoes,
-} from '@/src/lib/database/fetch';
+import { getUserProfileYapsAndEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function UserProfileYapsAndEchoesPage({
@@ -19,17 +16,6 @@ async function UserProfileYapsAndEchoesPage({
   if (!currentUsername) return null;
 
   const child = (async () => {
-    const userResponse = await getUserProfile(params.username);
-    if (userResponse.error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Try again.
-        </p>
-      );
-    }
-    if (!userResponse.user || !userResponse) {
-      return null;
-    }
     const { yapsAndEchoes, error } = await getUserProfileYapsAndEchoes(
       params.username
     );

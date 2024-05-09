@@ -16,11 +16,13 @@ async function Profile({
   params: { username: string };
   children: React.ReactNode;
 }>) {
-  const { user } = await getUserProfile(params.username);
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
+  const { user } = await getUserProfile(params.username);
+
   const isFollowing = await getIsFollowing(params.username, currentUsername);
+
   if (user) {
     return (
       <div className='flex min-h-full flex-col gap-4'>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import YapPost from '@/src/components/yap/YapPost';
-import { getUserProfile, getUserProfileMedia } from '@/src/lib/database/fetch';
+import { getUserProfileMedia } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 async function UserProfileMediaPage({
@@ -13,22 +13,6 @@ async function UserProfileMediaPage({
   if (!currentUsername) return null;
 
   const child = (async () => {
-    const userResponse = await getUserProfile(params.username);
-    if (userResponse.error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {userResponse.error}
-        </p>
-      );
-    }
-    if (!userResponse.user || !userResponse) {
-      return (
-        // <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        //   Something went wrong! Try again.
-        // </p>
-        <></>
-      );
-    }
     const { yaps, error } = await getUserProfileMedia(params.username);
 
     if (error) {
