@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import YapPost from '@/src/components/yap/YapPost';
 import { getYap } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -34,6 +36,26 @@ async function YapPostLayout({
 
   return (
     <>
+      <div className='flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
+        <Link
+          href={`..`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Yaps & Echoes
+        </Link>
+        <Link
+          href={`../yaps`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Yaps
+        </Link>
+        <Link
+          href={`../media`}
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Media
+        </Link>
+      </div>
       <YapPost currentUsername={currentUsername} {...yap} />
       {children}
       <div className='mx-6 flex flex-col gap-4'>
