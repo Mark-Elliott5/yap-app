@@ -22,9 +22,14 @@ import Link from 'next/link';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import NavBarUserInfo from '@/src/components/yap/NavBarUserInfo';
+import { getSession } from '@/src/lib/database/getUser';
 // import CreatePostButton from '@/src/components/yap/CreatePostButton';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
+  if (!session) return null;
+
+  const { username } = session.user;
   return (
     <div className=''>
       <div className='sticky top-0 backdrop-blur-sm'>
@@ -87,7 +92,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
-            href='/profile'
+            href={`/user/${username}`}
           >
             <TbUserSquare />
             Profile

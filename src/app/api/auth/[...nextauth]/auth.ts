@@ -4,7 +4,10 @@ import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 
 import db from '@/src/lib/database/db';
-import { getUserByEmail, getUserById } from '@/src/lib/database/getUser';
+import {
+  getUserByEmailEdge,
+  getUserByIdEdge,
+} from '@/src/lib/database/getUserEdge';
 import { LoginSchema } from '@/src/schemas';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
@@ -22,7 +25,7 @@ export const {
   callbacks: {
     // async signIn({ user }) {
     //   if (!user?.id) return false;
-    //   const existingUser = await getUserById(user.id);
+    //   const existingUser = await getUserByIdEdge(user.id);
 
     //   // if (!existingUser || !existingUser.emailVerified) {
     //   //   return false;
@@ -50,7 +53,7 @@ export const {
       // console.log('AUTH CONFIG TOKEN');
       if (!token.sub) return token;
       // console.log('GETTING EXISTING USER');
-      const existingUser = await getUserById(token.sub);
+      const existingUser = await getUserByIdEdge(token.sub);
       if (!existingUser) {
         // console.log('FAILED TO GET EXISTING USER');
         return token;
@@ -94,7 +97,7 @@ export const {
         const result = await LoginSchema.safeParseAsync(credentials);
         if (!result.success) return null;
         const { data } = result;
-        const user = await getUserByEmail(data.email);
+        const user = await getUserByEmailEdge(data.email);
         if (!user || !user.password) return null;
         const match = await bcrypt.compare(data.password, user.password);
         if (!match) {

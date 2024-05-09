@@ -1,8 +1,8 @@
-import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
 import SettingsClient from '@/src/components/settings/SettingsClient';
+import { getSession } from '@/src/lib/database/getUser';
 
 async function Settings() {
-  const session = await auth();
+  const session = await getSession();
   // Will not evaluate to undefined, because they would have been redirected if so.
   const { username, displayName, image, OAuth, joinDate, email } = session!
     .user as {

@@ -5,10 +5,11 @@ import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
-import { auth, signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
+import { signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/database/db';
 import {
   getCurrentUserPassword,
+  getSession,
   getUserByEmail,
   getUserByUsername,
 } from '@/src/lib/database/getUser';
@@ -38,8 +39,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
 
-const getSession = async (err: string) => {
-  const session = await auth();
+const getSessionWrapper = async (err: string) => {
+  const session = await getSession();
   if (!session || !session.user) {
     throw new ActionError(err);
   }
@@ -163,7 +164,7 @@ const register = async (data: FormData) => {
 
 const onboarding = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
     console.log('Onboarding session:', session);
 
     if (session.user.username) {
@@ -209,7 +210,7 @@ const onboarding = async (data: FormData) => {
 
 const changeEmail = async (data: FormData) => {
   try {
-    const session = await getSession('Session not found.');
+    const session = await getSessionWrapper('Session not found.');
     if (session.user.OAuth) {
       throw new ActionError('Cannot update OAuth user email.');
     }
@@ -308,7 +309,7 @@ const changePassword = async (data: FormData) => {
 
 const changeAvatar = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { avatar } = await ChangeAvatarSchema.parseAsync(data);
     if (!avatar) {
@@ -359,7 +360,7 @@ const changeAvatar = async (data: FormData) => {
 
 const deleteAccount = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { username } = await DeleteAccountSchema.parseAsync(data);
     if (username !== session.user.username) {
@@ -392,7 +393,7 @@ const deleteAccount = async (data: FormData) => {
 
 const changeDisplayName = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { displayName } = await ChangeDisplayNameSchema.parseAsync(data);
 
@@ -428,7 +429,7 @@ const changeDisplayName = async (data: FormData) => {
 
 const changeBio = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { bio } = await ChangeBioSchema.parseAsync(data);
 
@@ -460,7 +461,7 @@ const changeBio = async (data: FormData) => {
 
 const createPost = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { text, image } = await CreatePostSchema.parseAsync(data);
 
@@ -515,7 +516,7 @@ const createPost = async (data: FormData) => {
 
 const createReply = async (data: FormData) => {
   try {
-    const session = await getSession('Access denied.');
+    const session = await getSessionWrapper('Access denied.');
 
     const { text, image, id } = await CreateReplySchema.parseAsync(data);
 
@@ -575,7 +576,7 @@ const createReply = async (data: FormData) => {
 
 const heartYap = async (data: FormData) => {
   try {
-    const { user } = await getSession('Access denied.');
+    const { user } = await getSessionWrapper('Access denied.');
 
     const { id, state } = await AddHeartSchema.parseAsync(data);
 
@@ -612,7 +613,7 @@ const heartYap = async (data: FormData) => {
 const echoYap = async (data: FormData) => {
   console.log('echoing');
   try {
-    const { user } = await getSession('Access denied.');
+    const { user } = await getSessionWrapper('Access denied.');
 
     const { id } = await AddEchoSchema.parseAsync(data);
 
@@ -682,7 +683,7 @@ const echoYap = async (data: FormData) => {
 
 const followUser = async (data: FormData) => {
   try {
-    const { user } = await getSession('Access denied.');
+    const { user } = await getSessionWrapper('Access denied.');
 
     const { username } = await FollowUserSchema.parseAsync(data);
 

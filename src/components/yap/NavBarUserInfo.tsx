@@ -1,14 +1,14 @@
 import Link from 'next/link';
 
-import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+import { getSession } from '@/src/lib/database/getUser';
 
 async function NavBarUserInfo() {
-  const session = await auth();
+  const session = await getSession();
   // Will not evaluate to undefined, because they would have been redirected if so.
   const { username, displayName, image } = session!.user as {
     username: string;

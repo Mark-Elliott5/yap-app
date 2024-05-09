@@ -1,18 +1,14 @@
+import { cache } from 'react';
+
 import { auth } from '@/src/app/api/auth/[...nextauth]/auth';
 import db from '@/src/lib/database/db';
 import { User } from '@prisma/client';
 
-// cannot use this here, referencing it will break the app. I suspect with 99%
-// certainty, when auth is called in middleware, which runs on edge without
-// option for node, this causes the typeerror cannot read properties of
-// undefined (reading exec()) error.
-// import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+// These files must not be imported directly or indirectly to the edge runtime.
+// E.g. imported into auth.ts, which is then reexported to middleware.ts.
+// This way, cache() can be used here.
 
-// this also means cache() will not work here. Maybe duplicate auth() dependent
-// functions to a new file, and only import those functions into middleware,
-// then we can use cache() here if necessary.
-
-const getUserByEmail = async (email: User['email']) => {
+const getUserByEmail = cache(async (email: User['email']) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -24,9 +20,9 @@ const getUserByEmail = async (email: User['email']) => {
     console.log(err);
     return null;
   }
-};
+});
 
-const getUserById = async (id: User['id']) => {
+const getUserById = cache(async (id: User['id']) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -41,9 +37,9 @@ const getUserById = async (id: User['id']) => {
     console.log(err);
     return null;
   }
-};
+});
 
-const getUserByUsername = async (username: User['username']) => {
+const getUserByUsername = cache(async (username: User['username']) => {
   try {
     if (!username) {
       return null;
@@ -61,11 +57,11 @@ const getUserByUsername = async (username: User['username']) => {
     console.log(err);
     return null;
   }
-};
+});
 
-const getCurrentUserPassword = async () => {
+const getCurrentUserPassword = cache(async () => {
   try {
-    const session = await auth();
+    const session = await getSession();
     if (!session || !session.user) return null;
     const user = await db.user.findUnique({
       where: {
@@ -82,60 +78,46 @@ const getCurrentUserPassword = async () => {
     console.log(err);
     return null;
   }
-};
+});
 
-const getCurrentUserId = async () => {
+const getCurrentUserId = cache(async () => {
   try {
-    const session = await auth();
+    const session = await getSession();
     if (!session || !session.user || !session.user.id) return null;
     return session.user.id;
   } catch (err) {
     console.log(err);
     return null;
   }
-};
+});
 
-const getCurrentUsername = async () => {
+const getCurrentUsername = cache(async () => {
   try {
-    const session = await auth();
+    const session = await getSession();
     if (!session || !session.user || !session.user.username) return null;
     return session.user.username;
   } catch (err) {
     console.log(err);
     return null;
   }
-};
+});
 
-// const getSession = async () => {
-//   try {
-//     const session = await auth();
-//     if (!session) return null;
-//     return session;
-//   } catch (err) {
-//     console.log(err);
-//     return null;
-//   }
-// };
-
-// const updateUser = async (id: string, data: updateableFields) => {
-//   try {
-//     const user = await db.user.update({
-//       where: {
-//         id,
-//       },
-//       data,
-//     });
-//     return user;
-//   } catch (err) {
-//     console.log(err);
-//     return null;
-//   }
-// };
+const getSession = cache(async () => {
+  try {
+    const session = await auth();
+    if (!session) return null;
+    return session;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+});
 
 export {
   getCurrentUserId,
   getCurrentUsername,
   getCurrentUserPassword,
+  getSession,
   getUserByEmail,
   getUserById,
   getUserByUsername,
