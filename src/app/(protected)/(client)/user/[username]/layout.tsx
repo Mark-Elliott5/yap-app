@@ -1,10 +1,17 @@
-import { TbCalendarMonth } from 'react-icons/tb';
+import Link from 'next/link';
+import { TbAccessPoint, TbCalendarMonth, TbMessage } from 'react-icons/tb';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/src/components/ui/tooltip';
 import FollowButton from '@/src/components/yap/FollowButton';
 import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -50,11 +57,40 @@ async function Profile({
               @{user.username}
             </p>
             <div className='flex items-center gap-1'>
-              <TbCalendarMonth className='inline-block h-4 w-4 text-black dark:text-white' />{' '}
-              <span className='text-xs'>
+              <TbCalendarMonth size={'1.25rem'} className='inline-block' />{' '}
+              <span className='text-sm'>
                 Joined {new Date(user.joinDate).toLocaleDateString()}
               </span>
             </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className='w-fit'>
+                  <Link
+                    href={`/user/${user.username}/yaps`}
+                    className='flex items-center gap-1'
+                  >
+                    <TbMessage size={'1.25rem'} className='inline-block' />{' '}
+                    {user._count.yaps}
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className='bg-white dark:bg-zinc-950'>Yaps</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className='w-fit'>
+                  <p className='flex items-center gap-1'>
+                    <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
+                    {user._count.echoes}{' '}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className='bg-white dark:bg-zinc-950'>Echoes</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             {params.username !== currentUsername && (
               <FollowButton
                 isFollowing={isFollowing}
