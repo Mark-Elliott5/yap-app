@@ -38,31 +38,31 @@ async function YapPostLayout({
     <>
       <div className='flex gap-4 text-lg text-zinc-950 lg:text-xl dark:text-zinc-100'>
         <Link
-          href={`..`}
+          href={`/user/${params.username}/`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Latest
         </Link>
         <Link
-          href={`../yaps`}
+          href={`/user/${params.username}/yaps`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
         </Link>
         <Link
-          href={`./echoes`}
+          href={`/user/${params.username}/echoes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Echoes
         </Link>
         <Link
-          href={`../media`}
+          href={`/user/${params.username}/media`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Media
         </Link>
         <Link
-          href={`./likes`}
+          href={`/user/${params.username}/likes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Likes
