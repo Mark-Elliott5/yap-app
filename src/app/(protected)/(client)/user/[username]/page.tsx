@@ -65,7 +65,7 @@ async function UserProfileYapsAndEchoesPage({
 
   return (
     <>
-      <div className='flex gap-4 text-lg text-zinc-950 lg:text-xl dark:text-zinc-100'>
+      <div className='flex gap-2 text-lg text-zinc-950 sm:gap-4 lg:text-xl dark:text-zinc-100'>
         <Link
           href={``}
           className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'

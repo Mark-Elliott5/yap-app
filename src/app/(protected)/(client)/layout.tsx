@@ -57,7 +57,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </nav>
         <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       </div>
-      <div className='flex h-full sm:grid sm:grid-cols-597'>
+      <div className='flex h-full md:grid md:grid-cols-597'>
         <div
           id='left'
           className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 px-2 py-16 font-medium'
@@ -106,7 +106,9 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
           {/* <CreatePostButton /> */}
         </div>
-        <div className='z-10 col-span-1 col-start-2 pb-4'>{children}</div>
+        <div className='z-10 col-span-1 col-start-2 pb-4 pr-2 md:pr-[unset]'>
+          {children}
+        </div>
         <div id='right' className='col-span-1 col-start-3'></div>
       </div>
     </div>
