@@ -3,6 +3,7 @@ import {
   TbHome,
   TbNews,
   TbNotification,
+  TbSearch,
   TbSpeakerphone,
   TbUsers,
   TbUserSquare,
@@ -62,7 +63,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
       <div className='flex h-full gap-2 p-2 md:grid md:grid-cols-597 md:gap-[unset]'>
         <div
           id='left'
-          className='sticky left-0 top-0 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
+          className='sticky left-0 top-0 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-8 py-16 font-medium'
         >
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
@@ -98,6 +99,13 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             <TbUserSquare />
             <span className='hidden sm:inline-block'>Profile</span>
+          </Link>
+          <Link
+            href='/search'
+            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
+          >
+            <TbSearch />
+            <span className='hidden sm:inline-block'>Search</span>
           </Link>
           <Link
             href='/post'
