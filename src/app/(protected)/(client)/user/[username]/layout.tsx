@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
 import FollowButton from '@/src/components/yap/FollowButton';
+import abbreviateNum from '@/src/lib/abbreviateNum';
 import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
@@ -70,7 +71,7 @@ async function Profile({
                     className='flex items-center gap-1'
                   >
                     <TbMessage size={'1.25rem'} className='inline-block' />{' '}
-                    {user._count.yaps}
+                    {abbreviateNum(user._count.yaps)}
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -86,7 +87,7 @@ async function Profile({
                     className='flex items-center gap-1'
                   >
                     <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
-                    {user._count.echoes}{' '}
+                    {abbreviateNum(user._count.echoes)}
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent>
