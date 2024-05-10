@@ -69,10 +69,10 @@ async function YapPostLayout({
         </Link>
       </div>
       <YapPost currentUsername={currentUsername} {...yap} />
-      <div className='flex gap-4' key={yap.id}>
+      <div className='flex gap-4'>
         <Separator
           orientation='vertical'
-          className='w-[1px] flex-grow-0 bg-gradient-to-t from-zinc-800 to-zinc-600 text-white'
+          className='h-[unset] w-[1px] rounded-full bg-gradient-to-t from-zinc-50 to-zinc-400 dark:from-zinc-800 dark:to-zinc-600'
         />
         <div className='flex w-full flex-col gap-4'>
           {children}
