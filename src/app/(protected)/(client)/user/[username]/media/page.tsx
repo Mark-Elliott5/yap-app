@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
+import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileMedia } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
-import YapPost from '@/src/components/yap/YapPost';
 
 async function UserProfileMediaPage({
   params,

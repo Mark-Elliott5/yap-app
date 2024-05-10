@@ -34,10 +34,7 @@ async function Profile({
   if (user) {
     return (
       <div className='flex flex-col gap-4'>
-        <div
-          className='flex flex-col gap-2 rounded-lg bg-zinc-100 px-6 py-4 text-zinc-950 md:px-8 md:py-6 lg:px-10 lg:py-8
-  dark:bg-zinc-950 dark:text-zinc-50'
-        >
+        <div className='flex flex-col gap-2 rounded-lg bg-gradient-to-br from-white from-20% to-zinc-300 px-6 py-4 text-zinc-950 md:px-8 md:py-6 lg:px-10 lg:py-8 dark:from-zinc-900 dark:from-0% dark:to-zinc-950 dark:text-zinc-50'>
           <div className='flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
               {user.displayName && (

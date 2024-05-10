@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
+import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
-import EchoYapPost from '@/src/components/yap/EchoYapPost';
 
 async function UserProfileEchoesPage({
   params,

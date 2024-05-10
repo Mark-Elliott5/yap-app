@@ -31,7 +31,7 @@ function FollowButton({
     >
       <input hidden value={userToFollow} readOnly name='username' />
       <button
-        className={`transition-all hover:scale-[1.05] active:scale-[0.95] ${following ? 'bg-yap-blue-700' : 'bg-yap-blue-600'} flex items-center gap-1 rounded-sm px-2 py-1`}
+        className={`transition-all hover:scale-[1.05] active:scale-[0.95] ${following ? 'bg-yap-blue-500 dark:bg-yap-blue-700' : 'bg-yap-blue-400 dark:bg-yap-blue-600'} flex items-center gap-1 rounded-sm px-2 py-1 text-white`}
       >
         {following ? 'Following' : 'Follow'}
       </button>
