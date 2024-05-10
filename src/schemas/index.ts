@@ -162,10 +162,10 @@ const OnboardingSchema = zfd.formData({
       .min(1, {
         message: 'Username is required.',
       })
-      .max(32, {
-        message: 'Username cannot be longer than 32 characters.',
+      .max(15, {
+        message: 'Username cannot be longer than 15 characters.',
       })
-      .regex(/(\w+)/g, {
+      .regex(/^\w+$/, {
         message:
           'Username can only contain lowercase alphanumeric characters and underscores',
       })
@@ -206,10 +206,10 @@ const DeleteAccountSchema = zfd.formData({
       .min(1, {
         message: 'Username is required.',
       })
-      .max(32, {
-        message: 'Username cannot be longer than 32 characters.',
+      .max(15, {
+        message: 'Username cannot be longer than 15 characters.',
       })
-      .regex(/^[a-z0-9_.]+$/, {
+      .regex(/^\w+$/, {
         message:
           'Username can only contain lowercase alphanumeric characters, underscores, and periods.',
       })

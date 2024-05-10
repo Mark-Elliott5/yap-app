@@ -173,7 +173,7 @@ const onboarding = async (data: FormData) => {
 
     const { username, displayName } = await OnboardingSchema.parseAsync(data);
     const existingUser = await getUserByUsername(username);
-    if (existingUser) {
+    if (existingUser?.username?.toLowerCase() === username.toLowerCase()) {
       throw new ActionError('Username already taken');
     }
 
