@@ -1,5 +1,5 @@
-import ReplyPostForm from '@/src/components/yap/ReplyPostForm';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+import ReplyPostForm from '@/src/components/yap/ReplyPostForm';
 
 async function ReplyPage({
   params,

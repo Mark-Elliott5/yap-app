@@ -167,7 +167,7 @@ const OnboardingSchema = zfd.formData({
       })
       .regex(/^\w+$/, {
         message:
-          'Username can only contain lowercase alphanumeric characters and underscores',
+          'Username can only contain alphanumeric characters and underscores',
       })
   ),
   displayName: zfd.text(

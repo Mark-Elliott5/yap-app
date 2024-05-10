@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+import EchoYapPost from '@/src/components/yap/EchoYapPost';
 
 async function UserProfileEchoesPage({
   params,
@@ -37,7 +37,7 @@ async function UserProfileEchoesPage({
 
   return (
     <>
-      <div className='flex gap-4 text-lg text-zinc-950 lg:text-xl dark:text-zinc-100'>
+      <div className='flex max-w-[326px] gap-2 overflow-x-scroll text-lg text-zinc-950 sm:w-[unset] sm:max-w-[unset] sm:gap-4 sm:overflow-x-visible lg:text-xl dark:text-zinc-100'>
         <Link
           href={`.`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'

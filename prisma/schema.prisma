@@ -64,7 +64,7 @@ model Yap {
 model Echo {
   id       Int      @id @default(autoincrement())
   user     User     @relation(name: "UserEchoes", fields: [username], references: [username], onDelete: Cascade)
-  username String   @db.VarChar(30)
+  username String   @db.VarChar(15)
   date     DateTime @default(now())
   yapId    String   @db.VarChar(30)
   yap      Yap      @relation(name: "YapEchoes", fields: [yapId], references: [id], onDelete: Cascade)

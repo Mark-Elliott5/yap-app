@@ -35,17 +35,19 @@ async function Profile({
     return (
       <div className='flex flex-col gap-4'>
         <div
-          className='flex flex-col gap-2 rounded-lg bg-zinc-100 px-10 py-8 text-zinc-950
+          className='flex flex-col gap-2 rounded-lg bg-zinc-100 px-6 py-4 text-zinc-950 md:px-8 md:py-6 lg:px-10 lg:py-8
   dark:bg-zinc-950 dark:text-zinc-50'
         >
-          <div className='flex items-center gap-12'>
+          <div className='flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
               {user.displayName && (
-                <p className='text-4xl'>{user.displayName}</p>
+                <p className='text-3xl md:text-4xl'>{user.displayName}</p>
               )}
               <p
                 className={
-                  !user.displayName ? 'text-4xl' : 'text-xl text-zinc-400'
+                  !user.displayName
+                    ? 'text-3xl md:text-4xl'
+                    : 'text-lg text-zinc-400 sm:text-xl md:text-3xl'
                 }
               >
                 @{user.username}
@@ -98,7 +100,7 @@ async function Profile({
                 />
               )}
             </div>
-            <Avatar className='h-[200px] w-[200px] border-[2px] border-zinc-400 dark:border-zinc-800'>
+            <Avatar className='h-[125px] w-[125px] border-[2px] border-zinc-400 sm:h-[150px] sm:w-[150px] md:h-[175px] md:w-[175px] lg:h-[200px] lg:w-[200px] dark:border-zinc-800'>
               <AvatarImage src={user.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -109,10 +111,12 @@ async function Profile({
               </AvatarFallback>
             </Avatar>
           </div>
-          <div>
-            <p className=' text-zinc-400 dark:text-zinc-600'>About me</p>
-            <p className=''>{user.bio}</p>
-          </div>
+          {user.bio && (
+            <div>
+              <p className=' text-zinc-400 dark:text-zinc-600'>About me</p>
+              <p className='whitespace-normal'>{user.bio}</p>
+            </div>
+          )}
         </div>
         {children}
       </div>
@@ -120,19 +124,21 @@ async function Profile({
   }
 
   return (
-    <div className='flex min-h-full flex-col gap-4'>
-      <div className='flex gap-6 rounded-lg bg-zinc-100 p-10  dark:bg-zinc-950'>
-        <Avatar className='h-[200px] w-[200px] border-[2px] border-zinc-400 dark:border-zinc-800'>
-          <AvatarImage src={''} height={'1.5rem'} />
-          <AvatarFallback>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt={`Avatar`} src={'/defaultavatar.svg'} />
-          </AvatarFallback>
-        </Avatar>
-        <div>
-          <p className='text-4xl text-zinc-950 dark:text-zinc-100'>
-            @{params.username}
-          </p>
+    <div className='flex flex-col gap-4'>
+      <div
+        className='flex flex-col gap-2 rounded-lg bg-zinc-100 px-6 py-4 text-zinc-950 md:px-8 md:py-6 lg:px-10 lg:py-8
+dark:bg-zinc-950 dark:text-zinc-50'
+      >
+        <div className='flex items-center justify-between'>
+          <p className='text-3xl md:text-4xl'>@{params.username}</p>
+
+          <Avatar className='h-[125px] w-[125px] border-[2px] border-zinc-400 sm:h-[150px] sm:w-[150px] md:h-[175px] md:w-[175px] lg:h-[200px] lg:w-[200px] dark:border-zinc-800'>
+            <AvatarImage src={''} height={'1.5rem'} />
+            <AvatarFallback>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt={`avatar`} src={'/defaultavatar.svg'} />
+            </AvatarFallback>
+          </Avatar>
         </div>
       </div>
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>

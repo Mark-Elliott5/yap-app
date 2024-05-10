@@ -23,7 +23,6 @@ import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import NavBarUserInfo from '@/src/components/yap/NavBarUserInfo';
 import { getSession } from '@/src/lib/database/getUser';
-// import CreatePostButton from '@/src/components/yap/CreatePostButton';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
@@ -36,7 +35,10 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         <nav className='flex items-center justify-between px-4 py-2'>
           <Link
             href='/home'
-            className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
+            className={cn(
+              'text-3xl text-yap-red-500 transition-all hover:drop-shadow-heart',
+              archivoBlack.className
+            )}
           >
             yap
           </Link>
@@ -57,7 +59,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </nav>
         <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       </div>
-      <div className='flex h-full md:grid md:grid-cols-597'>
+      <div className='flex h-full gap-2 p-2 md:grid md:grid-cols-597 md:gap-[unset]'>
         <div
           id='left'
           className='sticky left-0 top-0 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
@@ -104,12 +106,14 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <TbSpeakerphone />
             <span className='hidden sm:inline-block'>Post</span>
           </Link>
-          {/* <CreatePostButton /> */}
         </div>
-        <div className='z-10 col-span-1 col-start-2 pb-4 pr-2 md:pr-[unset]'>
+        <div className='z-10 flex-grow pb-4 md:col-span-1 md:col-start-2'>
           {children}
         </div>
-        <div id='right' className='col-span-1 col-start-3'></div>
+        <div
+          id='right'
+          className='hidden md:col-span-1 md:col-start-3 md:block'
+        ></div>
       </div>
     </>
   );
