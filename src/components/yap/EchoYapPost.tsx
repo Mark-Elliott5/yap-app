@@ -61,7 +61,7 @@ async function EchoYapPost({
         </div>
         <TbAccessPoint size='1.25rem' className={''} />
       </Link>
-      <div className='flex flex-col gap-2 rounded-lg border-1 border-zinc-800 px-5 py-4'>
+      <div className='flex flex-col gap-2 rounded-lg border-1 border-zinc-300 px-5 py-4 dark:border-zinc-800'>
         <div className={`flex items-center gap-2 ${yap.isReply && 'mb-2'}`}>
           <UserHovercard
             username={yap.author.username!}
