@@ -6,21 +6,12 @@ import {
   AvatarImage,
 } from '@/src/components/ui/avatar';
 import AutoMention from '@/src/components/yap/AutoMention';
-import EchoButton from '@/src/components/yap/EchoButton';
-import LikeButton from '@/src/components/yap/LikeButton';
-import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
-import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
-interface ParentYapPreviewProps
+export interface ParentYapPreviewProps
   extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
   author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-  _count: {
-    likes: number;
-    echoes: number;
-    replies: number;
-  };
   currentUsername: string;
 }
 
@@ -33,12 +24,8 @@ async function ParentYapPreview({
   text,
   image,
   date,
-  _count,
   id,
-  currentUsername,
 }: ParentYapPreviewProps) {
-  const liked = await getLiked(id, currentUsername);
-  const echoed = await getEchoed(id, currentUsername);
   return (
     <div
       className={`flex flex-col gap-2 rounded-lg border-1 border-zinc-100 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900`}
@@ -101,11 +88,6 @@ async function ParentYapPreview({
             className='max-h-[500px] w-full rounded-md object-cover'
           />
         )}
-      </div>
-      <div className='flex items-center gap-16'>
-        <LikeButton id={id} liked={liked} likes={_count.likes} />
-        <EchoButton id={id} echoed={echoed} echoes={_count.echoes} />
-        <ReplyButton id={id} user={author.username} replies={_count.replies} />
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ function ReplyButton({
           <TooltipTrigger asChild>
             <Link
               href={`/user/${user}/post/${id}/reply`}
-              className={`flex items-center gap-1 text-zinc-600 transition-all hover:scale-[1.2] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.85]`}
+              className={`flex items-center gap-1 text-zinc-600 transition-all hover:scale-[1.2] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.95]`}
               // onClick={() => setPostVisible((prev) => !prev)}
               onMouseOver={() => setWobble(true)}
               onMouseLeave={() => setWobble(false)}

@@ -32,7 +32,7 @@ async function Profile({
 
   if (user) {
     return (
-      <div className='flex min-h-full flex-col gap-4'>
+      <div className='flex flex-col gap-4'>
         <div
           className='flex items-center gap-12 rounded-lg bg-zinc-100 p-10 text-zinc-950 dark:bg-zinc-950
   dark:text-zinc-50'

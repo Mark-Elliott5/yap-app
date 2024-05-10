@@ -57,58 +57,56 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </nav>
         <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       </div>
-      <div className='grid h-full grid-cols-597'>
+      <div className='flex h-full sm:grid sm:grid-cols-597'>
         <div
           id='left'
-          className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
+          className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 px-2 py-16 font-medium'
         >
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/home'
           >
             <TbHome />
-            Home
+            <span className='hidden sm:inline-block'>Home</span>
           </Link>
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/notifications'
           >
             <TbNotification />
-            Notifications
+            <span className='hidden sm:inline-block'>Notifications</span>
           </Link>
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/news'
           >
             <TbNews />
-            News
+            <span className='hidden sm:inline-block'>News</span>
           </Link>
           <Link
             href='/users'
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
           >
             <TbUsers />
-            Users
+            <span className='hidden sm:inline-block'>Users</span>
           </Link>
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href={`/user/${username}`}
           >
             <TbUserSquare />
-            Profile
+            <span className='hidden sm:inline-block'>Profile</span>
           </Link>
           <Link
             href='/post'
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
           >
             <TbSpeakerphone />
-            Post
+            <span className='hidden sm:inline-block'>Post</span>
           </Link>
           {/* <CreatePostButton /> */}
         </div>
-        <div className='z-10 col-span-1 col-start-2 flex min-h-dvh flex-col gap-4 pb-4'>
-          {children}
-        </div>
+        <div className='z-10 col-span-1 col-start-2 pb-4'>{children}</div>
         <div id='right' className='col-span-1 col-start-3'></div>
       </div>
     </div>

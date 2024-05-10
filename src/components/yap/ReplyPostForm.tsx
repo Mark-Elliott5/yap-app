@@ -57,7 +57,6 @@ function ReplyPostForm({
         onSubmit={({ formData }) => {
           !submitting ? handleChange(formData) : null;
         }}
-        className='margin-auto self-center'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
@@ -72,7 +71,7 @@ function ReplyPostForm({
                     placeholder='Yappity yap'
                     type='text'
                     minLength={0}
-                    maxLength={32}
+                    maxLength={144}
                     className='placeholder:italic'
                     autoFocus
                   />

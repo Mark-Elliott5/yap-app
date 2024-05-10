@@ -41,13 +41,6 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                   joinDate: true,
                 },
               },
-              _count: {
-                select: {
-                  echoes: true,
-                  likes: true,
-                  replies: true,
-                },
-              },
             },
           },
           _count: {
@@ -81,13 +74,6 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                       displayName: true,
                       image: true,
                       joinDate: true,
-                    },
-                  },
-                  _count: {
-                    select: {
-                      echoes: true,
-                      likes: true,
-                      replies: true,
                     },
                   },
                 },
@@ -137,13 +123,6 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
                 displayName: true,
                 image: true,
                 joinDate: true,
-              },
-            },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
               },
             },
           },
@@ -237,13 +216,6 @@ const getFollowingYaps = async (
                   joinDate: true,
                 },
               },
-              _count: {
-                select: {
-                  echoes: true,
-                  likes: true,
-                  replies: true,
-                },
-              },
             },
           },
           _count: {
@@ -281,13 +253,6 @@ const getFollowingYaps = async (
                       displayName: true,
                       image: true,
                       joinDate: true,
-                    },
-                  },
-                  _count: {
-                    select: {
-                      echoes: true,
-                      likes: true,
-                      replies: true,
                     },
                   },
                 },
@@ -346,13 +311,6 @@ const getFollowingYaps = async (
                 joinDate: true,
               },
             },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
-              },
-            },
           },
         },
         _count: {
@@ -395,13 +353,6 @@ const getFollowingYaps = async (
                     displayName: true,
                     image: true,
                     joinDate: true,
-                  },
-                },
-                _count: {
-                  select: {
-                    echoes: true,
-                    likes: true,
-                    replies: true,
                   },
                 },
               },
@@ -496,13 +447,6 @@ const getYap = async (id: Yap['id']) => {
                 displayName: true,
                 image: true,
                 joinDate: true,
-              },
-            },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
               },
             },
           },
@@ -617,13 +561,6 @@ const getUserProfileYaps = async (username: User['username']) => {
                 joinDate: true,
               },
             },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
-              },
-            },
           },
         },
         _count: {
@@ -694,13 +631,6 @@ const getUserProfileMedia = async (username: User['username']) => {
                 displayName: true,
                 image: true,
                 joinDate: true,
-              },
-            },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
               },
             },
           },
@@ -779,13 +709,6 @@ const getUserProfileLikes = async (
                   joinDate: true,
                 },
               },
-              _count: {
-                select: {
-                  echoes: true,
-                  likes: true,
-                  replies: true,
-                },
-              },
             },
           },
           _count: {
@@ -838,13 +761,6 @@ const getUserProfileLikes = async (
                 displayName: true,
                 image: true,
                 joinDate: true,
-              },
-            },
-            _count: {
-              select: {
-                echoes: true,
-                likes: true,
-                replies: true,
               },
             },
           },
@@ -917,13 +833,6 @@ const getUserProfileEchoes = async (
                       joinDate: true,
                     },
                   },
-                  _count: {
-                    select: {
-                      echoes: true,
-                      likes: true,
-                      replies: true,
-                    },
-                  },
                 },
               },
               _count: {
@@ -972,13 +881,6 @@ const getUserProfileEchoes = async (
                     displayName: true,
                     image: true,
                     joinDate: true,
-                  },
-                },
-                _count: {
-                  select: {
-                    echoes: true,
-                    likes: true,
-                    replies: true,
                   },
                 },
               },
@@ -1064,13 +966,6 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
                     joinDate: true,
                   },
                 },
-                _count: {
-                  select: {
-                    echoes: true,
-                    likes: true,
-                    replies: true,
-                  },
-                },
               },
             },
             _count: {
@@ -1105,13 +1000,6 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
                         displayName: true,
                         image: true,
                         joinDate: true,
-                      },
-                    },
-                    _count: {
-                      select: {
-                        echoes: true,
-                        likes: true,
-                        replies: true,
                       },
                     },
                   },

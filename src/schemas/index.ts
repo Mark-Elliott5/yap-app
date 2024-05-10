@@ -109,7 +109,7 @@ const ChangeBioSchema = zfd.formData({
     z
       .string()
       .max(144, {
-        message: 'Bio cannot be longer than 32 characters.',
+        message: 'Bio cannot be longer than 144 characters.',
       })
       .optional()
       .transform((val) => (val === '' ? undefined : val))
@@ -165,9 +165,9 @@ const OnboardingSchema = zfd.formData({
       .max(32, {
         message: 'Username cannot be longer than 32 characters.',
       })
-      .regex(/^[a-z0-9_.]+$/, {
+      .regex(/(\w+)/g, {
         message:
-          'Username can only contain lowercase alphanumeric characters, underscores, and periods.',
+          'Username can only contain lowercase alphanumeric characters and underscores',
       })
   ),
   displayName: zfd.text(
@@ -222,7 +222,7 @@ const CreatePostSchema = zfd
       z
         .string()
         .max(144, {
-          message: 'Content cannot be longer than 32 characters.',
+          message: 'Content cannot be longer than 144 characters.',
         })
         .optional()
         .transform((val) =>
@@ -262,7 +262,7 @@ const CreateReplySchema = zfd
       z
         .string()
         .max(144, {
-          message: 'Content cannot be longer than 32 characters.',
+          message: 'Content cannot be longer than 144 characters.',
         })
         .optional()
         .transform((val) =>

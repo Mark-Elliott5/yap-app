@@ -8,26 +8,17 @@ import {
 import AutoMention from '@/src/components/yap/AutoMention';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
+import ParentYapPreview, {
+  ParentYapPreviewProps,
+} from '@/src/components/yap/ParentYapPreview';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
-interface YapProps
-  extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
+interface YapProps extends Omit<Yap, 'authorId' | 'parentYapId'> {
   author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-  parentYap:
-    | ({
-        author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-        _count: {
-          likes: number;
-          echoes: number;
-          replies: number;
-        };
-      } & Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'>)
-    | 'thread'
-    | null;
+  parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | 'thread' | null;
   _count: {
     likes: number;
     echoes: number;
@@ -57,7 +48,7 @@ async function YapPost({
     <div
       className={`flex w-full flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
     >
-      <div className='flex items-center gap-2'>
+      <div className={`flex items-center gap-2 ${isReply && 'mb-2'}`}>
         <UserHovercard
           username={author.username!}
           joinDate={author.joinDate}

@@ -9,7 +9,9 @@ import {
 import AutoMention from '@/src/components/yap/AutoMention';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
+import ParentYapPreview, {
+  ParentYapPreviewProps,
+} from '@/src/components/yap/ParentYapPreview';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
@@ -18,22 +20,13 @@ import { Echo, User, Yap } from '@prisma/client';
 interface EchoYapProps extends Pick<Echo, 'date' | 'username'> {
   yap: {
     author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-    parentYap:
-      | ({
-          author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
-          _count: {
-            likes: number;
-            echoes: number;
-            replies: number;
-          };
-        } & Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'>)
-      | null;
+    parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | null;
     _count: {
       likes: number;
       echoes: number;
       replies: number;
     };
-  } & Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'>;
+  } & Omit<Yap, 'authorId' | 'parentYapId'>;
   currentUsername: string;
 }
 
@@ -69,7 +62,7 @@ async function EchoYapPost({
         <TbAccessPoint size='1.25rem' className={''} />
       </Link>
       <div className='flex flex-col gap-2 rounded-lg border-1 border-zinc-800 px-5 py-4'>
-        <div className='flex items-center gap-2'>
+        <div className={`flex items-center gap-2 ${yap.isReply && 'mb-2'}`}>
           <UserHovercard
             username={yap.author.username!}
             joinDate={yap.author.joinDate}
