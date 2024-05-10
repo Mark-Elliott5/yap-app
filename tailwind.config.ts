@@ -33,7 +33,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       gridTemplateColumns: {
-        597: '5fr 9fr 7fr;',
+        597: '5fr 9fr 5fr;',
         doc: '1fr 3fr 1fr',
       },
       colors: {

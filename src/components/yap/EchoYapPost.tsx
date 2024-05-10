@@ -48,21 +48,26 @@ async function EchoYapPost({
     >
       <Link
         href={`/user/${username}/`}
-        className='flex justify-between text-sm text-zinc-600'
+        className='flex justify-between text-xs text-zinc-600'
       >
         <div>
           <span>╭ </span>
-          <span className='text-xs'>
-            @{username} echoed...{' '}
-            <span className='text-zinc-600/60'>
-              {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
-            </span>
-          </span>
+          <span className='text-xs'>@{username} echoed... </span>
         </div>
-        <TbAccessPoint size='1.25rem' className={''} />
+        <div className='flex items-center gap-2'>
+          <span className='text-xs text-zinc-600/60'>
+            {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+          </span>
+          <TbAccessPoint
+            size='1.25rem'
+            className={'text-yap-peri-500 drop-shadow-echo'}
+          />
+        </div>
       </Link>
       <div className='flex flex-col gap-2 rounded-lg border-1 border-zinc-300 px-5 py-4 dark:border-zinc-800'>
-        <div className={`flex items-center gap-2 ${yap.isReply && 'mb-2'}`}>
+        <div
+          className={`flex items-center justify-between ${yap.isReply && 'mb-2'}`}
+        >
           <UserHovercard
             username={yap.author.username!}
             joinDate={yap.author.joinDate}

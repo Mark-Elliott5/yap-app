@@ -30,7 +30,7 @@ async function ParentYapPreview({
     <div
       className={`flex flex-col gap-2 rounded-lg border-1 border-zinc-300 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900`}
     >
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center justify-between'>
         <UserHovercard
           username={author.username!}
           joinDate={author.joinDate}

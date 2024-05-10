@@ -1169,6 +1169,9 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
           image: true,
           joinDate: true,
         },
+        orderBy: {
+          joinDate: 'desc',
+        },
       });
 
       return { users };
@@ -1185,9 +1188,129 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
         image: true,
         joinDate: true,
       },
+      orderBy: {
+        joinDate: 'desc',
+      },
     });
 
     return { users };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
+const getSearch = async (
+  query: string,
+  id: User['id'] | undefined = undefined
+) => {
+  try {
+    if (query === '') return { yaps: undefined };
+
+    if (!id) {
+      const yaps = await db.yap.findMany({
+        take: 30,
+        where: {
+          text: {
+            search: query,
+          },
+        },
+        include: {
+          author: {
+            select: {
+              displayName: true,
+              username: true,
+              image: true,
+              joinDate: true,
+              // id: true,
+            },
+          },
+          parentYap: {
+            include: {
+              author: {
+                select: {
+                  username: true,
+                  displayName: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              echoes: true,
+              replies: true,
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      return { yaps };
+    }
+
+    const yaps = await db.yap.findMany({
+      take: 30,
+      skip: 1,
+      cursor: {
+        id,
+      },
+      where: {
+        text: {
+          search: query,
+        },
+      },
+      include: {
+        author: {
+          select: {
+            displayName: true,
+            username: true,
+            image: true,
+            joinDate: true,
+            // id: true,
+          },
+        },
+        parentYap: {
+          include: {
+            author: {
+              select: {
+                username: true,
+                displayName: true,
+                image: true,
+                joinDate: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            echoes: true,
+            replies: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    return { yaps };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
@@ -1211,6 +1334,7 @@ export {
   getIsFollowing,
   getLatestYaps,
   getLiked,
+  getSearch,
   getUserProfile,
   getUserProfileEchoes,
   getUserProfileLikes,
