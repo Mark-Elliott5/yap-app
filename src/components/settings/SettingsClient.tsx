@@ -97,7 +97,11 @@ function SettingsClient({
         >
           yap
         </Link>
-        <Link href={`/user/${username}`} className='flex gap-3'>
+        <Link
+          href={`/user/${username}`}
+          className='flex gap-3'
+          prefetch={false}
+        >
           <div className='flex items-center gap-3 text-zinc-100'>
             <div className='flex flex-col sm:flex-row sm:gap-2'>
               <span

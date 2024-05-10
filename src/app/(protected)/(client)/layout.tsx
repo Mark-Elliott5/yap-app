@@ -31,7 +31,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
 
   const { username } = session.user;
   return (
-    <div className=''>
+    <>
       <div className='sticky top-0 backdrop-blur-sm'>
         <nav className='flex items-center justify-between px-4 py-2'>
           <Link
@@ -60,7 +60,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
       <div className='flex h-full md:grid md:grid-cols-597'>
         <div
           id='left'
-          className='sticky top-14 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 px-2 py-16 font-medium'
+          className='sticky left-0 top-0 col-span-1 col-start-1 flex h-min flex-col items-center justify-center gap-16 py-16 font-medium'
         >
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
@@ -111,7 +111,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </div>
         <div id='right' className='col-span-1 col-start-3'></div>
       </div>
-    </div>
+    </>
   );
 }
 

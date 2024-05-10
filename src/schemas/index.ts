@@ -108,8 +108,8 @@ const ChangeBioSchema = zfd.formData({
   bio: zfd.text(
     z
       .string()
-      .max(144, {
-        message: 'Bio cannot be longer than 144 characters.',
+      .max(300, {
+        message: 'Bio cannot be longer than 300 characters.',
       })
       .optional()
       .transform((val) => (val === '' ? undefined : val))

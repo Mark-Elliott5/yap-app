@@ -57,7 +57,7 @@ function ChangeBioForm() {
                     placeholder='This is me!'
                     type='text'
                     minLength={0}
-                    maxLength={32}
+                    maxLength={300}
                     className='placeholder:italic'
                   />
                 </FormControl>
