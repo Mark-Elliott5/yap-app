@@ -54,11 +54,9 @@ async function EchoYapPost({
           <span>╭ </span>
           <span className='text-xs'>@{username} echoed... </span>
         </div>
-        <div className='flex items-center gap-2'>
-          <span className='text-xs text-zinc-600/60'>
-            {date.toLocaleDateString()}
-          </span>
-          <span className='hidden text-xs text-zinc-600/60 sm:inline-block'>
+        <div className='flex items-center gap-2 text-zinc-600/70'>
+          <span className='text-xs'>{date.toLocaleDateString()}</span>
+          <span className='hidden text-xs sm:inline-block'>
             {date.toLocaleTimeString()}
           </span>
           <TbAccessPoint
@@ -108,10 +106,10 @@ async function EchoYapPost({
           </UserHovercard>
           <Link
             href={`/user/${yap.author.username}/post/${yap.id}`}
-            className='flex items-center gap-2 text-xs text-zinc-600'
+            className='flex items-center gap-2 text-xs text-zinc-600/70'
           >
             {yap.date.toLocaleDateString()}
-            <span className='hidden text-xs text-zinc-600/60 sm:inline-block'>
+            <span className='hidden text-xs sm:inline-block'>
               {date.toLocaleTimeString()}
             </span>
           </Link>

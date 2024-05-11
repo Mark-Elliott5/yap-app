@@ -68,10 +68,10 @@ async function ParentYapPreview({
         </UserHovercard>
         <Link
           href={`/user/${author.username}/post/${id}`}
-          className='flex items-center gap-2 text-xs text-zinc-600'
+          className='flex items-center gap-2 text-xs text-zinc-600/70'
         >
           {date.toLocaleDateString()}
-          <span className='hidden text-xs text-zinc-600/60 sm:inline-block'>
+          <span className='hidden text-xs sm:inline-block'>
             {date.toLocaleTimeString()}
           </span>
         </Link>

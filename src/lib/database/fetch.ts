@@ -160,9 +160,6 @@ const getFollowingYaps = async (
   echoId: Echo['id'] | undefined = undefined
 ) => {
   try {
-    console.log('Getting following yaps');
-    // await getSession('Access denied.');
-
     const user = await db.user.findUnique({
       where: {
         username: currentUsername,
@@ -176,7 +173,6 @@ const getFollowingYaps = async (
         },
       },
     });
-    console.log(user);
     if (!user) {
       return { failure: 'No user or no followers found.' };
     }
