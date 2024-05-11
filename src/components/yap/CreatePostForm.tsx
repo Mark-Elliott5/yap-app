@@ -48,7 +48,6 @@ function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
         onSubmit={({ formData }) => {
           !submitting ? handleChange(formData) : null;
         }}
-        className='h-dvh rounded-lg bg-white p-10 shadow-xl dark:bg-zinc-900'
       >
         <div className='flex flex-col gap-2 pb-6'>
           <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
