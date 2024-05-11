@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYapsAndEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -15,7 +17,7 @@ async function UserProfileYapsAndEchoesPage({
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const child = (async () => {
+  const posts = (async () => {
     const { yapsAndEchoes, error } = await getUserProfileYapsAndEchoes(
       params.username
     );
@@ -35,7 +37,7 @@ async function UserProfileYapsAndEchoesPage({
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {`*crickets* There's nothing here.`}
+          {`There's nothing here... yet.`}
         </p>
       );
     }
@@ -97,7 +99,7 @@ async function UserProfileYapsAndEchoesPage({
           Likes
         </Link>
       </div>
-      {child}
+      <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
     </>
   );
 }

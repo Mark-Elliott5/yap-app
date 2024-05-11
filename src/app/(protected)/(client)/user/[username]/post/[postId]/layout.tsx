@@ -29,7 +29,7 @@ async function YapPostLayout({
   if (!yap) {
     return (
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        {`*crickets* There's nothing here.`}
+        {`There's nothing here... yet.`}
       </p>
     );
   }

@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -11,7 +13,7 @@ async function Home() {
 
   const { yaps, error, echoes } = await getLatestYaps();
 
-  const child = (() => {
+  const posts = (() => {
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
         <>
@@ -63,7 +65,9 @@ async function Home() {
             Following
           </Link>
         </div>
-        <div className='flex flex-col gap-4'>{child}</div>
+        <Suspense fallback={<PostsFallback />}>
+          <div className='flex flex-col gap-4'>{posts}</div>
+        </Suspense>
       </>
     );
   }
@@ -78,7 +82,7 @@ async function Home() {
 
   return (
     <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-      {`*crickets* There's nothing here.`}
+      {`There's nothing here... yet.`}
     </p>
   );
 }

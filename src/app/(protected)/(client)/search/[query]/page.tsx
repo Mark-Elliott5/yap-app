@@ -1,3 +1,6 @@
+import { Suspense } from 'react';
+
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getSearch } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -44,11 +47,13 @@ async function SearchPage({ params }: { params: { query: string } }) {
           {`Search: "${decodeURIComponent(params.query)}"`}
         </header>
       </div>
-      <div className='flex flex-col gap-4'>
-        {yaps.map((yap) => (
-          <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-        ))}
-      </div>
+      <Suspense fallback={<PostsFallback />}>
+        <div className='flex flex-col gap-4'>
+          {yaps.map((yap) => (
+            <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+          ))}
+        </div>
+      </Suspense>
     </>
   );
 }

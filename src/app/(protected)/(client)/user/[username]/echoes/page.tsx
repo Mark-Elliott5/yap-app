@@ -12,7 +12,7 @@ async function UserProfileEchoesPage({
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const child = (async () => {
+  const posts = (async () => {
     const { echoes, error } = await getUserProfileEchoes(params.username);
     if (error) {
       return (
@@ -69,7 +69,7 @@ async function UserProfileEchoesPage({
           Likes
         </Link>
       </div>
-      {child}
+      {posts}
     </>
   );
 }

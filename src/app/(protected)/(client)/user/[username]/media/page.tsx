@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileMedia } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -12,7 +14,7 @@ async function UserProfileMediaPage({
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const child = (async () => {
+  const posts = (async () => {
     const { yaps, error } = await getUserProfileMedia(params.username);
 
     if (error) {
@@ -26,7 +28,7 @@ async function UserProfileMediaPage({
     if (!yaps || !yaps.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {`*crickets* There's nothing here.`}
+          {`There's nothing here... yet.`}
         </p>
       );
     }
@@ -70,7 +72,7 @@ async function UserProfileMediaPage({
           Likes
         </Link>
       </div>
-      {child}
+      <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
     </>
   );
 }

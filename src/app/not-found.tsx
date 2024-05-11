@@ -15,7 +15,10 @@ function NotFound() {
       <div className='flex flex-row items-center gap-6'>
         <Link
           href='/home'
-          className={cn('text-8xl text-yap-red-500', archivoBlack.className)}
+          className={cn(
+            'text-6xl text-yap-red-500 sm:text-8xl',
+            archivoBlack.className
+          )}
         >
           yap
         </Link>
@@ -27,7 +30,7 @@ function NotFound() {
           <div>
             <header
               className={cn(
-                'text-6xl text-yap-red-500',
+                'text-4xl text-yap-red-500 sm:text-6xl',
                 archivoBlack.className
               )}
             >

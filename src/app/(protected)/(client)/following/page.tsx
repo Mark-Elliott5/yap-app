@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -11,7 +13,7 @@ async function Following() {
 
   const { yaps, error, echoes } = await getFollowingYaps(currentUsername);
 
-  const child = (() => {
+  const posts = (() => {
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
         <div className='mt-4 flex flex-col gap-2'>
@@ -65,7 +67,9 @@ async function Following() {
             Following
           </Link>
         </div>
-        <div className='flex flex-col gap-4'>{child}</div>
+        <Suspense fallback={<PostsFallback />}>
+          <div className='flex flex-col gap-4'>{posts}</div>
+        </Suspense>
       </>
     );
   }

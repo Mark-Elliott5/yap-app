@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -12,7 +14,7 @@ async function UserProfileYapsPage({
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const child = (async () => {
+  const posts = (async () => {
     const { yaps, error } = await getUserProfileYaps(params.username);
 
     if (error) {
@@ -70,7 +72,7 @@ async function UserProfileYapsPage({
           Likes
         </Link>
       </div>
-      {child}
+      <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
     </>
   );
 }
