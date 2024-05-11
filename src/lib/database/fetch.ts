@@ -1218,12 +1218,14 @@ const getSearch = async (
   try {
     if (query === '') return { yaps: undefined };
 
+    console.log(query);
+
     if (!id) {
       const yaps = await db.yap.findMany({
         take: 30,
         where: {
           text: {
-            search: query,
+            search: query.split(' ').join(','),
           },
         },
         include: {
@@ -1272,7 +1274,7 @@ const getSearch = async (
       },
       where: {
         text: {
-          search: query,
+          search: query.split(' ').join(','),
         },
       },
       include: {

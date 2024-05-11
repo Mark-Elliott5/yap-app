@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
+          'min-h-dvh min-w-fit bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
           inter.className
         )}
       >

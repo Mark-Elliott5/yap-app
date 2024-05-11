@@ -49,7 +49,7 @@ async function ParentYapPreview({
               </AvatarFallback>
             </Avatar>
             {author.displayName && (
-              <span className='text-zinc-950 dark:text-zinc-100'>
+              <span className='text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'>
                 {author.displayName}
               </span>
             )}
@@ -57,8 +57,8 @@ async function ParentYapPreview({
               <span
                 className={
                   author.displayName
-                    ? 'text-zinc-600'
-                    : 'text-zinc-950 dark:text-zinc-100'
+                    ? 'text-xs text-zinc-600 sm:text-sm'
+                    : 'text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'
                 }
               >
                 @{author.username}
@@ -68,9 +68,12 @@ async function ParentYapPreview({
         </UserHovercard>
         <Link
           href={`/user/${author.username}/post/${id}`}
-          className='text-xs text-zinc-600'
+          className='flex items-center gap-2 text-xs text-zinc-600'
         >
-          {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+          {date.toLocaleDateString()}
+          <span className='hidden text-xs text-zinc-600/60 sm:inline-block'>
+            {date.toLocaleTimeString()}
+          </span>
         </Link>
       </div>
       <div className='flex flex-col gap-2 py-2'>

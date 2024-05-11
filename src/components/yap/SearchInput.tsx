@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Input } from '@/src/components/ui/input';
 
-function SearchInput() {
+function SearchInput({ className }: { className?: string }) {
   const router = useRouter();
 
   return (
@@ -15,6 +15,7 @@ function SearchInput() {
           router.push(`/search/${encodeURIComponent(e.currentTarget.value)}`);
       }}
       maxLength={50}
+      className={className}
     />
   );
 }

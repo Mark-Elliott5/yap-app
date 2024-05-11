@@ -86,9 +86,12 @@ async function YapPost({
         </UserHovercard>
         <Link
           href={`/user/${author.username}/post/${id}`}
-          className='text-xs text-zinc-600'
+          className='flex items-center gap-2 text-xs text-zinc-600'
         >
-          {date.toLocaleDateString() + ' ' + date.toLocaleTimeString()}
+          {date.toLocaleDateString()}
+          <span className='hidden text-xs text-zinc-600/60 sm:inline-block'>
+            {date.toLocaleTimeString()}
+          </span>
         </Link>
       </div>
       {parentYap ? (
