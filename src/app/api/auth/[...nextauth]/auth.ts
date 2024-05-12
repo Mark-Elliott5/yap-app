@@ -8,7 +8,7 @@ import {
   getUserByEmailEdge,
   getUserByIdEdge,
 } from '@/src/lib/database/getUserEdge';
-import { LoginSchema } from '@/src/schemas';
+// import { LoginSchema } from '@/src/schemas';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
 export const {
@@ -94,12 +94,18 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
-        const result = await LoginSchema.safeParseAsync(credentials);
-        if (!result.success) return null;
-        const { data } = result;
-        const user = await getUserByEmailEdge(data.email);
+        // const result = await LoginSchema.safeParseAsync(credentials);
+        // if (!result.success) return null;
+        // const { data } = credentials;
+        // credentials as { email: string; password: string };
+        const user = await getUserByEmailEdge(
+          (credentials as { email: string; password: string }).email
+        );
         if (!user || !user.password) return null;
-        const match = await bcrypt.compare(data.password, user.password);
+        const match = await bcrypt.compare(
+          (credentials as { email: string; password: string }).password,
+          user.password
+        );
         if (!match) {
           return null;
         }
