@@ -12,18 +12,19 @@ export const metadata: Metadata = {
   description: 'yap Social Media App',
 };
 
-export const dynamic = 'force-dynamic';
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html
+      lang='en'
+      className='min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950'
+    >
       <body
         className={cn(
-          'min-h-dvh min-w-fit bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
+          'min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
           inter.className
         )}
       >

@@ -38,7 +38,7 @@ function ReplyButton({
             >
               <TbMessage
                 size='1.25rem'
-                className={`${wobble ? 'animate-wiggle-more animate-infinite' : ''} h-full w-full`}
+                className={`${wobble ? 'animate-wiggle-more animate-infinite' : ''}`}
               />
               <span className='font-light text-inherit'>
                 {abbreviateNum(replies)}

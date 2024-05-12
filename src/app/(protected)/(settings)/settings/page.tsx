@@ -1,6 +1,8 @@
 import SettingsClient from '@/src/components/settings/SettingsClient';
 import { getSession } from '@/src/lib/database/getUser';
 
+export const dynamic = 'force-dynamic';
+
 async function Settings() {
   const session = await getSession();
   // Will not evaluate to undefined, because they would have been redirected if so.

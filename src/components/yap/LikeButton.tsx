@@ -51,12 +51,12 @@ function LikeButton({
               {on ? (
                 <TbHeartFilled
                   size='1.25rem'
-                  className={`${beat ? 'scale-[1.2] animate-spin' : ''} h-full w-full`}
+                  className={`${beat ? 'scale-[1.2] animate-spin' : ''}`}
                 />
               ) : (
                 <TbHeart
                   size='1.25rem'
-                  className={`${beat ? 'scale-[1.2] animate-spin' : ''} h-full w-full`}
+                  className={`${beat ? 'scale-[1.2] animate-spin' : ''}`}
                 />
               )}
               <span className='font-light text-inherit'>

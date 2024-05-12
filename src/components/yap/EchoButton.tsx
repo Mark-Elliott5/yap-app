@@ -47,7 +47,7 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
             >
               <TbAccessPoint
                 size='1.25rem'
-                className={`${spin ? 'animate-spin' : ''} h-full w-full`}
+                className={`${spin ? 'animate-spin' : ''}`}
               />
               <span className='font-light text-inherit'>
                 {abbreviateNum(
