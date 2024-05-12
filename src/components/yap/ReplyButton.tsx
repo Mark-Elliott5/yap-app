@@ -50,7 +50,6 @@ function ReplyButton({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      {/* {postVisible && <PostPopup setPostVisible={setPostVisible} id={id} />} */}
     </>
   );
 }
