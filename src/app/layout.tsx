@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: 'yap Social Media App',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
