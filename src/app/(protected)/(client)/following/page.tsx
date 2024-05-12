@@ -68,7 +68,7 @@ async function Following() {
           </Link>
         </div>
         <Suspense fallback={<PostsFallback />}>
-          <div className='flex flex-col gap-4'>{posts}</div>
+          <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
         </Suspense>
       </>
     );

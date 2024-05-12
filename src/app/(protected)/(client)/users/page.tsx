@@ -27,7 +27,7 @@ async function Users() {
           Users
         </header>
       </div>
-      <div className='flex flex-col gap-4'>
+      <div className='flex min-h-dvh flex-col gap-4'>
         {users.map((user) => (
           <UserTab key={user.username} {...user} />
         ))}

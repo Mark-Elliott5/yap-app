@@ -40,7 +40,7 @@ async function UserProfileYapsPage({
 
   return (
     <>
-      <div className='flex max-w-[300px] gap-2 overflow-x-scroll text-lg text-zinc-950 sm:w-[unset] sm:max-w-[400px] sm:gap-4 md:max-w-[unset] md:overflow-x-visible lg:text-xl dark:text-zinc-100'>
+      <div className='flex gap-2 overflow-y-hidden overflow-x-scroll text-lg text-zinc-950 sm:gap-4 md:overflow-x-visible lg:text-xl dark:text-zinc-100'>
         <Link
           href={`.`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'

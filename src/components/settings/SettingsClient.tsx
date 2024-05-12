@@ -162,7 +162,7 @@ function SettingsClient({
                 <SelectLabel className='text-left font-bold'>
                   Account
                 </SelectLabel>
-                <SelectItem value='privacy'>Privacy</SelectItem>
+                {/* <SelectItem value='privacy'>Privacy</SelectItem> */}
                 <SelectItem
                   value='delete'
                   className='text-yap-red-500 focus:text-yap-red-500 dark:focus:text-yap-red-500'

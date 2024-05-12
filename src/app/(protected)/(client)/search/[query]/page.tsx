@@ -48,7 +48,7 @@ async function SearchPage({ params }: { params: { query: string } }) {
         </header>
       </div>
       <Suspense fallback={<PostsFallback />}>
-        <div className='flex flex-col gap-4'>
+        <div className='flex min-h-dvh flex-col gap-4'>
           {yaps.map((yap) => (
             <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
           ))}
