@@ -563,6 +563,21 @@ const createReply = async (data: FormData) => {
     const postId = yap.id;
 
     if (yap.parentYap) {
+      const notification: Prisma.NotificationCreateInput = {
+        type: 'reply',
+        postId,
+        user: {
+          connect: {
+            id: yap.parentYap.authorId,
+          },
+        },
+        author: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+      };
+      await db.notification.create({ data: notification });
       const notifier = notifierUserIdMap.get(yap.parentYap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
