@@ -6,7 +6,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters", "omitApi", "fullTextSearch"]
+  previewFeatures = ["driverAdapters", "omitApi", "fullTextSearch", "relationJoins"]
 }
 
 datasource db {
@@ -70,28 +70,46 @@ model Echo {
   yap      Yap      @relation(name: "YapEchoes", fields: [yapId], references: [id], onDelete: Cascade)
 }
 
+enum NotifType {
+  echo
+  like
+  reply
+}
+
+model Notification {
+  id             Int       @id @default(autoincrement())
+  type           NotifType
+  user           User      @relation(name: "UserNotifications", fields: [username], references: [username], onDelete: Cascade)
+  username       String    @db.VarChar(15)
+  authorUsername String    @db.VarChar(15)
+  author         User      @relation(name: "SentNotifications", fields: [authorUsername], references: [username], onDelete: Cascade)
+  postId         String
+}
+
 model User {
-  id            String    @id @default(cuid()) @db.VarChar(30)
-  name          String?
-  displayName   String?
-  username      String?   @unique
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  imageKey      String?
-  joinDate      DateTime  @default(now())
-  role          UserRole  @default(USER)
-  OAuth         Boolean   @default(false)
-  private       Boolean   @default(false)
-  bio           String?
-  following     User[]    @relation("Following")
-  followers     User[]    @relation("Following")
-  yaps          Yap[]     @relation(name: "AuthoredYaps")
-  likedYaps     Yap[]     @relation(name: "LikedYaps")
-  echoes        Echo[]    @relation(name: "UserEchoes")
-  accounts      Account[]
-  sessions      Session[]
+  id                String         @id @default(cuid()) @db.VarChar(30)
+  name              String?
+  displayName       String?
+  username          String?        @unique
+  email             String         @unique
+  emailVerified     DateTime?
+  password          String?
+  image             String?
+  imageKey          String?
+  joinDate          DateTime       @default(now())
+  role              UserRole       @default(USER)
+  OAuth             Boolean        @default(false)
+  private           Boolean        @default(false)
+  bio               String?
+  following         User[]         @relation("Following")
+  followers         User[]         @relation("Following")
+  yaps              Yap[]          @relation(name: "AuthoredYaps")
+  likedYaps         Yap[]          @relation(name: "LikedYaps")
+  echoes            Echo[]         @relation(name: "UserEchoes")
+  accounts          Account[]
+  sessions          Session[]
+  notifications     Notification[] @relation(name: "UserNotifications")
+  sentNotifications Notification[] @relation(name: "SentNotifications")
 }
 
 // pnpx prisma generate     
