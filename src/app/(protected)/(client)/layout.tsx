@@ -69,7 +69,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <TbHome />
             <span className='hidden md:inline-block'>Home</span>
           </Link>
-          <Notifications />
+          <Notifications initialState={session.user.newNotifications} />
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/news'

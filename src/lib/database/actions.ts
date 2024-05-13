@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
 import { signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
+import { notifierUserIdMap } from '@/src/app/api/notifications/route';
 import db from '@/src/lib/database/db';
 import {
   getCurrentUserPassword,
@@ -549,8 +550,22 @@ const createReply = async (data: FormData) => {
       image: response?.data.url ?? null,
     };
 
-    const yap = await db.yap.create({ data: yapObj });
+    const yap = await db.yap.create({
+      data: yapObj,
+      include: {
+        parentYap: {
+          select: {
+            authorId: true,
+          },
+        },
+      },
+    });
     const postId = yap.id;
+
+    if (yap.parentYap) {
+      const notifier = notifierUserIdMap.get(yap.parentYap.authorId);
+      if (notifier) notifier.update({ data: 'true', event: 'update' });
+    }
 
     return { postId };
   } catch (err) {
@@ -592,6 +607,20 @@ const heartYap = async (data: FormData) => {
         },
       },
     });
+
+    const yap = await db.yap.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        authorId: true,
+      },
+    });
+
+    if (yap) {
+      const notifier = notifierUserIdMap.get(yap.authorId);
+      if (notifier) notifier.update({ data: 'true', event: 'update' });
+    }
 
     return { success: true };
   } catch (err) {
@@ -639,7 +668,7 @@ const echoYap = async (data: FormData) => {
     });
 
     if (!yap) {
-      await db.echo.create({
+      const echo = await db.echo.create({
         data: {
           user: {
             connect: {
@@ -652,7 +681,17 @@ const echoYap = async (data: FormData) => {
             },
           },
         },
+        select: {
+          yap: {
+            select: {
+              authorId: true,
+            },
+          },
+        },
       });
+
+      const notifier = notifierUserIdMap.get(echo.yap.authorId);
+      if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {
       await db.echo.delete({
         where: {

@@ -33,11 +33,8 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const StreamClient = (): [
-  boolean,
-  React.Dispatch<React.SetStateAction<boolean>>,
-] => {
-  const [state, setState] = useState<boolean>(false);
+const NotificationIcon = ({ initialState }: { initialState: boolean }) => {
+  const [state, setState] = useState<boolean>(initialState);
 
   const eventSource = useContext(EventSourceContext);
   const updateState = useCallback(
@@ -64,11 +61,6 @@ const StreamClient = (): [
     }
   }, [eventSource, updateState]);
 
-  return [state, setState];
-};
-
-const NotificationIcon = () => {
-  const [state, setState] = StreamClient();
   return (
     <Link
       className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
@@ -85,10 +77,10 @@ const NotificationIcon = () => {
   );
 };
 
-const Notifications = () => {
+const Notifications = ({ initialState }: { initialState: boolean }) => {
   return (
     <EventSourceProvider>
-      <NotificationIcon />
+      <NotificationIcon initialState={initialState} />
     </EventSourceProvider>
   );
 };

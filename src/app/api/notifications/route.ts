@@ -5,7 +5,7 @@ import { getSession } from '@/src/lib/database/getUser';
 
 // import { rickAstleySchema } from './types';
 
-export const notifierMap = new Map();
+export const notifierUserIdMap: Map<string, SyncEvents> = new Map();
 
 export const dynamic = 'force-dynamic';
 
@@ -31,24 +31,24 @@ export async function GET(request: NextRequest) {
   if (!session || !session.user) {
     throw new Error('User not logged in. SSE connection aborted.');
   }
-  const { username } = session.user;
+  const { id } = session.user;
   const responseStream = new TransformStream();
   const writer = responseStream.writable.getWriter();
   const encoder = new TextEncoder();
   const notifier = getSSEWriter(writer, encoder) as SyncEvents;
-  notifierMap.set(username, notifier);
+  notifierUserIdMap.set(id!, notifier);
 
   request.signal.onabort = () => {
     writer.close();
-    notifierMap.delete(username);
+    notifierUserIdMap.delete(id!);
   };
 
   // notifier.update({
   //   data: session.user._count.notifications >= 1 ? 'true' : 'false',
   //   event: 'update',
   // });
-  notifier.update({ data: 'false', event: 'update' });
-  setTimeout(() => notifier.update({ data: 'true', event: 'update' }), 3000);
+  // notifier.update({ data: 'false', event: 'update' });
+  // setTimeout(() => notifier.update({ data: 'true', event: 'update' }), 3000);
 
   return new NextResponse(responseStream.readable, {
     headers: {
