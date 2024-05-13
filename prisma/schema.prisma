@@ -109,6 +109,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   notifications     Notification[] @relation(name: "UserNotifications")
+  newNotifications  Boolean        @default(false)
   sentNotifications Notification[] @relation(name: "SentNotifications")
 }
 

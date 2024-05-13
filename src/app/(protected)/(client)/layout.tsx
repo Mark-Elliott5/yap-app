@@ -2,7 +2,6 @@ import { Archivo_Black } from 'next/font/google';
 import {
   TbHome,
   TbNews,
-  TbNotification,
   TbSearch,
   TbSpeakerphone,
   TbUsers,
@@ -23,6 +22,7 @@ import Link from 'next/link';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import NavBarUserInfo from '@/src/components/yap/NavBarUserInfo';
+import Notifications from '@/src/components/yap/NotificationStream';
 import { getSession } from '@/src/lib/database/getUser';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -69,13 +69,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <TbHome />
             <span className='hidden md:inline-block'>Home</span>
           </Link>
-          <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
-            href='/notifications'
-          >
-            <TbNotification />
-            <span className='hidden md:inline-block'>Notifications</span>
-          </Link>
+          <Notifications />
           <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/news'

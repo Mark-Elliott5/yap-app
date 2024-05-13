@@ -19,6 +19,7 @@ declare module 'next-auth/jwt' {
       joinDate: Date;
       bio: string | null;
       private: boolean;
+      newNotifications: boolean;
     };
   }
 }
@@ -36,6 +37,7 @@ declare module 'next-auth' {
       joinDate: Date;
       bio: string | null;
       private: boolean;
+      newNotifications: boolean;
     } & DefaultSession['user'];
   }
 }

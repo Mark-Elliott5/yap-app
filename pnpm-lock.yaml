@@ -101,6 +101,9 @@ dependencies:
   tailwindcss-animated:
     specifier: ^1.0.1
     version: 1.0.1(tailwindcss@3.4.1)
+  ts-sse:
+    specifier: ^0.0.6
+    version: 0.0.6
   uploadthing:
     specifier: ^6.9.0
     version: 6.9.0(next@14.2.3)(tailwindcss@3.4.1)
@@ -4638,6 +4641,11 @@ packages:
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  /ts-sse@0.0.6:
+    resolution: {integrity: sha512-b7Et0NWlZFbzk8WMMNvp6mnn+D/u/uZefo7gJvt+tAAiejj8COCCI3Nu8gsf6NF0TQWmVUv2fnQAlYayngYJVA==}
+    engines: {node: '>=12.0'}
+    dev: false
 
   /tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
