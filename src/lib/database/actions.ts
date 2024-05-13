@@ -632,7 +632,22 @@ const heartYap = async (data: FormData) => {
       },
     });
 
-    if (yap) {
+    if (yap && state) {
+      const notification: Prisma.NotificationCreateInput = {
+        type: 'like',
+        postId: id,
+        user: {
+          connect: {
+            id: yap.authorId,
+          },
+        },
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+      };
+      await db.notification.create({ data: notification });
       const notifier = notifierUserIdMap.get(yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
@@ -704,6 +719,22 @@ const echoYap = async (data: FormData) => {
           },
         },
       });
+
+      const notification: Prisma.NotificationCreateInput = {
+        type: 'echo',
+        postId: id,
+        user: {
+          connect: {
+            id: echo.yap.authorId,
+          },
+        },
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+      };
+      await db.notification.create({ data: notification });
 
       const notifier = notifierUserIdMap.get(echo.yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
