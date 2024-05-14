@@ -33,12 +33,20 @@ async function Notifications() {
     let separatorUsed = false;
 
     return notifications.map((notif) => {
-      if (newNotifications && !separatorUsed) {
+      if (
+        newNotifications &&
+        new Date(notif.date).getTime() - new Date(newNotifications).getTime() <=
+          0 &&
+        !separatorUsed
+      ) {
         separatorUsed = true;
         return (
           <>
+            <Separator className='bg-gradient-to-r from-transparent via-yap-red-500 to-transparent drop-shadow-heart' />
+            <span className='text-base italic text-zinc-950 dark:text-zinc-100'>
+              Old
+            </span>
             <NotificationTab key={notif.id} {...notif} />
-            <Separator className='bg-gradient-to-r from-yap-red-500' />
           </>
         );
       }
@@ -59,11 +67,6 @@ async function Notifications() {
             <NotifsFallback key={i} />
           ))}
         >
-          {newNotifications && (
-            <span className='text-base text-zinc-950 dark:text-zinc-100'>
-              New
-            </span>
-          )}
           {body}
         </Suspense>
       </div>

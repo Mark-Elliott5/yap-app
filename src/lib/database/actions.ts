@@ -577,15 +577,30 @@ const createReply = async (data: FormData) => {
           },
         },
       };
+
+      // error is thrown if record not found
+      try {
+        await db.user.update({
+          where: {
+            id: yap.parentYap.authorId,
+            AND: {
+              newNotifications: null,
+            },
+          },
+          data: {
+            newNotifications: new Date(),
+          },
+        });
+      } catch (err) {
+        if (
+          err instanceof PrismaClientKnownRequestError &&
+          err.code !== 'P2025'
+        ) {
+          throw err;
+        }
+      }
+
       await db.notification.create({ data: notification });
-      await db.user.update({
-        where: {
-          id: yap.parentYap.authorId,
-        },
-        data: {
-          newNotifications: new Date(),
-        },
-      });
       const notifier = notifierUserIdMap.get(yap.parentYap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
@@ -655,15 +670,29 @@ const heartYap = async (data: FormData) => {
           },
         },
       };
+
+      try {
+        await db.user.update({
+          where: {
+            id: yap.authorId,
+            AND: {
+              newNotifications: null,
+            },
+          },
+          data: {
+            newNotifications: new Date(),
+          },
+        });
+      } catch (err) {
+        if (
+          err instanceof PrismaClientKnownRequestError &&
+          err.code !== 'P2025'
+        ) {
+          throw err;
+        }
+      }
+
       await db.notification.create({ data: notification });
-      await db.user.update({
-        where: {
-          id: yap.authorId,
-        },
-        data: {
-          newNotifications: new Date(),
-        },
-      });
       const notifier = notifierUserIdMap.get(yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
@@ -750,15 +779,29 @@ const echoYap = async (data: FormData) => {
           },
         },
       };
+
+      try {
+        await db.user.update({
+          where: {
+            id: echo.yap.authorId,
+            AND: {
+              newNotifications: null,
+            },
+          },
+          data: {
+            newNotifications: new Date(),
+          },
+        });
+      } catch (err) {
+        if (
+          err instanceof PrismaClientKnownRequestError &&
+          err.code !== 'P2025'
+        ) {
+          throw err;
+        }
+      }
+
       await db.notification.create({ data: notification });
-      await db.user.update({
-        where: {
-          id: echo.yap.authorId,
-        },
-        data: {
-          newNotifications: new Date(),
-        },
-      });
       const notifier = notifierUserIdMap.get(echo.yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {
