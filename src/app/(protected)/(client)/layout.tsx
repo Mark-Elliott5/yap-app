@@ -106,7 +106,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <span className='hidden md:inline-block'>Yap</span>
           </Link>
         </div>
-        <div className='flex-grow p-4 md:z-10 md:col-span-1 md:col-start-2 md:pb-4'>
+        <div className='min-h-dvh flex-grow p-4 md:z-10 md:col-span-1 md:col-start-2 md:pb-4'>
           {children}
         </div>
       </div>
