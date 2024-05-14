@@ -1108,7 +1108,7 @@ const getNotifications = async (
   }
 };
 
-const getLiked = cache(async (id: Yap['id'], username: User['username']) => {
+const getLiked = cache(async (id: Yap['id'], username: string) => {
   try {
     if (!id) {
       throw new ActionError('No id was received by the server.');

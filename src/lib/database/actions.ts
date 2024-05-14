@@ -631,37 +631,58 @@ const heartYap = async (data: FormData) => {
   try {
     const { user } = await getSessionWrapper('Access denied.');
 
-    const { id, state } = await AddHeartSchema.parseAsync(data);
-
-    await db.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        likedYaps: {
-          [state ? 'connect' : 'disconnect']: {
-            id,
-          },
-        },
-      },
-    });
+    const { id } = await AddHeartSchema.parseAsync(data);
 
     const yap = await db.yap.findUnique({
       where: {
         id,
+        AND: {
+          likes: {
+            some: {
+              username: user.username!,
+            },
+          },
+        },
       },
-      select: {
-        authorId: true,
+      include: {
+        likes: {
+          where: {
+            username: user.username!,
+          },
+          take: 1,
+        },
       },
     });
 
-    if (yap && state) {
+    if (!yap) {
+      const like = await db.like.create({
+        data: {
+          user: {
+            connect: {
+              username: user.username!,
+            },
+          },
+          yap: {
+            connect: {
+              id,
+            },
+          },
+        },
+        select: {
+          yap: {
+            select: {
+              authorId: true,
+            },
+          },
+        },
+      });
+
       const notification: Prisma.NotificationCreateInput = {
         type: 'like',
         postId: id,
         user: {
           connect: {
-            id: yap.authorId,
+            id: like.yap.authorId,
           },
         },
         author: {
@@ -674,7 +695,7 @@ const heartYap = async (data: FormData) => {
       try {
         await db.user.update({
           where: {
-            id: yap.authorId,
+            id: like.yap.authorId,
             AND: {
               newNotifications: null,
             },
@@ -693,8 +714,17 @@ const heartYap = async (data: FormData) => {
       }
 
       await db.notification.create({ data: notification });
-      const notifier = notifierUserIdMap.get(yap.authorId);
+      const notifier = notifierUserIdMap.get(like.yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
+    } else {
+      await db.like.delete({
+        where: {
+          id: yap.likes[0].id,
+          AND: {
+            username: user.username!,
+          },
+        },
+      });
     }
 
     return { success: true };

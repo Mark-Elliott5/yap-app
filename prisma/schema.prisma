@@ -51,7 +51,7 @@ model Yap {
   text        String?
   date        DateTime @default(now())
   image       String?
-  likes       User[]   @relation(name: "LikedYaps")
+  likes       Like[]   @relation(name: "YapLikes")
   author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String   @db.VarChar(30)
   echoes      Echo[]   @relation(name: "YapEchoes")
@@ -68,6 +68,15 @@ model Echo {
   date     DateTime @default(now())
   yapId    String   @db.VarChar(30)
   yap      Yap      @relation(name: "YapEchoes", fields: [yapId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(name: "UserLikes", fields: [username], references: [username], onDelete: Cascade)
+  username String   @db.VarChar(15)
+  date     DateTime @default(now())
+  yapId    String   @db.VarChar(30)
+  yap      Yap      @relation(name: "YapLikes", fields: [yapId], references: [id], onDelete: Cascade)
 }
 
 enum NotifType {
@@ -105,7 +114,7 @@ model User {
   following         User[]         @relation("Following")
   followers         User[]         @relation("Following")
   yaps              Yap[]          @relation(name: "AuthoredYaps")
-  likedYaps         Yap[]          @relation(name: "LikedYaps")
+  likes             Like[]         @relation(name: "UserLikes")
   echoes            Echo[]         @relation(name: "UserEchoes")
   accounts          Account[]
   sessions          Session[]
