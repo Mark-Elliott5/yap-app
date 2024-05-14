@@ -14,6 +14,14 @@ async function Following() {
   const { yaps, error, echoes } = await getFollowingYaps(currentUsername);
 
   const posts = (() => {
+    if (error) {
+      return (
+        <span className='text-zinc-950 dark:text-zinc-100'>
+          Something went wrong! Please reload the page.
+        </span>
+      );
+    }
+
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
         <div className='mt-4 flex flex-col gap-2'>
@@ -50,37 +58,28 @@ async function Following() {
       );
     });
   })();
-  if (yaps) {
-    return (
-      <>
-        <div className='my-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
-          <Link
-            href='/home'
-            className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
-          >
-            Latest
-          </Link>
-          <Link
-            href='/following'
-            className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
-          >
-            Following
-          </Link>
-        </div>
-        <Suspense fallback={<PostsFallback />}>
-          <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
-        </Suspense>
-      </>
-    );
-  }
 
-  if (error) {
-    return (
-      <span className='text-zinc-950 dark:text-zinc-100'>
-        Something went wrong! Please reload the page.
-      </span>
-    );
-  }
+  return (
+    <>
+      <div className='my-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
+        <Link
+          href='/home'
+          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+        >
+          Latest
+        </Link>
+        <Link
+          href='/following'
+          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+        >
+          Following
+        </Link>
+      </div>
+      <Suspense fallback={<PostsFallback />}>
+        <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
+      </Suspense>
+    </>
+  );
 }
 
 export default Following;
