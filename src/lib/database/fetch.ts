@@ -1035,6 +1035,79 @@ const getUserProfileYapsAndEchoes = async (username: User['username']) => {
   }
 };
 
+const getNotifications = async (
+  username: string,
+  id: number | undefined = undefined
+) => {
+  try {
+    await db.user.update({
+      where: {
+        username,
+      },
+      data: {
+        newNotifications: null,
+      },
+    });
+    if (!id) {
+      const notifications = await db.notification.findMany({
+        take: 30,
+        where: {
+          username,
+        },
+        include: {
+          author: {
+            select: {
+              image: true,
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      return { notifications };
+    }
+
+    const notifications = await db.notification.findMany({
+      take: 30,
+      skip: 1,
+      cursor: {
+        id,
+      },
+      where: {
+        username,
+      },
+      include: {
+        author: {
+          select: {
+            image: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    return { notifications };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 const getLiked = cache(async (id: Yap['id'], username: User['username']) => {
   try {
     if (!id) {
@@ -1332,6 +1405,7 @@ export {
   getIsFollowing,
   getLatestYaps,
   getLiked,
+  getNotifications,
   getSearch,
   getUserProfile,
   getUserProfileEchoes,
