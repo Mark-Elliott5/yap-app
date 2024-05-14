@@ -4,21 +4,17 @@ import { getUsers } from '@/src/lib/database/fetch';
 async function Users() {
   const { users, error } = await getUsers();
 
-  if (error) {
-    return (
-      <p className='text-zinc-950 dark:text-zinc-100'>
-        Something went wrong! Please reload the page.
-      </p>
-    );
-  }
+  const posts = (() => {
+    if (error || !users || !users.length) {
+      return (
+        <p className='text-zinc-950 dark:text-zinc-100'>
+          Something went wrong! Please reload the page.
+        </p>
+      );
+    }
 
-  if (!users || !users.length) {
-    return (
-      <p className='text-zinc-950 dark:text-zinc-100'>
-        Something went wrong! Please reload the page.
-      </p>
-    );
-  }
+    return users.map((user) => <UserTab key={user.username} {...user} />);
+  })();
 
   return (
     <>
@@ -27,11 +23,7 @@ async function Users() {
           Users
         </header>
       </div>
-      <div className='flex min-h-dvh flex-col gap-4'>
-        {users.map((user) => (
-          <UserTab key={user.username} {...user} />
-        ))}
-      </div>
+      <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
     </>
   );
 }
