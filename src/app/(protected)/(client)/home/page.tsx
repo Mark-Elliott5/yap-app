@@ -70,7 +70,13 @@ async function Home() {
         </Link>
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
-        <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
+        <Suspense
+          fallback={Array.from({ length: 8 }).map((_, i) => (
+            <PostsFallback key={i} />
+          ))}
+        >
+          {posts}
+        </Suspense>
       </div>
     </>
   );

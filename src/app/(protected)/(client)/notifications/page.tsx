@@ -54,7 +54,11 @@ async function Notifications() {
         </div>
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
-        <Suspense fallback={<NotifsFallback />}>
+        <Suspense
+          fallback={Array.from({ length: 10 }).map((_, i) => (
+            <NotifsFallback key={i} />
+          ))}
+        >
           {newNotifications && (
             <span className='text-base text-zinc-950 dark:text-zinc-100'>
               New

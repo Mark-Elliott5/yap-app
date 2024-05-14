@@ -27,7 +27,13 @@ async function Users() {
         </header>
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
-        <Suspense fallback={<UsersFallback />}>{posts}</Suspense>
+        <Suspense
+          fallback={Array.from({ length: 10 }).map((_, i) => (
+            <UsersFallback key={i} />
+          ))}
+        >
+          {posts}
+        </Suspense>
       </div>
     </>
   );
