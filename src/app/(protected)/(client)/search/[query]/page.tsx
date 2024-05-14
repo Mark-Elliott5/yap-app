@@ -39,7 +39,11 @@ async function SearchPage({ params }: { params: { query: string } }) {
           {`Search: "${decodeURIComponent(params.query)}"`}
         </header>
       </div>
-      <Suspense fallback={<PostsFallback />}>
+      <Suspense
+        fallback={Array.from({ length: 8 }).map((_, i) => (
+          <PostsFallback key={i} />
+        ))}
+      >
         <div className='flex min-h-dvh flex-col gap-4'>{body}</div>
       </Suspense>
     </>

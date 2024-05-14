@@ -39,7 +39,7 @@ async function UserProfileLikesPage({
 
   return (
     <>
-      <div className='flex gap-2 overflow-x-scroll text-sm text-zinc-950 sm:gap-4 sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
+      <div className='flex gap-2 overflow-x-scroll px-[9px] py-[6px] text-sm text-zinc-950 sm:gap-4 sm:px-[unset] sm:py-[unset] sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
         <Link
           href={`.`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
@@ -66,12 +66,18 @@ async function UserProfileLikesPage({
         </Link>
         <Link
           href={``}
-          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+          className='rounded-md border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Likes
         </Link>
       </div>
-      <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
+      <Suspense
+        fallback={Array.from({ length: 8 }).map((_, i) => (
+          <PostsFallback key={i} />
+        ))}
+      >
+        {posts}
+      </Suspense>
     </>
   );
 }

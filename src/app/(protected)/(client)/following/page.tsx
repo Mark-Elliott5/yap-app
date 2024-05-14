@@ -70,12 +70,16 @@ async function Following() {
         </Link>
         <Link
           href='/following'
-          className='rounded-md border-t-1 border-zinc-100 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+          className='rounded-md border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Following
         </Link>
       </div>
-      <Suspense fallback={<PostsFallback />}>
+      <Suspense
+        fallback={Array.from({ length: 8 }).map((_, i) => (
+          <PostsFallback key={i} />
+        ))}
+      >
         <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
       </Suspense>
     </>
