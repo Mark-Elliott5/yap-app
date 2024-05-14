@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { Separator } from '@/src/components/ui/separator';
 import NotificationTab from '@/src/components/yap/NotificationTab';
-import PostsFallback from '@/src/components/yap/PostsFallback';
+import NotifsFallback from '@/src/components/yap/NotifsFallback';
 import { getNotifications } from '@/src/lib/database/fetch';
 import { getSession } from '@/src/lib/database/getUser';
 
@@ -53,16 +53,16 @@ async function Notifications() {
           Notifications
         </div>
       </div>
-      <Suspense fallback={<PostsFallback />}>
-        <div className='flex min-h-dvh flex-col gap-4'>
+      <div className='flex min-h-dvh flex-col gap-4'>
+        <Suspense fallback={<NotifsFallback />}>
           {newNotifications && (
             <span className='text-base text-zinc-950 dark:text-zinc-100'>
               New
             </span>
           )}
           {body}
-        </div>
-      </Suspense>
+        </Suspense>
+      </div>
     </>
   );
 }

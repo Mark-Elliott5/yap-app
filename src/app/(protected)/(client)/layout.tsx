@@ -1,7 +1,7 @@
 import { Archivo_Black } from 'next/font/google';
 import {
   TbHome,
-  TbNews,
+  // TbNews,
   TbSearch,
   TbSpeakerphone,
   TbUsers,
@@ -70,13 +70,13 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <span className='hidden md:inline-block'>Home</span>
           </Link>
           <Notifications initialState={session.user.newNotifications} />
-          <Link
+          {/* <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
             href='/news'
           >
             <TbNews />
             <span className='hidden md:inline-block'>News</span>
-          </Link>
+          </Link> */}
           <Link
             href='/users'
             className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
