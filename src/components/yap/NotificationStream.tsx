@@ -23,6 +23,7 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       source.close();
+      console.log('source closed');
     };
   }, []);
 
@@ -33,8 +34,8 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const NotificationIcon = ({ initialState }: { initialState: boolean }) => {
-  const [state, setState] = useState<boolean>(initialState);
+const NotificationIcon = ({ initialState }: { initialState: Date | null }) => {
+  const [state, setState] = useState<boolean>(!!initialState);
 
   const eventSource = useContext(EventSourceContext);
   const updateState = useCallback(
@@ -65,7 +66,8 @@ const NotificationIcon = ({ initialState }: { initialState: boolean }) => {
     <Link
       className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
       href='/notifications'
-      onClick={() => setState((prev) => !prev)}
+      prefetch={false}
+      onClick={() => setState(false)}
     >
       {state ? (
         <TbBellFilled className={'animate-wiggle-more animate-infinite'} />
@@ -77,7 +79,7 @@ const NotificationIcon = ({ initialState }: { initialState: boolean }) => {
   );
 };
 
-const Notifications = ({ initialState }: { initialState: boolean }) => {
+const Notifications = ({ initialState }: { initialState: Date | null }) => {
   return (
     <EventSourceProvider>
       <NotificationIcon initialState={initialState} />
