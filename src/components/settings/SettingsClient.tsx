@@ -136,7 +136,7 @@ function SettingsClient({
           <SettingsDropDown />
         </Link>
       </nav>
-      <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
+      <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700 drop-shadow-heart' />
       <div className='m-auto flex w-full max-w-[600px] flex-col gap-6 p-10 sm:w-5/6 md:w-2/3 lg:w-1/2'>
         <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
           Settings

@@ -55,7 +55,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <SettingsDropDown />
           </div>
         </nav>
-        <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
+        <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700 drop-shadow-heart' />
       </div>
       <div className='lg:grid-cols-595 md:grid-cols-593 flex h-full flex-col-reverse p-0 md:grid md:gap-[unset] md:p-2 md:[flex-direction:unset]'>
         <div
