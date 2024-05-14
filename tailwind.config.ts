@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontSize: {
+        '2xs': ['10px', '12px'],
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -33,7 +36,8 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       gridTemplateColumns: {
-        597: '5fr 9fr 5fr;',
+        595: '5fr 10fr 5fr;',
+        593: '5fr 9fr 2fr;',
         doc: '1fr 3fr 1fr',
       },
       colors: {

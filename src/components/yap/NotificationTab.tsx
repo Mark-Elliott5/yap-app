@@ -28,15 +28,15 @@ function NotificationTab({
       className={`rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl transition-all hover:scale-[1.05] dark:border-zinc-800 dark:bg-zinc-900`}
     >
       <div className='top-0 flex items-center justify-between'>
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-3'>
           {type === 'like' ? (
-            <TbHeartFilled className='h-3 w-3 text-yap-red-500 drop-shadow-heart lg:h-5 lg:w-5' />
+            <TbHeartFilled className='h-4 w-4 text-yap-red-500 drop-shadow-heart lg:h-5 lg:w-5' />
           ) : type === 'echo' ? (
-            <TbAccessPoint className='h-3 w-3 text-yap-peri-500 drop-shadow-echo lg:h-5 lg:w-5' />
+            <TbAccessPoint className='h-4 w-4 text-yap-peri-500 drop-shadow-echo lg:h-5 lg:w-5' />
           ) : (
-            <TbMessage className='h-3 w-3 text-yap-blue-500 drop-shadow-reply lg:h-5 lg:w-5' />
+            <TbMessage className='h-4 w-4 text-yap-blue-500 drop-shadow-reply lg:h-5 lg:w-5' />
           )}
-          <div className='flex items-center gap-1 text-sm text-zinc-950 lg:text-base dark:text-zinc-100'>
+          <div className='flex items-center gap-1 text-xs text-zinc-950 md:text-sm lg:text-base dark:text-zinc-100'>
             <Link
               href={`/user/${authorUsername}`}
               className='flex items-center gap-2'
@@ -51,23 +51,22 @@ function NotificationTab({
                   />
                 </AvatarFallback>
               </Avatar>
-              <span>@{authorUsername}</span>
             </Link>
             <Link
               href={`/user/${username}/post/${postId}`}
               className='hover:underline'
             >
-              {' '}
+              @{authorUsername}{' '}
               {type === 'like'
                 ? 'liked'
                 : type === 'echo'
                   ? 'echoed'
                   : 'replied to'}{' '}
-              your post.
+              your yap.
             </Link>
           </div>
         </div>
-        <span className='text-xs text-zinc-600'>
+        <span className='text-2xs text-zinc-600 sm:text-xs'>
           {date.toLocaleDateString()}
         </span>
       </div>

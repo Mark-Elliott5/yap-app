@@ -44,7 +44,7 @@ async function EchoYapPost({
   const echoed = await getEchoed(yap.id, currentUsername);
   return (
     <div
-      className={`flex w-full flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800  dark:bg-zinc-900`}
+      className={`flex w-full flex-col gap-2 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
     >
       <Link
         href={`/user/${username}/`}
@@ -122,7 +122,7 @@ async function EchoYapPost({
             />
             <Link
               href={`/user/${yap.parentYap.author.username}/post/${yap.parentYap.id}`}
-              className='text-sm text-zinc-600'
+              className='text-xs text-zinc-600 sm:text-sm'
             >
               ╰{' '}
               <span className='hover:underline'>
@@ -132,7 +132,7 @@ async function EchoYapPost({
           </>
         )}
         {yap.isReply && !yap.parentYap && (
-          <span className='text-sm text-zinc-600'>
+          <span className='text-xs text-zinc-600 sm:text-sm'>
             ╰ in reply to a deleted yap
           </span>
         )}

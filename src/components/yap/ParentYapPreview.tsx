@@ -38,8 +38,8 @@ async function ParentYapPreview({
           image={author.image}
         >
           <div className='top-0 flex items-center gap-2'>
-            <Avatar>
-              <AvatarImage src={author.image ?? ''} height={'1.5rem'} />
+            <Avatar className='h-8 w-8'>
+              <AvatarImage src={author.image ?? ''} />
               <AvatarFallback>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -78,7 +78,7 @@ async function ParentYapPreview({
       </div>
       <div className='flex flex-col gap-2 py-2'>
         {text && (
-          <p className='text-zinc-950 dark:text-zinc-100'>
+          <p className='text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'>
             <AutoMention text={text} />
           </p>
         )}

@@ -38,7 +38,7 @@ async function Notifications() {
         return (
           <>
             <NotificationTab key={notif.id} {...notif} />
-            <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
+            <Separator className='bg-gradient-to-r from-yap-red-500' />
           </>
         );
       }
@@ -58,7 +58,6 @@ async function Notifications() {
           {newNotifications && (
             <span className='text-base text-zinc-950 dark:text-zinc-100'>
               New
-              <Separator className='inline-block bg-gradient-to-r from-yap-red-500 to-rose-700' />
             </span>
           )}
           {body}

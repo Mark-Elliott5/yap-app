@@ -57,7 +57,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         </nav>
         <Separator className='bg-gradient-to-r from-yap-red-500 to-rose-700' />
       </div>
-      <div className='flex h-full flex-col-reverse p-0 md:grid md:grid-cols-597 md:gap-[unset] md:p-2 md:[flex-direction:unset]'>
+      <div className='lg:grid-cols-595 md:grid-cols-593 flex h-full flex-col-reverse p-0 md:grid md:gap-[unset] md:p-2 md:[flex-direction:unset]'>
         <div
           id='left'
           className='sticky bottom-0 z-10 col-span-1 col-start-1 flex h-min items-center justify-evenly gap-2 border-t-1 border-zinc-100 bg-zinc-100 px-4 py-3 font-medium md:left-0 md:top-0 md:z-[unset] md:flex-col md:justify-center md:gap-8 md:border-t-0 md:border-[unset] md:bg-[unset] md:px-0 md:py-16 dark:border-zinc-800 dark:bg-zinc-900 md:dark:border-[unset] md:dark:bg-[unset]'
@@ -100,19 +100,15 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <Link
             href='/post'
-            className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
+            className='flex items-center gap-2 rounded-full bg-gradient-to-r from-yap-red-500 from-20% to-rose-700 px-4 py-2 text-2xl text-zinc-950 transition-all hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:text-zinc-100'
           >
             <TbSpeakerphone />
-            <span className='hidden md:inline-block'>Post</span>
+            <span className='hidden md:inline-block'>Yap</span>
           </Link>
         </div>
         <div className='flex-grow p-4 md:z-10 md:col-span-1 md:col-start-2 md:pb-4'>
           {children}
         </div>
-        <div
-          id='right'
-          className='hidden md:col-span-1 md:col-start-3 md:block'
-        ></div>
       </div>
     </>
   );
