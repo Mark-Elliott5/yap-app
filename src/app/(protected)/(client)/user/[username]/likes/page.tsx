@@ -15,7 +15,7 @@ async function UserProfileLikesPage({
   if (!currentUsername) return null;
 
   const posts = (async () => {
-    const { yaps, error } = await getUserProfileLikes(params.username);
+    const { likes, error } = await getUserProfileLikes(params.username);
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
@@ -24,7 +24,7 @@ async function UserProfileLikesPage({
       );
     }
 
-    if (!yaps || !yaps.length) {
+    if (!likes || !likes.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
           No likes yet!
@@ -32,8 +32,8 @@ async function UserProfileLikesPage({
       );
     }
 
-    return yaps.map((yap) => (
-      <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+    return likes.map((like) => (
+      <YapPost key={like.id} currentUsername={currentUsername} {...like.yap} />
     ));
   })();
 

@@ -1,7 +1,7 @@
 import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
-import { Echo, User, Yap } from '@prisma/client';
+import { Echo, Like, User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -664,7 +664,7 @@ const getUserProfileMedia = async (username: User['username']) => {
 
 const getUserProfileLikes = async (
   username: User['username'],
-  id: Yap['id'] | undefined = undefined
+  id: Like['id'] | undefined = undefined
 ) => {
   try {
     if (!username) {
@@ -672,46 +672,42 @@ const getUserProfileLikes = async (
     }
 
     if (!id) {
-      const yaps = await db.yap.findMany({
+      const likes = await db.like.findMany({
         take: 20,
         where: {
-          likes: {
-            some: {
-              username,
-            },
-          },
-        },
-        omit: {
-          parentYapId: true,
-          authorId: true,
+          username,
         },
         include: {
-          author: {
-            select: {
-              displayName: true,
-              username: true,
-              image: true,
-              joinDate: true,
-              // id: true,
-            },
-          },
-          parentYap: {
+          yap: {
             include: {
               author: {
                 select: {
-                  username: true,
                   displayName: true,
+                  username: true,
                   image: true,
                   joinDate: true,
+                  // id: true,
                 },
               },
-            },
-          },
-          _count: {
-            select: {
-              likes: true,
-              echoes: true,
-              replies: true,
+              parentYap: {
+                include: {
+                  author: {
+                    select: {
+                      username: true,
+                      displayName: true,
+                      image: true,
+                      joinDate: true,
+                    },
+                  },
+                },
+              },
+              _count: {
+                select: {
+                  likes: true,
+                  echoes: true,
+                  replies: true,
+                },
+              },
             },
           },
         },
@@ -720,52 +716,48 @@ const getUserProfileLikes = async (
         },
       });
 
-      return { yaps };
+      return { likes };
     }
-    const yaps = await db.yap.findMany({
+    const likes = await db.like.findMany({
       take: 20,
       skip: 1,
       cursor: {
         id,
       },
       where: {
-        likes: {
-          some: {
-            username,
-          },
-        },
-      },
-      omit: {
-        parentYapId: true,
-        authorId: true,
+        username,
       },
       include: {
-        author: {
-          select: {
-            displayName: true,
-            username: true,
-            image: true,
-            joinDate: true,
-            // id: true,
-          },
-        },
-        parentYap: {
+        yap: {
           include: {
             author: {
               select: {
-                username: true,
                 displayName: true,
+                username: true,
                 image: true,
                 joinDate: true,
+                // id: true,
               },
             },
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            echoes: true,
-            replies: true,
+            parentYap: {
+              include: {
+                author: {
+                  select: {
+                    username: true,
+                    displayName: true,
+                    image: true,
+                    joinDate: true,
+                  },
+                },
+              },
+            },
+            _count: {
+              select: {
+                likes: true,
+                echoes: true,
+                replies: true,
+              },
+            },
           },
         },
       },
@@ -774,7 +766,7 @@ const getUserProfileLikes = async (
       },
     });
 
-    return { yaps };
+    return { likes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
