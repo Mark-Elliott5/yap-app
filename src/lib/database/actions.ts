@@ -578,6 +578,14 @@ const createReply = async (data: FormData) => {
         },
       };
       await db.notification.create({ data: notification });
+      await db.user.update({
+        where: {
+          id: yap.parentYap.authorId,
+        },
+        data: {
+          newNotifications: new Date(),
+        },
+      });
       const notifier = notifierUserIdMap.get(yap.parentYap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
@@ -648,6 +656,14 @@ const heartYap = async (data: FormData) => {
         },
       };
       await db.notification.create({ data: notification });
+      await db.user.update({
+        where: {
+          id: yap.authorId,
+        },
+        data: {
+          newNotifications: new Date(),
+        },
+      });
       const notifier = notifierUserIdMap.get(yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
@@ -735,7 +751,14 @@ const echoYap = async (data: FormData) => {
         },
       };
       await db.notification.create({ data: notification });
-
+      await db.user.update({
+        where: {
+          id: echo.yap.authorId,
+        },
+        data: {
+          newNotifications: new Date(),
+        },
+      });
       const notifier = notifierUserIdMap.get(echo.yap.authorId);
       if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {

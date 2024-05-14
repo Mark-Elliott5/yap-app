@@ -84,6 +84,7 @@ model Notification {
   authorUsername String    @db.VarChar(15)
   author         User      @relation(name: "SentNotifications", fields: [authorUsername], references: [username], onDelete: Cascade)
   postId         String
+  date           DateTime  @default(now())
 }
 
 model User {
@@ -109,7 +110,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   notifications     Notification[] @relation(name: "UserNotifications")
-  newNotifications  Boolean        @default(false)
+  newNotifications  DateTime?
   sentNotifications Notification[] @relation(name: "SentNotifications")
 }
 
