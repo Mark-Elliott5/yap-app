@@ -69,9 +69,9 @@ async function Home() {
           Following
         </Link>
       </div>
-      <Suspense fallback={<PostsFallback />}>
-        <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
-      </Suspense>
+      <div className='flex min-h-dvh flex-col gap-4'>
+        <Suspense fallback={<PostsFallback />}>{posts}</Suspense>
+      </div>
     </>
   );
 }

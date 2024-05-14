@@ -1,3 +1,6 @@
+import { Suspense } from 'react';
+
+import UsersFallback from '@/src/components/yap/UsersFallback';
 import UserTab from '@/src/components/yap/UserTab';
 import { getUsers } from '@/src/lib/database/fetch';
 
@@ -23,7 +26,9 @@ async function Users() {
           Users
         </header>
       </div>
-      <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
+      <div className='flex min-h-dvh flex-col gap-4'>
+        <Suspense fallback={<UsersFallback />}>{posts}</Suspense>
+      </div>
     </>
   );
 }

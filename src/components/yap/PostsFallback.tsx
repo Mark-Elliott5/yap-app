@@ -2,9 +2,9 @@ import { Skeleton } from '@/src/components/ui/skeleton';
 
 function PostsFallback() {
   return (
-    <div className='flex min-h-dvh flex-col gap-4'>
+    <>
       <Skeleton
-        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white p-2 px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
+        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
@@ -21,7 +21,7 @@ function PostsFallback() {
         </div>
       </Skeleton>
       <Skeleton
-        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white p-2 px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
+        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
@@ -39,7 +39,7 @@ function PostsFallback() {
         </div>
       </Skeleton>
       <Skeleton
-        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white p-2 px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
+        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
@@ -57,7 +57,7 @@ function PostsFallback() {
         </div>
       </Skeleton>
       <Skeleton
-        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white p-2 px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
+        className={`flex w-full flex-col gap-4 rounded-lg border-t-1 border-zinc-100 bg-white px-5 py-4 shadow-xl dark:border-zinc-800 dark:bg-zinc-900`}
       >
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-2'>
@@ -73,7 +73,7 @@ function PostsFallback() {
           <Skeleton className='h-6 w-6 rounded-full' />
         </div>
       </Skeleton>
-    </div>
+    </>
   );
 }
 
