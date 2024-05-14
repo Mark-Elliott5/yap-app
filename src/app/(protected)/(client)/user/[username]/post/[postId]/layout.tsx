@@ -72,7 +72,7 @@ async function YapPostLayout({
       <div className='flex gap-4'>
         <Separator
           orientation='vertical'
-          className='h-[unset] w-[1px] rounded-full bg-gradient-to-t from-zinc-50 to-zinc-400 dark:from-zinc-800 dark:to-zinc-600'
+          className='dark:drop-shadow-thread-dark drop-shadow-thread-light h-[unset] w-[1px] rounded-full bg-gradient-to-b from-zinc-400 to-transparent dark:from-zinc-600'
         />
         <div className='flex w-full flex-col gap-4'>
           {children}

@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config = {
-  // darkMode: ['selector'],
+  darkMode: ['selector'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -119,6 +119,8 @@ const config = {
         green: '0 0 3px #41f500',
         echo: '0 0 3px #6366f1',
         reply: '0 0 3px #1a81ef',
+        'thread-dark': '0 0 3px #52525b',
+        'thread-light': '0 0 3px #a1a1aa',
       },
       borderWidth: {
         1: '1px',

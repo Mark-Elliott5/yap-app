@@ -76,7 +76,10 @@ async function ParentYapPreview({
           </span>
         </Link>
       </div>
-      <div className='flex flex-col gap-2 py-2'>
+      <Link
+        href={`/user/${author.username}/post/${id}`}
+        className='flex flex-col gap-2 py-2'
+      >
         {text && (
           <p className='text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'>
             <AutoMention text={text} />
@@ -91,7 +94,7 @@ async function ParentYapPreview({
             className='max-h-[500px] w-full rounded-md object-cover'
           />
         )}
-      </div>
+      </Link>
     </div>
   );
 }
