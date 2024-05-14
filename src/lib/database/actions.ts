@@ -725,6 +725,15 @@ const heartYap = async (data: FormData) => {
           },
         },
       });
+      await db.notification.deleteMany({
+        where: {
+          postId: yap.id,
+          AND: {
+            authorUsername: user.username!,
+            type: 'like',
+          },
+        },
+      });
     }
 
     return { success: true };
@@ -840,6 +849,15 @@ const echoYap = async (data: FormData) => {
           id: yap.echoes[0].id,
           AND: {
             username: user.username!,
+          },
+        },
+      });
+      await db.notification.deleteMany({
+        where: {
+          postId: yap.id,
+          AND: {
+            authorUsername: user.username!,
+            type: 'echo',
           },
         },
       });

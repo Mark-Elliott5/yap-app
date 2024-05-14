@@ -36,10 +36,10 @@ function NotificationTab({
           ) : (
             <TbMessage className='h-4 w-4 text-yap-blue-500 drop-shadow-reply lg:h-5 lg:w-5' />
           )}
-          <div className='flex items-center gap-1 text-xs text-zinc-950 md:text-sm lg:text-base dark:text-zinc-100'>
+          <div className='flex items-center gap-3 text-xs text-zinc-950 md:text-sm lg:text-base dark:text-zinc-100'>
             <Link
               href={`/user/${authorUsername}`}
-              className='flex items-center gap-2'
+              className='flex items-center'
             >
               <Avatar className='h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 lg:h-12 lg:w-12'>
                 <AvatarImage src={author.image ?? ''} />
