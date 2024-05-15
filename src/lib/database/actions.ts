@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
 import { signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
-import { notifierUserIdMap } from '@/src/app/api/notifications/route';
+import { notifierUserIdMap } from '@/src/app/api/notifications/notifierMap';
 import db from '@/src/lib/database/db';
 import {
   getCurrentUserPassword,

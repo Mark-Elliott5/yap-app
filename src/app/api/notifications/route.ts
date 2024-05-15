@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { EventNotifier, getSSEWriter } from 'ts-sse';
 
+import { notifierUserIdMap } from '@/src/app/api/notifications/notifierMap';
 import { getSession } from '@/src/lib/database/getUser';
-
-// import { rickAstleySchema } from './types';
-
-export const notifierUserIdMap: Map<string, SyncEvents> = new Map();
 
 export const dynamic = 'force-dynamic';
 
