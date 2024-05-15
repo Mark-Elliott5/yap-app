@@ -18,7 +18,7 @@ const apiUploadPrefix = '/api/uploadthing';
 /**
  * Default login redirect path
  */
-const DEFAULT_LOGIN_REDIRECT = '/settings';
+const DEFAULT_LOGIN_REDIRECT = '/home';
 
 /**
  * Default register redirect path to onboard user (get their desired username and displayName)

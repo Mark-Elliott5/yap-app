@@ -15,9 +15,18 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   // console.log('REQ.AUTH:', req.auth);
 
+  const isRoot = nextUrl.pathname === '/';
+  console.log('ISROOT', isRoot);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.has(nextUrl.pathname);
   const isUploadRoute = nextUrl.pathname.startsWith(apiUploadPrefix);
+
+  if (isRoot) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL('/home', nextUrl));
+    }
+    return Response.redirect(new URL('/login', nextUrl));
+  }
 
   if (isApiAuthRoute || isPublicRoute) {
     // console.log('ISAPIAUTHROUTE/PUBLICROUTE RETURN');
