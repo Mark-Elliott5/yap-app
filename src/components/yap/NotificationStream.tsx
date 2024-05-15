@@ -16,9 +16,12 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
   const [eventSource, setEventSource] = useState<null | EventSource>(null);
 
   useEffect(() => {
-    const source = new EventSource('http://localhost:3000/api/notifications', {
-      withCredentials: true,
-    });
+    const source = new EventSource(
+      'https://yap-app.onrender.com/api/notifications',
+      {
+        withCredentials: true,
+      }
+    );
     setEventSource(source);
 
     return () => {
