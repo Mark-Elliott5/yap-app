@@ -29,7 +29,7 @@ async function YapPostLayout({
   if (!yap) {
     return (
       <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        {`There's nothing here... yet.`}
+        Post not found.
       </p>
     );
   }
@@ -72,7 +72,7 @@ async function YapPostLayout({
       <div className='flex gap-4'>
         <Separator
           orientation='vertical'
-          className='dark:drop-shadow-thread-dark drop-shadow-thread-light h-[unset] w-[1px] rounded-full bg-gradient-to-b from-zinc-400 to-transparent dark:from-zinc-600'
+          className='h-[unset] w-[1px] rounded-full bg-gradient-to-b from-zinc-400 to-transparent drop-shadow-thread-light dark:from-zinc-600 dark:drop-shadow-thread-dark'
         />
         <div className='flex w-full flex-col gap-4'>
           {children}

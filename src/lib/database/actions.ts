@@ -30,6 +30,7 @@ import {
   CreatePostSchema,
   CreateReplySchema,
   DeleteAccountSchema,
+  DeleteYapSchema,
   FollowUserSchema,
   LoginSchema,
   OnboardingSchema,
@@ -627,6 +628,39 @@ const createReply = async (data: FormData) => {
   }
 };
 
+const deleteYap = async (data: FormData) => {
+  try {
+    const { user } = await getSessionWrapper('Access denied.');
+
+    const { id } = await DeleteYapSchema.parseAsync(data);
+
+    const yap = await db.yap.delete({
+      where: {
+        id,
+        AND: {
+          authorId: { equals: user.id },
+        },
+      },
+    });
+    console.log(yap);
+
+    return { success: true };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 const heartYap = async (data: FormData) => {
   try {
     const { user } = await getSessionWrapper('Access denied.');
@@ -943,6 +977,7 @@ export {
   createPost,
   createReply,
   deleteAccount,
+  deleteYap,
   echoYap,
   followUser,
   heartYap,

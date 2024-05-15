@@ -295,6 +295,10 @@ const CreateReplySchema = zfd
     }
   });
 
+const DeleteYapSchema = zfd.formData({
+  id: zfd.text(z.string().min(1, 'ID is required.')),
+});
+
 const AddHeartSchema = zfd.formData({
   id: zfd.text(z.string().min(1, 'ID is required.')),
   // state: zfd.numeric(
@@ -325,6 +329,7 @@ export {
   CreatePostSchema,
   CreateReplySchema,
   DeleteAccountSchema,
+  DeleteYapSchema,
   FollowUserSchema,
   LoginSchema,
   OnboardingSchema,

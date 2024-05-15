@@ -6,6 +6,7 @@ import {
   AvatarImage,
 } from '@/src/components/ui/avatar';
 import AutoMention from '@/src/components/yap/AutoMention';
+import DeleteButton from '@/src/components/yap/DeleteButton';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
 import ParentYapPreview, {
@@ -139,6 +140,7 @@ async function YapPost({
         <LikeButton id={id} liked={liked} likes={_count.likes} />
         <EchoButton id={id} echoed={echoed} echoes={_count.echoes} />
         <ReplyButton id={id} user={author.username} replies={_count.replies} />
+        {author.username === currentUsername && <DeleteButton id={id} />}
       </div>
     </div>
   );

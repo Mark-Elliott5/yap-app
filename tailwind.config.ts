@@ -121,6 +121,7 @@ const config = {
         reply: '0 0 3px #1a81ef',
         'thread-dark': '0 0 3px #52525b',
         'thread-light': '0 0 3px #a1a1aa',
+        delete: '0 0 3px #ef4444',
       },
       borderWidth: {
         1: '1px',
