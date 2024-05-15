@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/src/components/ui/dropdown-menu';
+import ThemeChanger from '@/src/components/yap/ThemeChanger';
 
 function SettingsDropDown() {
   return (
@@ -24,23 +25,7 @@ function SettingsDropDown() {
           <DropdownMenuItem>Settings</DropdownMenuItem>
         </Link>
         <DropdownMenuItem>
-          <button
-            className='w-full text-left'
-            // onClick={() => {
-            //   const body = document.getElementsByTagName('body')[0];
-            //   if (body.classList.contains('dark')) {
-            //     localStorage.theme = 'light';
-            //     body.classList.add('light');
-            //     body.classList.remove('dark');
-            //     return;
-            //   }
-            //   localStorage.theme = 'dark';
-            //   body.classList.add('dark');
-            //   body.classList.remove('light');
-            // }}
-          >
-            Theme
-          </button>
+          <ThemeChanger />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className='w-full'>

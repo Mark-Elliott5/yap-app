@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 import { cn } from '@/src/lib/utils';
 
@@ -21,14 +22,16 @@ export default function RootLayout({
     <html
       lang='en'
       className='min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950'
+      suppressHydrationWarning
     >
+      <head />
       <body
         className={cn(
           'min-h-dvh bg-gradient-to-b from-white from-20% to-zinc-50 bg-fixed dark:from-zinc-900 dark:from-0% dark:to-zinc-950',
           inter.className
         )}
       >
-        {children}
+        <ThemeProvider defaultTheme='dark'>{children}</ThemeProvider>
       </body>
     </html>
   );
