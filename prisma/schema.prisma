@@ -51,6 +51,7 @@ model Yap {
   text        String?
   date        DateTime @default(now())
   image       String?
+  imageKey    String?
   likes       Like[]   @relation(name: "YapLikes")
   author      User     @relation(name: "AuthoredYaps", fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String   @db.VarChar(30)

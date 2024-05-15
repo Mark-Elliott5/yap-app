@@ -33,7 +33,7 @@ function DeleteButton({ id }: DeleteButtonProps) {
         <TooltipTrigger asChild>
           <div>
             <button
-              className={`hover:drop-shadow-delete flex items-center gap-1 text-zinc-500 transition-all hover:scale-[1.2] hover:text-red-500 active:scale-[0.95] dark:text-zinc-600`}
+              className={`flex items-center gap-1 text-zinc-500 transition-all hover:scale-[1.2] hover:text-red-500 hover:drop-shadow-delete active:scale-[0.95] dark:text-zinc-600`}
               onClick={() => setFormVisible(true)}
             >
               {formVisible ? (

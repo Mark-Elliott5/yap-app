@@ -489,6 +489,7 @@ const createPost = async (data: FormData) => {
       },
       isReply: false,
       image: response?.data.url ?? null,
+      imageKey: response?.data.key ?? null,
     };
 
     const yap = await db.yap.create({ data: yapObj });
@@ -642,7 +643,9 @@ const deleteYap = async (data: FormData) => {
         },
       },
     });
-    console.log(yap);
+    if (yap.imageKey) {
+      await utapi.deleteFiles(yap.imageKey);
+    }
 
     return { success: true };
   } catch (err) {
