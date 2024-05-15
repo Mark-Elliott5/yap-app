@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: `yap | Yap to your heart's content`,
   description: 'yap Social Media App',
+  icons: 'icon.svg',
 };
 
 export default function RootLayout({

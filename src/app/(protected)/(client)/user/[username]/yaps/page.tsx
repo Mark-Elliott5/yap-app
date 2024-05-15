@@ -28,7 +28,7 @@ async function UserProfileYapsPage({
     if (!yaps || !yaps.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No media yet!
+          No yaps yet.
         </p>
       );
     }

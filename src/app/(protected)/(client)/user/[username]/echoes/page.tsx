@@ -25,7 +25,7 @@ async function UserProfileEchoesPage({
     if (!echoes || !echoes.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No likes yet!
+          No echoes yet.
         </p>
       );
     }

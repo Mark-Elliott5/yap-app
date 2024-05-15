@@ -27,7 +27,7 @@ async function UserProfileLikesPage({
     if (!likes || !likes.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No likes yet!
+          No likes yet.
         </p>
       );
     }

@@ -4,7 +4,9 @@ function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='flex h-dvh items-center justify-center'>{children}</div>
+    <div className='flex h-dvh items-center justify-center bg-gradient-to-b from-zinc-900 from-0% to-zinc-950 bg-fixed'>
+      {children}
+    </div>
   );
 }
 
