@@ -10,7 +10,7 @@ async function PostPage() {
           Post
         </header>
       </div>
-      <div className='rounded-lg border-t-1 border-zinc-100 bg-white p-10 shadow-xl dark:border-zinc-800 dark:bg-zinc-900'>
+      <div className='rounded-lg border-t-1 border-zinc-200 bg-white p-10 shadow-xl dark:border-zinc-800 dark:bg-zinc-900'>
         <CreatePostForm currentUser={currentUsername} />
       </div>
     </>
