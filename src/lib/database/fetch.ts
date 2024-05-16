@@ -474,12 +474,8 @@ const getYap = async (id: Yap['id']) => {
   }
 };
 
-const getUserProfile = cache(async (username: User['username']) => {
+const getUserProfile = cache(async (username: string) => {
   try {
-    if (!username) {
-      throw new ActionError('No post USERNAME was received by the server.');
-    }
-
     const user = await db.user.findUnique({
       where: {
         username,
@@ -523,12 +519,8 @@ const getUserProfile = cache(async (username: User['username']) => {
   }
 });
 
-const getUserProfileYaps = async (username: User['username']) => {
+const getUserProfileYaps = async (username: string) => {
   try {
-    if (!username) {
-      throw new ActionError('No post USERNAME was received by the server.');
-    }
-
     const yaps = await db.yap.findMany({
       where: {
         author: {
@@ -592,12 +584,8 @@ const getUserProfileYaps = async (username: User['username']) => {
   }
 };
 
-const getUserProfileMedia = async (username: User['username']) => {
+const getUserProfileMedia = async (username: string) => {
   try {
-    if (!username) {
-      throw new ActionError('No username was received by the server.');
-    }
-
     const yaps = await db.yap.findMany({
       where: {
         author: {
@@ -665,14 +653,10 @@ const getUserProfileMedia = async (username: User['username']) => {
 };
 
 const getUserProfileLikes = async (
-  username: User['username'],
+  username: string,
   id: Like['id'] | undefined = undefined
 ) => {
   try {
-    if (!username) {
-      throw new ActionError('No username was received by the server.');
-    }
-
     if (!id) {
       const likes = await db.like.findMany({
         take: 20,
@@ -787,14 +771,10 @@ const getUserProfileLikes = async (
 };
 
 const getUserProfileEchoes = async (
-  username: User['username'],
+  username: string,
   id: Echo['id'] | undefined = undefined
 ) => {
   try {
-    if (!username) {
-      throw new ActionError('No username was received by the server.');
-    }
-
     if (!id) {
       const echoes = await db.echo.findMany({
         take: 20,
@@ -908,12 +888,8 @@ const getUserProfileEchoes = async (
   }
 };
 
-const getUserProfileYapsAndEchoes = async (username: User['username']) => {
+const getUserProfileYapsAndEchoes = async (username: string) => {
   try {
-    if (!username) {
-      throw new ActionError('No username was received by the server.');
-    }
-
     const yapsAndEchoes = await db.user.findUnique({
       where: {
         username,
@@ -1140,7 +1116,7 @@ const getLiked = cache(async (id: Yap['id'], username: string) => {
   }
 });
 
-const getEchoed = cache(async (id: Yap['id'], username: User['username']) => {
+const getEchoed = cache(async (id: Yap['id'], username: string) => {
   try {
     if (!id) {
       throw new ActionError('No id was received by the server.');
@@ -1393,8 +1369,73 @@ const getSearch = async (
   }
 };
 
+const getFollowers = async (
+  username: string,
+  id: User['id'] | undefined = undefined
+) => {
+  try {
+    if (!id) {
+      const user = await db.user.findUnique({
+        where: {
+          username,
+        },
+        select: {
+          followers: {
+            take: 20,
+            select: {
+              username: true,
+              displayName: true,
+              image: true,
+              joinDate: true,
+            },
+          },
+        },
+      });
+
+      return { followers: user?.followers };
+    }
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        followers: {
+          take: 20,
+          skip: 1,
+          cursor: {
+            id,
+          },
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            joinDate: true,
+          },
+        },
+      },
+    });
+
+    return { followers: user?.followers };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   getEchoed,
+  getFollowers,
   getFollowingYaps,
   getIsFollowing,
   getLatestYaps,
