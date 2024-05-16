@@ -60,51 +60,53 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
       <div className='flex h-full flex-col-reverse p-0 md:grid md:grid-cols-593 md:gap-[unset] md:p-2 md:[flex-direction:unset] lg:grid-cols-595'>
         <div
           id='left'
-          className='sticky bottom-0 z-10 col-span-1 col-start-1 flex h-min items-center justify-evenly gap-2 border-t-1 border-zinc-300 bg-zinc-100 px-4 py-3 font-medium text-zinc-950 md:left-0 md:top-0 md:z-[unset] md:flex-col md:justify-center md:gap-8 md:border-t-0 md:border-[unset] md:bg-[unset] md:px-0 md:py-16 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 md:dark:border-[unset] md:dark:bg-[unset]'
+          className='sticky bottom-0 z-10 col-span-1 col-start-1 flex justify-center md:top-0 md:z-[unset]'
         >
-          <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-            href='/home'
-          >
-            <TbHome />
-            <span className='hidden md:inline-block'>Home</span>
-          </Link>
-          <Notifications initialState={session.user.newNotifications} />
-          {/* <Link
+          <div className='sticky bottom-0 flex h-min min-w-full items-center justify-evenly gap-2 border-t-1 border-zinc-300 bg-zinc-100 px-4 py-3 font-medium text-zinc-950 shadow-xl md:top-32 md:min-w-[unset] md:flex-col md:justify-center md:gap-8 md:rounded-lg md:bg-white md:px-5 md:py-5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100'>
+            <Link
+              className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
+              href='/home'
+            >
+              <TbHome />
+              <span className='hidden md:inline-block'>Home</span>
+            </Link>
+            <Notifications initialState={session.user.newNotifications} />
+            {/* <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             href='/news'
           >
             <TbNews />
             <span className='hidden md:inline-block'>News</span>
           </Link> */}
-          <Link
-            href='/users'
-            className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-          >
-            <TbUsers />
-            <span className='hidden md:inline-block'>Users</span>
-          </Link>
-          <Link
-            className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-            href={`/user/${username}`}
-          >
-            <TbUserSquare />
-            <span className='hidden md:inline-block'>Profile</span>
-          </Link>
-          <Link
-            href='/search'
-            className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-          >
-            <TbSearch />
-            <span className='hidden md:inline-block'>Search</span>
-          </Link>
-          <Link
-            href='/post'
-            className='flex items-center gap-2 rounded-full bg-gradient-to-r from-yap-red-500 from-20% to-rose-500 px-4 py-2 text-2xl text-zinc-100 transition-all hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:to-rose-700'
-          >
-            <TbSpeakerphone />
-            <span className='hidden md:inline-block'>Yap</span>
-          </Link>
+            <Link
+              href='/users'
+              className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
+            >
+              <TbUsers />
+              <span className='hidden md:inline-block'>Users</span>
+            </Link>
+            <Link
+              className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
+              href={`/user/${username}`}
+            >
+              <TbUserSquare />
+              <span className='hidden md:inline-block'>Profile</span>
+            </Link>
+            <Link
+              href='/search'
+              className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
+            >
+              <TbSearch />
+              <span className='hidden md:inline-block'>Search</span>
+            </Link>
+            <Link
+              href='/post'
+              className='flex items-center gap-2 rounded-full bg-gradient-to-r from-yap-red-500 from-20% to-rose-500 px-4 py-2 text-2xl text-zinc-100 transition-all hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:to-rose-700'
+            >
+              <TbSpeakerphone />
+              <span className='hidden md:inline-block'>Yap</span>
+            </Link>
+          </div>
         </div>
         <div className='min-h-dvh flex-grow p-4 md:z-10 md:col-span-1 md:col-start-2 md:pb-4'>
           {children}
