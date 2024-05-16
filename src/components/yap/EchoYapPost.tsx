@@ -49,7 +49,7 @@ async function EchoYapPost({
     >
       <Link
         href={`/user/${username}/`}
-        className='flex items-center justify-between text-xs text-zinc-600'
+        className='flex flex-wrap items-center justify-between gap-y-3 text-xs text-zinc-600'
       >
         <div>
           <span>╭ </span>
@@ -68,7 +68,7 @@ async function EchoYapPost({
       </Link>
       <div className='flex flex-col gap-2 rounded-lg border-1 border-zinc-300 px-5 py-4 dark:border-zinc-800'>
         <div
-          className={`flex items-center justify-between ${yap.isReply && 'mb-2'}`}
+          className={`flex flex-wrap items-center justify-between gap-y-3 ${yap.isReply && 'mb-2'}`}
         >
           <UserHovercard
             username={yap.author.username!}
@@ -76,7 +76,7 @@ async function EchoYapPost({
             displayName={yap.author.displayName}
             image={yap.author.image}
           >
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-wrap items-center gap-2 gap-y-3'>
               <Avatar>
                 <AvatarImage src={yap.author.image ?? ''} height={'1.5rem'} />
                 <AvatarFallback>
@@ -153,7 +153,7 @@ async function EchoYapPost({
             />
           )}
         </div>
-        <div className='flex items-center gap-16'>
+        <div className='flex flex-wrap items-center gap-[16%] gap-y-3'>
           <LikeButton id={yap.id} liked={liked} likes={yap._count.likes} />
           <EchoButton id={yap.id} echoed={echoed} echoes={yap._count.echoes} />
           <ReplyButton

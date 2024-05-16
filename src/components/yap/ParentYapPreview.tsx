@@ -30,14 +30,14 @@ async function ParentYapPreview({
     <div
       className={`flex flex-col gap-2 rounded-lg border-1 border-zinc-300 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900`}
     >
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-wrap items-center justify-between gap-y-3'>
         <UserHovercard
           username={author.username!}
           joinDate={author.joinDate}
           displayName={author.displayName}
           image={author.image}
         >
-          <div className='top-0 flex items-center gap-2'>
+          <div className='top-0 flex flex-wrap items-center gap-2 gap-y-3'>
             <Avatar className='h-8 w-8'>
               <AvatarImage src={author.image ?? ''} />
               <AvatarFallback>
@@ -68,7 +68,7 @@ async function ParentYapPreview({
         </UserHovercard>
         <Link
           href={`/user/${author.username}/post/${id}`}
-          className='flex items-center gap-2 text-xs text-zinc-600/70'
+          className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
           {date.toLocaleDateString()}
           <span className='hidden text-xs sm:inline-block'>

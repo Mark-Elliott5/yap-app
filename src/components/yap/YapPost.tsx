@@ -49,14 +49,16 @@ async function YapPost({
     <div
       className={`flex w-full flex-col gap-2 rounded-lg border-t-1 border-zinc-200 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
     >
-      <div className={`flex items-center justify-between ${isReply && 'mb-2'}`}>
+      <div
+        className={`flex flex-wrap items-center justify-between gap-y-3 ${isReply && 'mb-2'}`}
+      >
         <UserHovercard
           username={author.username!}
           joinDate={author.joinDate}
           displayName={author.displayName}
           image={author.image}
         >
-          <div className='top-0 flex items-center gap-2'>
+          <div className='top-0 flex flex-wrap items-center gap-2 gap-y-3'>
             <Avatar>
               <AvatarImage src={author.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
@@ -87,7 +89,7 @@ async function YapPost({
         </UserHovercard>
         <Link
           href={`/user/${author.username}/post/${id}`}
-          className='flex items-center gap-2 text-xs text-zinc-600/70'
+          className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
           {date.toLocaleDateString()}
           <span className='hidden text-xs sm:inline-block'>
@@ -136,7 +138,7 @@ async function YapPost({
           />
         )}
       </div>
-      <div className='flex items-center gap-16'>
+      <div className='flex flex-wrap items-center gap-[16%] gap-y-3'>
         <LikeButton id={id} liked={liked} likes={_count.likes} />
         <EchoButton id={id} echoed={echoed} echoes={_count.echoes} />
         <ReplyButton id={id} user={author.username} replies={_count.replies} />
