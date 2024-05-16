@@ -24,7 +24,7 @@ async function FollowingPage({
     if (!following || !following.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {params.username} is not following anyone.
+          @{params.username} is not following anyone.
         </p>
       );
     }
