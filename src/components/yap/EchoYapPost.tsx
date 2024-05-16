@@ -111,7 +111,7 @@ async function EchoYapPost({
           >
             {yap.date.toLocaleDateString()}
             <span className='hidden text-xs sm:inline-block'>
-              {date.toLocaleTimeString()}
+              {yap.date.toLocaleTimeString()}
             </span>
           </Link>
         </div>
