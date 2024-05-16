@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { TbQuestionMark, TbTrash } from 'react-icons/tb';
+import { TbLoader2, TbQuestionMark, TbTrash } from 'react-icons/tb';
 
 import {
   Tooltip,
@@ -18,9 +18,11 @@ interface DeleteButtonProps {
 
 function DeleteButton({ id }: DeleteButtonProps) {
   const [formVisible, setFormVisible] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
   const handleChange = async (data: FormData) => {
+    setSubmitting(true);
     const { success } = await deleteYap(data);
     if (success) {
       router.refresh();
@@ -45,10 +47,14 @@ function DeleteButton({ id }: DeleteButtonProps) {
                   className='flex'
                 >
                   <input hidden value={id} readOnly name='id' />
-                  <button className='flex'>
-                    <TbTrash size='1.25rem' className='inline-block' />
-                    <TbQuestionMark size='1.25rem' className='inline-block' />
-                  </button>
+                  {submitting ? (
+                    <TbLoader2 size='1.25rem' className='animate-spin' />
+                  ) : (
+                    <button className='flex'>
+                      <TbTrash size='1.25rem' className='inline-block' />
+                      <TbQuestionMark size='1.25rem' className='inline-block' />
+                    </button>
+                  )}
                 </form>
               ) : (
                 <TbTrash size='1.25rem' />
