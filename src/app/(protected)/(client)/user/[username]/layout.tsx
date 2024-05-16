@@ -1,17 +1,17 @@
 import Link from 'next/link';
-import { TbAccessPoint, TbCalendarMonth, TbMessage } from 'react-icons/tb';
+import {
+  TbAccessPoint,
+  TbCalendarMonth,
+  TbMessage,
+  TbUsers,
+  TbUsersGroup,
+} from 'react-icons/tb';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/src/components/ui/tooltip';
 import FollowButton from '@/src/components/yap/FollowButton';
 import abbreviateNum from '@/src/lib/abbreviateNum';
 import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
@@ -55,41 +55,34 @@ async function Profile({
                   Joined {new Date(user.joinDate).toLocaleDateString()}
                 </span>
               </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className='w-fit'>
-                    <Link
-                      href={`/user/${user.username}/yaps`}
-                      className='flex items-center gap-1'
-                    >
-                      <TbMessage size={'1.25rem'} className='inline-block' />{' '}
-                      {abbreviateNum(user._count.yaps)}
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className='bg-white dark:bg-zinc-950'>Yaps</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className='w-fit'>
-                    <Link
-                      href={`/user/${user.username}/echoes`}
-                      className='flex items-center gap-1'
-                    >
-                      <TbAccessPoint
-                        size={'1.25rem'}
-                        className='inline-block'
-                      />{' '}
-                      {abbreviateNum(user._count.echoes)}
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className='bg-white dark:bg-zinc-950'>Echoes</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Link
+                href={`/user/${user.username}/yaps`}
+                className='flex items-center gap-1'
+              >
+                <TbMessage size={'1.25rem'} className='inline-block' />{' '}
+                {abbreviateNum(user._count.yaps)} Yaps
+              </Link>
+              <Link
+                href={`/user/${user.username}/echoes`}
+                className='flex items-center gap-1'
+              >
+                <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
+                {abbreviateNum(user._count.echoes)} Echoes
+              </Link>
+              <Link
+                href={`/user/${user.username}/following`}
+                className='flex items-center gap-1'
+              >
+                <TbUsers size={'1.25rem'} className='inline-block' />{' '}
+                {abbreviateNum(user._count.following)} Following
+              </Link>
+              <Link
+                href={`/user/${user.username}/followers`}
+                className='flex items-center gap-1'
+              >
+                <TbUsersGroup size={'1.25rem'} className='inline-block' />{' '}
+                {abbreviateNum(user._count.followers)} Followers
+              </Link>
               {params.username !== currentUsername && (
                 <FollowButton
                   isFollowing={isFollowing}

@@ -498,6 +498,8 @@ const getUserProfile = cache(async (username: User['username']) => {
           select: {
             yaps: true,
             echoes: true,
+            followers: true,
+            following: true,
           },
         },
       },
