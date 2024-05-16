@@ -1433,9 +1433,74 @@ const getFollowers = async (
   }
 };
 
+const getFollowing = async (
+  username: string,
+  id: User['id'] | undefined = undefined
+) => {
+  try {
+    if (!id) {
+      const user = await db.user.findUnique({
+        where: {
+          username,
+        },
+        select: {
+          following: {
+            take: 20,
+            select: {
+              username: true,
+              displayName: true,
+              image: true,
+              joinDate: true,
+            },
+          },
+        },
+      });
+
+      return { following: user?.following };
+    }
+    const user = await db.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        following: {
+          take: 20,
+          skip: 1,
+          cursor: {
+            id,
+          },
+          select: {
+            username: true,
+            displayName: true,
+            image: true,
+            joinDate: true,
+          },
+        },
+      },
+    });
+
+    return { following: user?.following };
+  } catch (err) {
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    console.log(err);
+    return { error: 'Unknown error occured.' };
+  }
+};
+
 export {
   getEchoed,
   getFollowers,
+  getFollowing,
   getFollowingYaps,
   getIsFollowing,
   getLatestYaps,
