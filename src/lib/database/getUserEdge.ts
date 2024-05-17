@@ -18,7 +18,7 @@ const getUserByEmailEdge = async (email: User['email']) => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETUSERBYEMAILEDGE ERROR:', err);
     return null;
   }
 };
@@ -38,7 +38,7 @@ const getUserByIdEdge = async (id: User['id']) => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETUSERBYEDGE ERROR:', err);
     return null;
   }
 };

@@ -10,7 +10,6 @@ function SearchInput({ className }: { className?: string }) {
   return (
     <Input
       onKeyDown={(e) => {
-        console.log(e.currentTarget.value);
         e.key === 'Enter' &&
           router.push(`/search/${encodeURIComponent(e.currentTarget.value)}`);
       }}

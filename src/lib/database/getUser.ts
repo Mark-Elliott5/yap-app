@@ -17,7 +17,7 @@ const getUserByEmail = cache(async (email: User['email']) => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETUSERBYEMAIL ERROR:', err);
     return null;
   }
 });
@@ -34,7 +34,7 @@ const getUserById = cache(async (id: User['id']) => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETUSERBYID ERROR:', err);
     return null;
   }
 });
@@ -54,7 +54,7 @@ const getUserByUsername = cache(async (username: User['username']) => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETUSERBYUSERNAME ERROR:', err);
     return null;
   }
 });
@@ -75,7 +75,7 @@ const getCurrentUserPassword = cache(async () => {
     });
     return user;
   } catch (err) {
-    console.log(err);
+    console.error('GETCURRENTUSERPASSWORD ERROR:', err);
     return null;
   }
 });
@@ -86,7 +86,7 @@ const getCurrentUserId = cache(async () => {
     if (!session || !session.user || !session.user.id) return null;
     return session.user.id;
   } catch (err) {
-    console.log(err);
+    console.error('GETCURRENTUSERID ERROR:', err);
     return null;
   }
 });
@@ -97,7 +97,7 @@ const getCurrentUsername = cache(async () => {
     if (!session || !session.user || !session.user.username) return null;
     return session.user.username;
   } catch (err) {
-    console.log(err);
+    console.error('GETCURRENTUSERNAME ERROR:', err);
     return null;
   }
 });
@@ -108,7 +108,7 @@ const getSession = cache(async () => {
     if (!session) return null;
     return session;
   } catch (err) {
-    console.log(err);
+    console.error('GETSESSION ERROR:', err);
     return null;
   }
 });

@@ -26,7 +26,6 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       source.close();
-      console.log('source closed');
     };
   }, []);
 

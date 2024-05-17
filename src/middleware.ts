@@ -16,7 +16,6 @@ export default auth((req) => {
   // console.log('REQ.AUTH:', req.auth);
 
   const isRoot = nextUrl.pathname === '/';
-  console.log('ISROOT', isRoot);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.has(nextUrl.pathname);
   const isUploadRoute = nextUrl.pathname.startsWith(apiUploadPrefix);

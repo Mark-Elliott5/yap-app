@@ -52,7 +52,6 @@ const getSessionWrapper = async (err: string) => {
 const login = async (data: FormData) => {
   try {
     const { email, password } = await LoginSchema.parseAsync(data);
-    console.log(email, password);
 
     await signIn('credentials', {
       email,
@@ -118,7 +117,7 @@ const register = async (data: FormData) => {
     };
 
     await db.user.create({ data: userObj });
-    console.log('User created: ' + email);
+
     // return { success: 'Registration successful!' };
 
     await signIn('credentials', {
@@ -167,7 +166,6 @@ const register = async (data: FormData) => {
 const onboarding = async (data: FormData) => {
   try {
     const session = await getSessionWrapper('Access denied.');
-    console.log('Onboarding session:', session);
 
     if (session.user.username) {
       throw new ActionError('Username already set.');
@@ -186,7 +184,6 @@ const onboarding = async (data: FormData) => {
         displayName,
       },
     });
-    console.log('Username updated:', username);
     // return { success: 'Registration successful!' };
   } catch (err) {
     if (err instanceof ZodError) {
@@ -791,7 +788,6 @@ const heartYap = async (data: FormData) => {
 };
 
 const echoYap = async (data: FormData) => {
-  console.log('echoing');
   try {
     const { user } = await getSessionWrapper('Access denied.');
 

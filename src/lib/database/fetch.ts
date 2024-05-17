@@ -8,9 +8,6 @@ class ActionError extends Error {}
 
 const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
   try {
-    console.log('Getting latest yaps');
-    // await getSession('Access denied.');
-
     if (!id) {
       const yaps = await db.yap.findMany({
         take: 10,
@@ -140,7 +137,7 @@ const getLatestYaps = async (id: Yap['id'] | undefined = undefined) => {
     return { yaps };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -371,7 +368,7 @@ const getFollowingYaps = async (
     return { yaps, echoes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -460,7 +457,7 @@ const getYap = async (id: Yap['id']) => {
     return { yap };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -504,7 +501,7 @@ const getUserProfile = cache(async (username: string) => {
     return { user };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -514,7 +511,7 @@ const getUserProfile = cache(async (username: string) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILE ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 });
@@ -569,7 +566,7 @@ const getUserProfileYaps = async (username: string) => {
     return { yaps };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -579,7 +576,7 @@ const getUserProfileYaps = async (username: string) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILEYAPS ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -637,7 +634,7 @@ const getUserProfileMedia = async (username: string) => {
     return { yaps };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -647,7 +644,7 @@ const getUserProfileMedia = async (username: string) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILEMEDIA ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -755,7 +752,7 @@ const getUserProfileLikes = async (
     return { likes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -765,7 +762,7 @@ const getUserProfileLikes = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILELIKES ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -873,7 +870,7 @@ const getUserProfileEchoes = async (
     return { echoes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -883,7 +880,7 @@ const getUserProfileEchoes = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILEECHOES ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -990,7 +987,7 @@ const getUserProfileYapsAndEchoes = async (username: string) => {
     return { yapsAndEchoes };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1000,7 +997,7 @@ const getUserProfileYapsAndEchoes = async (username: string) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERPROFILEYAPSANDECHOES ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -1063,7 +1060,7 @@ const getNotifications = async (
     return { notifications };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1073,7 +1070,7 @@ const getNotifications = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETNOTIFICATIONS ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -1100,7 +1097,7 @@ const getLiked = cache(async (id: Yap['id'], username: string) => {
     return !!yap;
   } catch (err) {
     // if (err instanceof PrismaClientKnownRequestError) {
-    //   console.log('Prisma error:', err);
+    // //   console.log('Prisma error:', err);
     //   return { error: 'Something went wrong! Please try again.' };
     // }
 
@@ -1138,7 +1135,7 @@ const getEchoed = cache(async (id: Yap['id'], username: string) => {
     return !!yap;
   } catch (err) {
     // if (err instanceof PrismaClientKnownRequestError) {
-    //   console.log('Prisma error:', err);
+    // //   console.log('Prisma error:', err);
     //   return { error: 'Something went wrong! Please try again.' };
     // }
 
@@ -1180,7 +1177,7 @@ const getIsFollowing = cache(
       return !!isFollowing;
     } catch (err) {
       // if (err instanceof PrismaClientKnownRequestError) {
-      //   console.log('Prisma error:', err);
+      // //   console.log('Prisma error:', err);
       //   return { error: 'Something went wrong! Please try again.' };
       // }
 
@@ -1235,7 +1232,7 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
     return { users };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1245,7 +1242,7 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETUSERS ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -1354,7 +1351,7 @@ const getSearch = async (
     return { yaps };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1364,7 +1361,7 @@ const getSearch = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETSEARCH ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -1418,7 +1415,7 @@ const getFollowers = async (
     return { followers: user?.followers };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1428,7 +1425,7 @@ const getFollowers = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETFOLLOWERS ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
@@ -1482,7 +1479,7 @@ const getFollowing = async (
     return { following: user?.following };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
+      // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
     }
 
@@ -1492,7 +1489,7 @@ const getFollowing = async (
     // if (err instanceof PrismaClientKnownRequestError) {
     //   return { error: 'Database error!' };
     // }
-    console.log(err);
+    console.error('GETFOLLOWING ERROR:', err);
     return { error: 'Unknown error occured.' };
   }
 };
