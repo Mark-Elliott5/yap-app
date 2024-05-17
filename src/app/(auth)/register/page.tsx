@@ -5,7 +5,7 @@ import RegisterForm from '@/src/components/auth/RegisterForm';
 
 export const metadata: Metadata = {
   title: `Register | yap`,
-  description: 'yap Social Media App',
+  description: 'Register Page | yap',
 };
 
 function RegisterPage() {

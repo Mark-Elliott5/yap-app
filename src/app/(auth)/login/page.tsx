@@ -5,7 +5,7 @@ import LoginForm from '@/src/components/auth/LoginForm';
 
 export const metadata: Metadata = {
   title: `Login | yap`,
-  description: 'yap Social Media App',
+  description: 'Login Page | yap',
 };
 
 function LoginPage() {

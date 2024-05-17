@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
@@ -6,6 +7,11 @@ import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export const metadata: Metadata = {
+  title: `Following Feed | yap`,
+  description: 'Following Feed Page | yap',
+};
 
 async function Following() {
   const currentUsername = await getCurrentUsername();

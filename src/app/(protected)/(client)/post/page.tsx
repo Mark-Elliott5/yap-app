@@ -1,5 +1,12 @@
+import { Metadata } from 'next';
+
 import CreatePostForm from '@/src/components/yap/CreatePostForm';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export const metadata: Metadata = {
+  title: `Post | yap`,
+  description: 'Post Page | yap',
+};
 
 async function PostPage() {
   const currentUsername = await getCurrentUsername();

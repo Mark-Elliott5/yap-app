@@ -1,9 +1,21 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import UsersFallback from '@/src/components/yap/UsersFallback';
 import UserTab from '@/src/components/yap/UserTab';
 import { getFollowers } from '@/src/lib/database/fetch';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  return {
+    title: `@${params.username}'s Followers | yap`,
+    description: `@${params.username}'s Followers | yap`,
+  };
+}
 
 async function FollowersPage({
   params,

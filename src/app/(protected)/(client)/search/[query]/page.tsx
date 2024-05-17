@@ -1,9 +1,21 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getSearch } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { query: string };
+}): Promise<Metadata> {
+  return {
+    title: `"${decodeURIComponent(params.query)}" 🔎 | yap`,
+    description: `Search for ${decodeURIComponent(params.query)} | yap`,
+  };
+}
 
 async function SearchPage({ params }: { params: { query: string } }) {
   const currentUsername = await getCurrentUsername();

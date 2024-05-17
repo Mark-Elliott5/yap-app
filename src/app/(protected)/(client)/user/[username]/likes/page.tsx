@@ -1,10 +1,22 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileLikes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  return {
+    title: `@${params.username}'s Likes | yap`,
+    description: `@${params.username}'s Likes | yap`,
+  };
+}
 
 async function UserProfileLikesPage({
   params,

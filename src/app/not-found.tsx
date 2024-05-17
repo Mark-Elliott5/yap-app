@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { Archivo_Black } from 'next/font/google';
 import Link from 'next/link';
 
@@ -8,6 +9,11 @@ const archivoBlack = Archivo_Black({
   subsets: ['latin'],
   weight: '400',
 });
+
+export const metadata: Metadata = {
+  title: `Not Found 💔 | yap`,
+  description: 'Not Found Page | yap',
+};
 
 function NotFound() {
   return (

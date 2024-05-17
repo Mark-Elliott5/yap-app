@@ -1,5 +1,12 @@
+import { Metadata } from 'next';
+
 import SettingsClient from '@/src/components/settings/SettingsClient';
 import { getSession } from '@/src/lib/database/getUser';
+
+export const metadata: Metadata = {
+  title: `Settings | yap`,
+  description: 'Settings Page | yap',
+};
 
 export const dynamic = 'force-dynamic';
 

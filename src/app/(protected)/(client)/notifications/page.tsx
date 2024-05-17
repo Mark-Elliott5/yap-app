@@ -1,10 +1,16 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 import { Separator } from '@/src/components/ui/separator';
 import NotificationTab from '@/src/components/yap/NotificationTab';
 import NotifsFallback from '@/src/components/yap/NotifsFallback';
 import { getNotifications } from '@/src/lib/database/fetch';
 import { getSession } from '@/src/lib/database/getUser';
+
+export const metadata: Metadata = {
+  title: `Notifications | yap`,
+  description: 'Notifications Page | yap',
+};
 
 async function Notifications() {
   const session = await getSession();

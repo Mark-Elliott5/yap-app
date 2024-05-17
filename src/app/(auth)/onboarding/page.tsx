@@ -5,8 +5,8 @@ import LogoutButton from '@/src/components/auth/LogoutButton';
 import OnboardingForm from '@/src/components/auth/OnboardingForm';
 
 export const metadata: Metadata = {
-  title: `Username | yap`,
-  description: 'yap Social Media App',
+  title: `Onboarding | yap`,
+  description: 'Onboarding Page | yap',
 };
 
 function OnboardingPage() {

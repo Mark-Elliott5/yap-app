@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: `Search 🔎 | yap`,
+  description: 'Search Page | yap',
+};
+
 function StartSearch() {
   return (
     <>

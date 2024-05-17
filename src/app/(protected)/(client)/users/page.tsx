@@ -1,8 +1,14 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 import UsersFallback from '@/src/components/yap/UsersFallback';
 import UserTab from '@/src/components/yap/UserTab';
 import { getUsers } from '@/src/lib/database/fetch';
+
+export const metadata: Metadata = {
+  title: `Users | yap`,
+  description: 'Users Page | yap',
+};
 
 async function Users() {
   const { users, error } = await getUsers();

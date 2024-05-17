@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
@@ -6,6 +7,17 @@ import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYapsAndEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  return {
+    title: `@${params.username}'s Profile | yap`,
+    description: `@${params.username}'s Profile | yap`,
+  };
+}
 
 async function UserProfileYapsAndEchoesPage({
   params,

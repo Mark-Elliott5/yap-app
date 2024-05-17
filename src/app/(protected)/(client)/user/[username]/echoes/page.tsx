@@ -1,8 +1,20 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  return {
+    title: `@${params.username}'s Echoes | yap`,
+    description: `@${params.username}'s Echoes | yap`,
+  };
+}
 
 async function UserProfileEchoesPage({
   params,

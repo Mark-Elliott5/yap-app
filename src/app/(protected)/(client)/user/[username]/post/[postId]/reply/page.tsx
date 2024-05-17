@@ -1,5 +1,18 @@
+import { Metadata } from 'next';
+
 import ReplyPostForm from '@/src/components/yap/ReplyPostForm';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  return {
+    title: `Reply to @${params.username} | yap`,
+    description: `Reply to @${params.username} | yap`,
+  };
+}
 
 async function ReplyPage({
   params,

@@ -5,7 +5,7 @@ import AuthCardWrapper from '@/src/components/auth/AuthCardWrapper';
 
 export const metadata: Metadata = {
   title: `Error 💔 | yap`,
-  description: 'yap Social Media App',
+  description: 'Error Page | yap',
 };
 
 function AuthErrorPage() {
