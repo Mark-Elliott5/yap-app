@@ -21,9 +21,11 @@ function SettingsDropDown() {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href='/settings'>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem>
+          <Link href='/settings' className='w-full'>
+            Settings
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <ThemeChanger />
         </DropdownMenuItem>
