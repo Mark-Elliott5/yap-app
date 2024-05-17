@@ -25,7 +25,7 @@ function NotificationTab({
   }) {
   return (
     <div
-      className={`rounded-lg border-t-1 border-zinc-200 bg-white px-5 py-4 shadow-xl transition-all hover:scale-[1.05] dark:border-zinc-800 dark:bg-zinc-900`}
+      className={`rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 shadow-xl transition-all hover:scale-[1.05] dark:border-zinc-800 dark:bg-zinc-900`}
     >
       <div className='top-0 flex items-center justify-between'>
         <div className='flex items-center gap-3'>
