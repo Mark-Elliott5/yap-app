@@ -18,9 +18,15 @@ export async function generateMetadata({
 }
 
 async function SearchPage({ params }: { params: { query: string } }) {
-  const currentUsername = await getCurrentUsername();
+  const currentData = getCurrentUsername();
+  const yapData = getSearch(decodeURIComponent(params.query));
+
+  const [currentUsername, { yaps, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
   if (!currentUsername) return null;
-  const { yaps, error } = await getSearch(decodeURIComponent(params.query));
 
   const body = (() => {
     if (error) {

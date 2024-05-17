@@ -23,11 +23,17 @@ async function UserProfileLikesPage({
 }: {
   params: { username: string };
 }) {
-  const currentUsername = await getCurrentUsername();
+  const currentData = getCurrentUsername();
+  const yapData = getUserProfileLikes(params.username);
+
+  const [currentUsername, { likes, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
   if (!currentUsername) return null;
 
   const posts = (async () => {
-    const { likes, error } = await getUserProfileLikes(params.username);
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>

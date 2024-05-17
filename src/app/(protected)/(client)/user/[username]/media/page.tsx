@@ -23,12 +23,17 @@ async function UserProfileMediaPage({
 }: {
   params: { username: string; media: string };
 }) {
-  const currentUsername = await getCurrentUsername();
+  const currentData = getCurrentUsername();
+  const yapData = getUserProfileMedia(params.username);
+
+  const [currentUsername, { yaps, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
   if (!currentUsername) return null;
 
   const posts = (async () => {
-    const { yaps, error } = await getUserProfileMedia(params.username);
-
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>

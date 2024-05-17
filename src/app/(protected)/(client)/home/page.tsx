@@ -14,10 +14,15 @@ export const metadata: Metadata = {
 };
 
 async function Home() {
-  const currentUsername = await getCurrentUsername();
-  if (!currentUsername) return null;
+  const currentData = getCurrentUsername();
+  const yapData = getLatestYaps();
 
-  const { yaps, error, echoes } = await getLatestYaps();
+  const [currentUsername, { yaps, echoes, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
+  if (!currentUsername) return null;
 
   const posts = (() => {
     if (error) {

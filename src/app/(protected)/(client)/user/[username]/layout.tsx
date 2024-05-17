@@ -24,10 +24,15 @@ async function Profile({
   params: { username: string };
   children: React.ReactNode;
 }>) {
-  const currentUsername = await getCurrentUsername();
-  if (!currentUsername) return null;
+  const currentData = getCurrentUsername();
+  const userData = getUserProfile(params.username);
 
-  const { user } = await getUserProfile(params.username);
+  const [currentUsername, { user }] = await Promise.all([
+    currentData,
+    userData,
+  ]);
+
+  if (!currentUsername) return null;
 
   const isFollowing = await getIsFollowing(params.username, currentUsername);
 

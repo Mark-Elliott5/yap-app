@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 async function PostPage() {
   const currentUsername = await getCurrentUsername();
+
   return (
     <>
       <div className='my-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>

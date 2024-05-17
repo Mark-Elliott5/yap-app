@@ -12,10 +12,15 @@ async function YapPostLayout({
   children: React.ReactNode;
   params: { username: string; postId: string };
 }>) {
-  const currentUsername = await getCurrentUsername();
-  if (!currentUsername) return null;
+  const currentData = getCurrentUsername();
+  const yapData = getYap(params.postId);
 
-  const { yap, error } = await getYap(params.postId);
+  const [currentUsername, { yap, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
+  if (!currentUsername) return null;
 
   if (error) {
     console.log('ERROR', error);

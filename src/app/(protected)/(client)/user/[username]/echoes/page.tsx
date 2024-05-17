@@ -21,11 +21,17 @@ async function UserProfileEchoesPage({
 }: {
   params: { username: string };
 }) {
-  const currentUsername = await getCurrentUsername();
+  const currentData = getCurrentUsername();
+  const yapData = getUserProfileEchoes(params.username);
+
+  const [currentUsername, { echoes, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
   if (!currentUsername) return null;
 
   const posts = (async () => {
-    const { echoes, error } = await getUserProfileEchoes(params.username);
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>

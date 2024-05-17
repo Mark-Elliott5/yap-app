@@ -26,14 +26,17 @@ async function UserProfileYapsAndEchoesPage({
 }) {
   // get currently logged in user to check if this user has liked/echoed/replied
   // YapPost via its child Like/Echo/Reply button components
-  const currentUsername = await getCurrentUsername();
+  const currentData = getCurrentUsername();
+  const yapData = getUserProfileYapsAndEchoes(params.username);
+
+  const [currentUsername, { yapsAndEchoes, error }] = await Promise.all([
+    currentData,
+    yapData,
+  ]);
+
   if (!currentUsername) return null;
 
   const posts = (async () => {
-    const { yapsAndEchoes, error } = await getUserProfileYapsAndEchoes(
-      params.username
-    );
-
     if (error) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
