@@ -207,7 +207,7 @@ const onboarding = async (data: FormData) => {
     return { error: 'Something went wrong!' };
   }
 
-  redirect(`/settings`, RedirectType.replace);
+  redirect(`/home`, RedirectType.replace);
 };
 
 const changeEmail = async (data: FormData) => {
