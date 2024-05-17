@@ -57,28 +57,28 @@ async function Profile({
               </div>
               <Link
                 href={`/user/${user.username}/yaps`}
-                className='flex items-center gap-1'
+                className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbMessage size={'1.25rem'} className='inline-block' />{' '}
                 {abbreviateNum(user._count.yaps)} Yaps
               </Link>
               <Link
                 href={`/user/${user.username}/echoes`}
-                className='flex items-center gap-1'
+                className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
                 {abbreviateNum(user._count.echoes)} Echoes
               </Link>
               <Link
                 href={`/user/${user.username}/following`}
-                className='flex items-center gap-1'
+                className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbUsers size={'1.25rem'} className='inline-block' />{' '}
                 {abbreviateNum(user._count.following)} Following
               </Link>
               <Link
                 href={`/user/${user.username}/followers`}
-                className='flex items-center gap-1'
+                className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbUsersGroup size={'1.25rem'} className='inline-block' />{' '}
                 {abbreviateNum(user._count.followers)} Followers
