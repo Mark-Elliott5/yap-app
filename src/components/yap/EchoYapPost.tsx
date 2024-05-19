@@ -20,14 +20,17 @@ import { Echo, User, Yap } from '@prisma/client';
 
 interface EchoYapProps extends Pick<Echo, 'date' | 'username'> {
   yap: {
-    author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
+    author: Pick<User, 'displayName' | 'username' | 'image'> & {
+      joinDate: string | Date;
+    };
     parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | null;
     _count: {
       likes: number;
       echoes: number;
       replies: number;
     };
-  } & Omit<Yap, 'authorId' | 'parentYapId'>;
+    date: string | Date;
+  } & Omit<Yap, 'authorId' | 'parentYapId' | 'imageKey' | 'date'>;
   currentUsername: string;
 }
 
@@ -72,7 +75,11 @@ async function EchoYapPost({
         >
           <UserHovercard
             username={yap.author.username!}
-            joinDate={yap.author.joinDate}
+            joinDate={
+              typeof yap.author.joinDate === 'string'
+                ? new Date(yap.author.joinDate + 'Z')
+                : yap.author.joinDate
+            }
             displayName={yap.author.displayName}
             image={yap.author.image}
           >
@@ -109,9 +116,13 @@ async function EchoYapPost({
             href={`/user/${yap.author.username}/post/${yap.id}`}
             className='flex items-center gap-2 text-xs text-zinc-600/70'
           >
-            {yap.date.toLocaleDateString()}
+            {typeof yap.date === 'string'
+              ? new Date(yap.date + 'Z').toLocaleDateString()
+              : yap.date.toLocaleDateString()}
             <span className='hidden text-xs sm:inline-block'>
-              {yap.date.toLocaleTimeString()}
+              {typeof yap.date === 'string'
+                ? new Date(yap.date + 'Z').toLocaleTimeString()
+                : yap.date.toLocaleTimeString()}
             </span>
           </Link>
         </div>

@@ -10,8 +10,11 @@ import UserHovercard from '@/src/components/yap/UserHovercard';
 import { User, Yap } from '@prisma/client';
 
 export interface ParentYapPreviewProps
-  extends Pick<Yap, 'text' | 'image' | 'date' | 'id' | 'isReply'> {
-  author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
+  extends Pick<Yap, 'text' | 'image' | 'id' | 'isReply'> {
+  author: Pick<User, 'displayName' | 'username' | 'image'> & {
+    joinDate: string | Date;
+  };
+  date: string | Date;
   currentUsername: string;
 }
 
@@ -33,7 +36,11 @@ async function ParentYapPreview({
       <div className='flex flex-wrap items-center justify-between gap-y-3'>
         <UserHovercard
           username={author.username!}
-          joinDate={author.joinDate}
+          joinDate={
+            typeof author.joinDate === 'string'
+              ? new Date(author.joinDate + 'Z')
+              : author.joinDate
+          }
           displayName={author.displayName}
           image={author.image}
         >
@@ -70,9 +77,13 @@ async function ParentYapPreview({
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
-          {date.toLocaleDateString()}
+          {typeof date === 'string'
+            ? new Date(date + 'Z').toLocaleDateString()
+            : date.toLocaleDateString()}
           <span className='hidden text-xs sm:inline-block'>
-            {date.toLocaleTimeString()}
+            {typeof date === 'string'
+              ? new Date(date + 'Z').toLocaleTimeString()
+              : date.toLocaleTimeString()}
           </span>
         </Link>
       </div>

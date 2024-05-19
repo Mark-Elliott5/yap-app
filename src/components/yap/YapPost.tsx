@@ -17,14 +17,18 @@ import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked } from '@/src/lib/database/fetch';
 import { User, Yap } from '@prisma/client';
 
-interface YapProps extends Omit<Yap, 'authorId' | 'parentYapId'> {
-  author: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>;
+interface YapProps
+  extends Omit<Yap, 'authorId' | 'parentYapId' | 'imageKey' | 'date'> {
+  author: Pick<User, 'displayName' | 'username' | 'image'> & {
+    joinDate: string | Date;
+  };
   parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | 'thread' | null;
   _count: {
     likes: number;
     echoes: number;
     replies: number;
   };
+  date: string | Date;
   currentUsername: string;
 }
 
@@ -54,7 +58,11 @@ async function YapPost({
       >
         <UserHovercard
           username={author.username!}
-          joinDate={author.joinDate}
+          joinDate={
+            typeof author.joinDate === 'string'
+              ? new Date(author.joinDate + 'Z')
+              : author.joinDate
+          }
           displayName={author.displayName}
           image={author.image}
         >
@@ -91,9 +99,13 @@ async function YapPost({
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
-          {date.toLocaleDateString()}
+          {typeof date === 'string'
+            ? new Date(date + 'Z').toLocaleDateString()
+            : date.toLocaleDateString()}
           <span className='hidden text-xs sm:inline-block'>
-            {date.toLocaleTimeString()}
+            {typeof date === 'string'
+              ? new Date(date + 'Z').toLocaleTimeString()
+              : date.toLocaleTimeString()}
           </span>
         </Link>
       </div>

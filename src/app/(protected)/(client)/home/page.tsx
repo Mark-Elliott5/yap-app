@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 
 async function Home() {
   const currentData = getCurrentUsername();
-  const yapData = getLatestYaps();
+  const postsData = getLatestYaps();
 
-  const [currentUsername, { yaps, echoes, error }] = await Promise.all([
+  const [currentUsername, { posts, error }] = await Promise.all([
     currentData,
-    yapData,
+    postsData,
   ]);
 
   if (!currentUsername) return null;
 
-  const posts = (() => {
+  const latest = (() => {
     if (error) {
       return (
         <span className='text-zinc-950 dark:text-zinc-100'>
@@ -33,7 +33,7 @@ async function Home() {
       );
     }
 
-    if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
+    if (!posts || !posts.length) {
       return (
         <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
           {`There's nothing here... yet.`}
@@ -41,25 +41,19 @@ async function Home() {
       );
     }
 
-    const posts = (() => {
-      const temp = [...yaps, ...echoes];
-      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
-      return temp;
-    })();
-
-    return posts.map((yap) => {
-      if ('yap' in yap) {
+    return posts.map((post) => {
+      if (post.type === 'Echo') {
         return (
           <EchoYapPost
-            key={yap.id}
+            key={post.id}
             currentUsername={currentUsername}
-            {...yap}
+            {...post}
           />
         );
       }
 
       return (
-        <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
+        <YapPost key={post.id} currentUsername={currentUsername} {...post} />
       );
     });
   })();
@@ -86,7 +80,7 @@ async function Home() {
             <PostsFallback key={i} />
           ))}
         >
-          {posts}
+          {latest}
         </Suspense>
       </div>
     </>
