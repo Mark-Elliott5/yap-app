@@ -64,6 +64,7 @@ async function FollowersPage({
         <OlderPostsLink
           length={followers.length}
           id={followers[followers.length - 1].id}
+          typeText='Followers'
         />
       </>
     );

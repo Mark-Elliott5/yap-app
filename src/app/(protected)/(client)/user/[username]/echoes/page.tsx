@@ -75,6 +75,7 @@ async function UserProfileEchoesPage({
           length={echoes.length}
           date={echoes[echoes.length - 1].date}
           id={echoes[echoes.length - 1].id}
+          typeText='Echoes'
         />
       </>
     );

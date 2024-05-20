@@ -77,6 +77,7 @@ async function UserProfileLikesPage({
           length={likes.length}
           date={likes[likes.length - 1].date}
           id={likes[likes.length - 1].id}
+          typeText='Likes'
         />
       </>
     );

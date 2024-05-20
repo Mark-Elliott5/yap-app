@@ -78,6 +78,7 @@ async function SearchPage({
           date={yaps[yaps.length - 1].date}
           id={yaps[yaps.length - 1].id}
           customParam={`query=${encodeURIComponent(query)}`}
+          typeText='Yaps'
         />
       </>
     );

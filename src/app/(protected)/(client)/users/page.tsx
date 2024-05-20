@@ -41,7 +41,11 @@ async function Users({ searchParams }: { searchParams: { id?: string } }) {
           <UserTab key={user.username} {...user} />
         ))}
 
-        <OlderPostsLink length={users.length} id={users[users.length - 1].id} />
+        <OlderPostsLink
+          length={users.length}
+          id={users[users.length - 1].id}
+          typeText='Users'
+        />
       </>
     );
   })();

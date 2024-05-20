@@ -73,6 +73,7 @@ async function UserProfileYapsPage({
           length={yaps.length}
           date={yaps[yaps.length - 1].date}
           id={yaps[yaps.length - 1].id}
+          typeText='Yaps'
         />
       </>
     );
