@@ -2,9 +2,10 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import YapPost from '@/src/components/yap/YapPost';
 import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -14,18 +15,30 @@ export const metadata: Metadata = {
   description: 'Following Feed Page | yap',
 };
 
-async function Following() {
+async function Following({
+  searchParams,
+}: {
+  searchParams: {
+    date: string | undefined;
+    id: string | undefined;
+  };
+}) {
   const currentUsername = await getCurrentUsername();
   if (!currentUsername) return null;
 
-  const { yaps, error, echoes } = await getFollowingYaps(currentUsername);
+  const { date, id } = searchParams;
+  const { yaps, error, noFollowing } = await getFollowingYaps(
+    currentUsername,
+    date,
+    id
+  );
 
-  const posts = (() => {
+  const followingPosts = (() => {
     if (error) {
       return <SomethingWentWrong />;
     }
 
-    if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
+    if (noFollowing) {
       return (
         <div
           className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
@@ -41,27 +54,22 @@ async function Following() {
       );
     }
 
-    const posts = (() => {
-      const temp = [...yaps, ...echoes];
-      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
-      return temp;
-    })();
+    if (!yaps || !yaps.length) {
+      return <TheresNothingHere />;
+    }
 
-    return posts.map((yap) => {
-      if ('yap' in yap) {
-        return (
-          <EchoYapPost
-            key={yap.id}
-            currentUsername={currentUsername}
-            {...yap}
-          />
-        );
-      }
-
-      return (
-        <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-      );
-    });
+    return (
+      <>
+        {yaps.map((post) => (
+          <YapPost key={post.id} currentUsername={currentUsername} {...post} />
+        ))}
+        <OlderPostsLink
+          length={yaps.length}
+          date={yaps[yaps.length - 1].date}
+          id={yaps[yaps.length - 1].id}
+        />
+      </>
+    );
   })();
 
   return (
@@ -80,13 +88,15 @@ async function Following() {
           Following
         </Link>
       </div>
-      <Suspense
-        fallback={Array.from({ length: 8 }).map((_, i) => (
-          <PostsFallback key={i} />
-        ))}
-      >
-        <div className='flex min-h-dvh flex-col gap-4'>{posts}</div>
-      </Suspense>
+      <div className='flex min-h-dvh flex-col gap-4'>
+        <Suspense
+          fallback={Array.from({ length: 8 }).map((_, i) => (
+            <PostsFallback key={i} />
+          ))}
+        >
+          {followingPosts}
+        </Suspense>
+      </div>
     </>
   );
 }

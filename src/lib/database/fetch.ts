@@ -280,187 +280,34 @@ const getLatestYaps = async (
   }
 };
 
-// const getLatestYapsCursor = async (date: string, id: string) => {
-//   try {
-//     const posts = await db.$queryRaw<LatestPosts>`WITH combined_posts AS (
-//         SELECT
-//             "Yap".id,
-//             "Yap".text,
-//             "Yap".image,
-//             "Yap".date,
-//             'Yap' AS type,
-//             NULL AS username,
-//             NULL AS yap,
-//             CASE
-//                 WHEN u1.id IS NULL THEN NULL
-//                 ELSE JSON_BUILD_OBJECT(
-//                     'username', u1.username,
-//                     'displayName', u1."displayName",
-//                     'image', u1.image,
-//                     'joinDate', u1."joinDate"
-//                 )
-//             END AS author,
-//             JSON_BUILD_OBJECT(
-//                 'likes', COUNT(DISTINCT l.id),
-//                 'echoes', COUNT(DISTINCT e.id),
-//                 'replies', COUNT(DISTINCT r.id)
-//             ) AS _count,
-//             CASE
-//                 WHEN "ParentYap".id IS NULL THEN NULL
-//                 ELSE JSON_BUILD_OBJECT(
-//                     'id', "ParentYap".id,
-//                     'text', "ParentYap".text,
-//                     'date', "ParentYap".date,
-//                     'image', "ParentYap".image,
-//                     'authorId', "ParentYap"."authorId",
-//                     'isReply', "ParentYap"."isReply",
-//                     'author', JSON_BUILD_OBJECT(
-//                         'username', u2.username,
-//                         'displayName', u2."displayName",
-//                         'image', u2.image,
-//                         'joinDate', u2."joinDate"
-//                     )
-//                 )
-//             END AS "parentYap"
-//         FROM "Yap"
-//         LEFT JOIN "Like" l ON "Yap".id = l."yapId"
-//         LEFT JOIN "Echo" e ON "Yap".id = e."yapId"
-//         LEFT JOIN "Yap" r ON "Yap".id = r."parentYapId"
-//         LEFT JOIN "User" u1 ON "Yap"."authorId" = u1.id
-//         LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
-//         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
-//         GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate",
-//                 "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId",
-//                 "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
-//         UNION ALL
-//         SELECT
-//             "Echo".id::VARCHAR,
-//             NULL AS text,
-//             NULL AS image,
-//             "Echo".date,
-//             'Echo' AS type,
-//             "Echo"."username",
-//             JSON_BUILD_OBJECT(
-//                 'id', "Yap".id,
-//                 'text', "Yap".text,
-//                 'date', "Yap".date,
-//                 'image', "Yap".image,
-//                 'imageKey', "Yap"."imageKey",
-//                 'isReply', "Yap"."isReply",
-//                 'parentYap', CASE
-//                     WHEN "ParentYap".id IS NULL THEN NULL
-//                     ELSE JSON_BUILD_OBJECT(
-//                         'id', "ParentYap".id,
-//                         'text', "ParentYap".text,
-//                         'date', "ParentYap".date,
-//                         'image', "ParentYap".image,
-//                         'authorId', "ParentYap"."authorId",
-//                         'isReply', "ParentYap"."isReply",
-//                         'author', JSON_BUILD_OBJECT(
-//                             'username', u2.username,
-//                             'displayName', u2."displayName",
-//                             'image', u2.image,
-//                             'joinDate', u2."joinDate"
-//                         )
-//                     )
-//                 END,
-//                 'author', JSON_BUILD_OBJECT(
-//                     'username', u4.username,
-//                     'displayName', u4."displayName",
-//                     'image', u4.image,
-//                     'joinDate', u4."joinDate"
-//                 ),
-//                 '_count', JSON_BUILD_OBJECT(
-//                     'likes', COUNT(DISTINCT l.id),
-//                     'echoes', COUNT(DISTINCT e.id),
-//                     'replies', COUNT(DISTINCT r.id)
-//                 )
-//             ) AS yap,
-//             NULL AS author,
-//             NULL AS _count,
-//             NULL AS "parentYap"
-//         FROM "Echo"
-//         JOIN "Yap" ON "Echo"."yapId" = "Yap".id
-//         LEFT JOIN "Like" l ON "Yap".id = l."yapId"
-//         LEFT JOIN "Echo" AS e ON "Yap".id = e."yapId"
-//         LEFT JOIN "Yap" AS r ON "Yap".id = r."parentYapId"
-//         LEFT JOIN "User" u3 ON "Echo"."username" = u3.username
-//         LEFT JOIN "User" u4 ON "Yap"."authorId" = u4.id
-//         LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
-//         LEFT JOIN "User" u5 ON "ParentYap"."authorId" = u5.id
-//         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
-//         GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username,
-//                 u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text,
-//                 "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId",
-//                 "Yap"."isReply", "Yap"."parentYapId", u4.username,
-//                 u4."displayName", u4.image, u4."joinDate", "ParentYap".id,
-//                 "ParentYap".text, "ParentYap".date, "ParentYap".image,
-//                 "ParentYap"."authorId", "ParentYap"."isReply",
-//                 "ParentYap"."parentYapId", u5.username, u5."displayName",
-//                 u5.image, u5."joinDate", u2.username, u2."displayName",
-//                 u2.image, u2."joinDate"
-//     )
-//     SELECT * FROM combined_posts
-//     WHERE (date, id::VARCHAR) < (${date}, ${id})
-//     ORDER BY date DESC, id DESC
-//     LIMIT 20;
-//   `;
-
-//     return { posts };
-//   } catch (err) {
-//     if (err instanceof PrismaClientKnownRequestError) {
-//       // console.log('Prisma error:', err);
-//       console.error('ERROR:', err);
-//       return { error: 'Something went wrong! Please try again.' };
-//     }
-
-//     if (err instanceof ActionError) {
-//       return { error: err.message };
-//     }
-//     // if (err instanceof PrismaClientKnownRequestError) {
-//     //   return { error: 'Database error!' };
-//     // }
-//     return { error: 'Unknown error occured.' };
-//   }
-// };
-
 const getFollowingYaps = async (
   currentUsername: string,
-  yapId: Yap['id'] | undefined = undefined,
-  echoId: Echo['id'] | undefined = undefined
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
 ) => {
   try {
     const user = await db.user.findUnique({
-      where: {
-        username: currentUsername,
-      },
-      select: {
-        following: {
-          take: 100,
-          select: {
-            username: true,
-          },
-        },
-      },
+      where: { username: currentUsername },
+      select: { following: { select: { id: true } } },
     });
-    if (!user) {
-      return { failure: 'No user or no followers found.' };
+
+    if (!user || !user.following.length) {
+      return { noFollowing: 'No user or no followers found.' };
     }
 
     const { following } = user;
 
-    if (!yapId) {
+    if (!date && !id) {
       const yaps = await db.yap.findMany({
-        take: 10,
         where: {
           author: {
-            username: {
-              in: [...following.map(({ username }) => username!)],
-            },
+            id: { in: [...following.map((user) => user.id)] },
           },
         },
-        orderBy: {
-          date: 'desc',
+        take: 20,
+        omit: {
+          parentYapId: true,
+          authorId: true,
         },
         include: {
           author: {
@@ -492,70 +339,27 @@ const getFollowingYaps = async (
             },
           },
         },
-      });
-      const echoes = await db.echo.findMany({
-        take: 10,
-        where: {
-          username: {
-            in: [...following.map(({ username }) => username!)],
-          },
-        },
-        include: {
-          yap: {
-            include: {
-              author: {
-                select: {
-                  displayName: true,
-                  username: true,
-                  image: true,
-                  joinDate: true,
-                },
-              },
-              parentYap: {
-                include: {
-                  author: {
-                    select: {
-                      username: true,
-                      displayName: true,
-                      image: true,
-                      joinDate: true,
-                    },
-                  },
-                },
-              },
-              _count: {
-                select: {
-                  likes: true,
-                  echoes: true,
-                  replies: true,
-                },
-              },
-            },
-          },
-        },
         orderBy: {
           date: 'desc',
         },
       });
 
-      return { yaps, echoes };
+      return { yaps };
     }
-
     const yaps = await db.yap.findMany({
-      skip: 1,
-      take: 10,
-      cursor: {
-        id: yapId,
-      },
       where: {
         author: {
-          username: {
-            in: [...following.map(({ username }) => username!)],
-          },
+          id: { in: [...following.map((user) => user.id)] },
         },
       },
-      orderBy: {
-        date: 'desc',
+      take: 20,
+      cursor: {
+        date,
+        id,
+      },
+      omit: {
+        parentYapId: true,
+        authorId: true,
       },
       include: {
         author: {
@@ -587,59 +391,14 @@ const getFollowingYaps = async (
           },
         },
       },
-    });
-
-    const echoes = await db.echo.findMany({
-      skip: 1,
-      take: 10,
-      cursor: {
-        id: echoId,
-      },
-      where: {
-        username: {
-          in: [...following.map(({ username }) => username!)],
-        },
-      },
-      include: {
-        yap: {
-          include: {
-            author: {
-              select: {
-                displayName: true,
-                username: true,
-                image: true,
-                joinDate: true,
-              },
-            },
-            parentYap: {
-              include: {
-                author: {
-                  select: {
-                    username: true,
-                    displayName: true,
-                    image: true,
-                    joinDate: true,
-                  },
-                },
-              },
-            },
-            _count: {
-              select: {
-                likes: true,
-                echoes: true,
-                replies: true,
-              },
-            },
-          },
-        },
-      },
       orderBy: {
         date: 'desc',
       },
     });
 
-    return { yaps, echoes };
+    return { yaps };
   } catch (err) {
+    console.log('FOLLOW ERR:', err);
     if (err instanceof PrismaClientKnownRequestError) {
       // console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
