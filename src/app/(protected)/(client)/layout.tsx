@@ -32,7 +32,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
   const { username } = session.user;
   return (
     <>
-      <div className='sticky top-0 z-10 backdrop-blur-[8px] md:z-[unset]'>
+      <div className='sticky top-0 z-10 backdrop-blur-[8px] md:z-[9]'>
         <nav className='flex items-center justify-between px-4 py-2'>
           <Link
             href='/home'

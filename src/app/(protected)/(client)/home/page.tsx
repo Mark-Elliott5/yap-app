@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
   title: `Home | yap`,
   description: 'Home Page | yap',
 };
+
+export const dynamic = 'force-dynamic';
 
 async function Home({
   searchParams,
@@ -35,7 +38,9 @@ async function Home({
   const latest = (() => {
     if (error) {
       return (
-        <span className='text-zinc-950 dark:text-zinc-100'>
+        <span
+          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+        >
           Something went wrong! Please reload the page.
         </span>
       );
@@ -43,27 +48,44 @@ async function Home({
 
     if (!posts || !posts.length) {
       return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
+        <span
+          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
+        >
           {`There's nothing here... yet.`}
-        </p>
+        </span>
       );
     }
 
-    return posts.map((post) => {
-      if (post.type === 'Echo') {
-        return (
-          <EchoYapPost
-            key={post.id}
-            currentUsername={currentUsername}
-            {...post}
-          />
-        );
-      }
+    return (
+      <>
+        {/* {date && id && <NewerPostsLink date={posts[0].date} id={posts[0].id} />} */}
+        {posts.map((post) => {
+          if (post.type === 'Echo') {
+            return (
+              <EchoYapPost
+                key={post.id}
+                currentUsername={currentUsername}
+                {...post}
+              />
+            );
+          }
 
-      return (
-        <YapPost key={post.id} currentUsername={currentUsername} {...post} />
-      );
-    });
+          return (
+            <YapPost
+              key={post.id}
+              currentUsername={currentUsername}
+              {...post}
+            />
+          );
+        })}
+
+        <OlderPostsLink
+          length={posts.length}
+          date={posts[posts.length - 1].date}
+          id={posts[posts.length - 1].id}
+        />
+      </>
+    );
   })();
 
   return (

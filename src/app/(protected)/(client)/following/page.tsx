@@ -22,7 +22,9 @@ async function Following() {
   const posts = (() => {
     if (error) {
       return (
-        <span className='text-zinc-950 dark:text-zinc-100'>
+        <span
+          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+        >
           Something went wrong! Please reload the page.
         </span>
       );
@@ -30,7 +32,9 @@ async function Following() {
 
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
-        <div className='mt-4 flex flex-col gap-2'>
+        <div
+          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+        >
           <p className='text-center text-zinc-600'>*dust settles*</p>
           <p className='text-center text-zinc-950 dark:text-zinc-50'>
             {`It appears you aren't following anyone.`}
