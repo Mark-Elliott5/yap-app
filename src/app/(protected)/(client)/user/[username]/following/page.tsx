@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import UsersFallback from '@/src/components/yap/UsersFallback';
 import UserTab from '@/src/components/yap/UserTab';
 import { getFollowing } from '@/src/lib/database/fetch';
@@ -26,18 +27,16 @@ async function FollowingPage({
 
   const posts = (() => {
     if (error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Please try again.
-        </p>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!following || !following.length) {
       return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
+        <span
+          className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+        >
           @{params.username} is not following anyone.
-        </p>
+        </span>
       );
     }
     return following.map((user) => <UserTab key={user.username} {...user} />);

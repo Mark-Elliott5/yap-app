@@ -5,6 +5,7 @@ import Link from 'next/link';
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -37,21 +38,15 @@ async function Home({
 
   const latest = (() => {
     if (error) {
-      return (
-        <span
-          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
-        >
-          Something went wrong! Please reload the page.
-        </span>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!posts || !posts.length) {
       return (
         <span
-          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
+          className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
         >
-          {`There's nothing here... yet.`}
+          {`You've reached the end!`}
         </span>
       );
     }

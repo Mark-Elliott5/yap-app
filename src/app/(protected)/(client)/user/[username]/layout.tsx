@@ -136,9 +136,11 @@ dark:bg-zinc-950 dark:text-zinc-50'
           </Avatar>
         </div>
       </div>
-      <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
+      <span
+        className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+      >
         {`This user does not exist.`}
-      </p>
+      </span>
     </div>
   );
 }

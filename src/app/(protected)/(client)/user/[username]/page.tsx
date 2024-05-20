@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import PostsFallback from '@/src/components/yap/PostsFallback';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYapsAndEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -38,11 +40,7 @@ async function UserProfileYapsAndEchoesPage({
 
   const posts = (async () => {
     if (error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong!. Try again.
-        </p>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!yapsAndEchoes) return null;
@@ -50,11 +48,7 @@ async function UserProfileYapsAndEchoesPage({
     const { yaps, echoes } = yapsAndEchoes;
 
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {`There's nothing here... yet.`}
-        </p>
-      );
+      return <TheresNothingHere />;
     }
 
     const posts = (() => {

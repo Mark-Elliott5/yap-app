@@ -4,6 +4,8 @@ import { Metadata } from 'next';
 import { Separator } from '@/src/components/ui/separator';
 import NotificationTab from '@/src/components/yap/NotificationTab';
 import NotifsFallback from '@/src/components/yap/NotifsFallback';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import { getNotifications } from '@/src/lib/database/fetch';
 import { getSession } from '@/src/lib/database/getUser';
 
@@ -21,19 +23,11 @@ async function Notifications() {
 
   const body = (() => {
     if (error) {
-      return (
-        <span className='text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Please reload the page.
-        </span>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!notifications || !notifications.length) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {`There's nothing here... yet.`}
-        </p>
-      );
+      return <TheresNothingHere />;
     }
 
     let separatorUsed = false;

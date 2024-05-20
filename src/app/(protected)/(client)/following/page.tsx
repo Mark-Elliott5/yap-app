@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import PostsFallback from '@/src/components/yap/PostsFallback';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import YapPost from '@/src/components/yap/YapPost';
 import { getFollowingYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -21,19 +22,13 @@ async function Following() {
 
   const posts = (() => {
     if (error) {
-      return (
-        <span
-          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
-        >
-          Something went wrong! Please reload the page.
-        </span>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
       return (
         <div
-          className={`my-8 flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+          className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
         >
           <p className='text-center text-zinc-600'>*dust settles*</p>
           <p className='text-center text-zinc-950 dark:text-zinc-50'>

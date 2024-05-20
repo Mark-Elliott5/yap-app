@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 
 import PostsFallback from '@/src/components/yap/PostsFallback';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import YapPost from '@/src/components/yap/YapPost';
 import { getSearch } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -30,19 +32,11 @@ async function SearchPage({ params }: { params: { query: string } }) {
 
   const body = (() => {
     if (error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong!. Try again.
-        </p>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!yaps || !yaps.length) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          {`Nothing matched your query.`}
-        </p>
-      );
+      return <TheresNothingHere />;
     }
 
     return yaps.map((yap) => (

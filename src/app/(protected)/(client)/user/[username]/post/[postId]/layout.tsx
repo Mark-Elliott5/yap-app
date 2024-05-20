@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Separator } from '@/src/components/ui/separator';
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import YapPost from '@/src/components/yap/YapPost';
 import { getYap } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -24,18 +25,16 @@ async function YapPostLayout({
 
   if (error) {
     console.log('ERROR', error);
-    return (
-      <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-        Something went wrong! Please try again.
-      </p>
-    );
+    return <SomethingWentWrong />;
   }
 
   if (!yap) {
     return (
-      <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
+      <span
+        className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+      >
         Post not found.
-      </p>
+      </span>
     );
   }
 

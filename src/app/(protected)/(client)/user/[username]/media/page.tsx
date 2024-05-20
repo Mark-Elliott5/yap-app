@@ -35,11 +35,7 @@ async function UserProfileMediaPage({
 
   const posts = (async () => {
     if (error) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Please try again.
-        </p>
-      );
+      return <SomethingWentWrong />;
     }
 
     if (!yaps || !yaps.length) {
