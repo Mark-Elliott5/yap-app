@@ -64,7 +64,7 @@ function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
                     {...field}
                     placeholder='Yappity yap'
                     minLength={0}
-                    maxLength={144}
+                    maxLength={280}
                     className='placeholder:italic'
                     autoFocus
                   />

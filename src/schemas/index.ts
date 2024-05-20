@@ -221,8 +221,8 @@ const CreatePostSchema = zfd
     text: zfd.text(
       z
         .string()
-        .max(144, {
-          message: 'Content cannot be longer than 144 characters.',
+        .max(280, {
+          message: 'Content cannot be longer than 280 characters.',
         })
         .optional()
         .transform((val) =>
@@ -261,8 +261,8 @@ const CreateReplySchema = zfd
     text: zfd.text(
       z
         .string()
-        .max(144, {
-          message: 'Content cannot be longer than 144 characters.',
+        .max(280, {
+          message: 'Content cannot be longer than 280 characters.',
         })
         .optional()
         .transform((val) =>
