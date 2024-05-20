@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
@@ -48,11 +49,16 @@ async function UserProfileEchoesPage({
     }
 
     if (!echoes || !echoes.length) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No echoes yet.
-        </p>
-      );
+      if (date || id) {
+        return (
+          <span
+            className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+          >
+            {`You've reached the end!`}
+          </span>
+        );
+      }
+      return <TheresNothingHere />;
     }
 
     return (
