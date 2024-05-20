@@ -1516,12 +1516,17 @@ const getIsFollowing = cache(
   }
 );
 
-const getUsers = async (id: User['id'] | undefined = undefined) => {
+const getUsers = async (id: string | undefined = undefined) => {
   try {
-    if (!id) {
+    if (id) {
       const users = await db.user.findMany({
+        skip: 1,
         take: 20,
+        cursor: {
+          id,
+        },
         select: {
+          id: true,
           displayName: true,
           username: true,
           image: true,
@@ -1536,11 +1541,8 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
     }
     const users = await db.user.findMany({
       take: 20,
-      skip: 1,
-      cursor: {
-        id,
-      },
       select: {
+        id: true,
         displayName: true,
         username: true,
         image: true,
