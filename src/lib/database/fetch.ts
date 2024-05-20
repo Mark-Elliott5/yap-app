@@ -1758,18 +1758,23 @@ const getFollowers = async (
 
 const getFollowing = async (
   username: string,
-  id: User['id'] | undefined = undefined
+  id: string | undefined = undefined
 ) => {
   try {
-    if (!id) {
+    if (id) {
       const user = await db.user.findUnique({
         where: {
           username,
         },
         select: {
           following: {
+            skip: 1,
             take: 20,
+            cursor: {
+              id,
+            },
             select: {
+              id: true,
               username: true,
               displayName: true,
               image: true,
@@ -1788,11 +1793,8 @@ const getFollowing = async (
       select: {
         following: {
           take: 20,
-          skip: 1,
-          cursor: {
-            id,
-          },
           select: {
+            id: true,
             username: true,
             displayName: true,
             image: true,
