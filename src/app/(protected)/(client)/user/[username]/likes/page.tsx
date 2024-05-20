@@ -2,7 +2,9 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileLikes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -20,11 +22,17 @@ export async function generateMetadata({
 
 async function UserProfileLikesPage({
   params,
+  searchParams,
 }: {
   params: { username: string };
+  searchParams: {
+    date: string | undefined;
+    id: string | undefined;
+  };
 }) {
+  const { date, id } = searchParams;
   const currentData = getCurrentUsername();
-  const yapData = getUserProfileLikes(params.username);
+  const yapData = getUserProfileLikes(params.username, date, id);
 
   const [currentUsername, { likes, error }] = await Promise.all([
     currentData,
@@ -43,16 +51,35 @@ async function UserProfileLikesPage({
     }
 
     if (!likes || !likes.length) {
-      return (
-        <p className='my-8 text-center italic text-zinc-950 dark:text-zinc-100'>
-          No likes yet.
-        </p>
-      );
+      if (date || id) {
+        return (
+          <span
+            className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+          >
+            {`You've reached the end!`}
+          </span>
+        );
+      }
+      return <TheresNothingHere />;
     }
 
-    return likes.map((like) => (
-      <YapPost key={like.id} currentUsername={currentUsername} {...like.yap} />
-    ));
+    return (
+      <>
+        {likes.map((like) => (
+          <YapPost
+            key={like.id}
+            currentUsername={currentUsername}
+            {...like.yap}
+          />
+        ))}
+
+        <OlderPostsLink
+          length={likes.length}
+          date={likes[likes.length - 1].date}
+          id={likes[likes.length - 1].id}
+        />
+      </>
+    );
   })();
 
   return (

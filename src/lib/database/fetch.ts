@@ -2,7 +2,7 @@ import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
 import { LatestPosts } from '@/src/lib/database/fetchTypes';
-import { Like, User, Yap } from '@prisma/client';
+import { User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -804,12 +804,18 @@ const getUserProfileMedia = async (
 
 const getUserProfileLikes = async (
   username: string,
-  id: Like['id'] | undefined = undefined
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
 ) => {
   try {
-    if (!id) {
+    if (date && id) {
       const likes = await db.like.findMany({
+        skip: 1,
         take: 20,
+        cursor: {
+          date,
+          id: parseInt(id),
+        },
         where: {
           username,
         },
@@ -856,10 +862,6 @@ const getUserProfileLikes = async (
     }
     const likes = await db.like.findMany({
       take: 20,
-      skip: 1,
-      cursor: {
-        id,
-      },
       where: {
         username,
       },
