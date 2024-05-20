@@ -917,106 +917,269 @@ const getUserProfileEchoes = async (
   }
 };
 
-const getUserProfileYapsAndEchoes = async (username: string) => {
+const getUserProfileYapsAndEchoes = async (
+  username: string,
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
+) => {
   try {
-    const yapsAndEchoes = await db.user.findUnique({
-      where: {
-        username,
-      },
-      omit: {
-        password: true,
-        OAuth: true,
-        name: true,
-        email: true,
-        emailVerified: true,
-        imageKey: true,
-        role: true,
-        bio: true,
-        displayName: true,
-        joinDate: true,
-        id: true,
-        private: true,
-        image: true,
-        username: true,
-      },
-      include: {
-        yaps: {
-          include: {
-            author: {
-              select: {
-                displayName: true,
-                username: true,
-                image: true,
-                joinDate: true,
-                // id: true,
-              },
-            },
-            parentYap: {
-              include: {
-                author: {
-                  select: {
-                    username: true,
-                    displayName: true,
-                    image: true,
-                    joinDate: true,
-                  },
-                },
-              },
-            },
-            _count: {
-              select: {
-                likes: true,
-                echoes: true,
-                replies: true,
-              },
-            },
-          },
-          orderBy: {
-            date: 'desc',
-          },
-        },
-        echoes: {
-          include: {
-            yap: {
-              include: {
-                author: {
-                  select: {
-                    displayName: true,
-                    username: true,
-                    image: true,
-                    joinDate: true,
-                  },
-                },
-                parentYap: {
-                  include: {
-                    author: {
-                      select: {
-                        username: true,
-                        displayName: true,
-                        image: true,
-                        joinDate: true,
-                      },
-                    },
-                  },
-                },
-                _count: {
-                  select: {
-                    likes: true,
-                    echoes: true,
-                    replies: true,
-                  },
-                },
-              },
-            },
-          },
-          orderBy: {
-            date: 'desc',
-          },
-        },
-      },
-    });
+    if (date && id) {
+      const posts = await db.$queryRaw<LatestPosts>`WITH combined_posts AS (
+        SELECT 
+            "Yap".id, 
+            "Yap".text, 
+            "Yap".image,
+            "Yap".date, 
+            'Yap' AS type, 
+            NULL AS username,
+            NULL AS yap,
+            CASE 
+                WHEN u1.id IS NULL THEN NULL
+                ELSE JSON_BUILD_OBJECT(
+                    'username', u1.username,
+                    'displayName', u1."displayName",
+                    'image', u1.image,
+                    'joinDate', u1."joinDate"
+                )
+            END AS author,
+            JSON_BUILD_OBJECT(
+                'likes', COUNT(DISTINCT l.id),
+                'echoes', COUNT(DISTINCT e.id),
+                'replies', COUNT(DISTINCT r.id)
+            ) AS _count,
+            CASE 
+                WHEN "ParentYap".id IS NULL THEN NULL
+                ELSE JSON_BUILD_OBJECT(
+                    'id', "ParentYap".id,
+                    'text', "ParentYap".text,
+                    'date', "ParentYap".date,
+                    'image', "ParentYap".image,
+                    'authorId', "ParentYap"."authorId",
+                    'isReply', "ParentYap"."isReply",
+                    'author', JSON_BUILD_OBJECT(
+                        'username', u2.username,
+                        'displayName', u2."displayName",
+                        'image', u2.image,
+                        'joinDate', u2."joinDate"
+                    )
+                )
+            END AS "parentYap"
+        FROM "Yap"
+        LEFT JOIN "Like" l ON "Yap".id = l."yapId"
+        LEFT JOIN "Echo" e ON "Yap".id = e."yapId"
+        LEFT JOIN "Yap" r ON "Yap".id = r."parentYapId"
+        LEFT JOIN "User" u1 ON "Yap"."authorId" = u1.id
+        LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
+        LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
+        WHERE u1.username = ${username}
+        GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
+                "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
+                "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
+        UNION ALL
+        SELECT 
+            "Echo".id::VARCHAR, 
+            NULL AS text,
+            NULL AS image,
+            "Echo".date, 
+            'Echo' AS type, 
+            "Echo"."username",
+            JSON_BUILD_OBJECT(
+                'id', "Yap".id,
+                'text', "Yap".text,
+                'date', "Yap".date,
+                'image', "Yap".image,
+                'imageKey', "Yap"."imageKey",
+                'isReply', "Yap"."isReply",
+                'parentYap', CASE 
+                    WHEN "ParentYap".id IS NULL THEN NULL
+                    ELSE JSON_BUILD_OBJECT(
+                        'id', "ParentYap".id,
+                        'text', "ParentYap".text,
+                        'date', "ParentYap".date,
+                        'image', "ParentYap".image,
+                        'authorId', "ParentYap"."authorId",
+                        'isReply', "ParentYap"."isReply",
+                        'author', JSON_BUILD_OBJECT(
+                            'username', u2.username,
+                            'displayName', u2."displayName",
+                            'image', u2.image,
+                            'joinDate', u2."joinDate"
+                        )
+                    )
+                END,
+                'author', JSON_BUILD_OBJECT(
+                    'username', u4.username,
+                    'displayName', u4."displayName",
+                    'image', u4.image,
+                    'joinDate', u4."joinDate"
+                ),
+                '_count', JSON_BUILD_OBJECT(
+                    'likes', COUNT(DISTINCT l.id),
+                    'echoes', COUNT(DISTINCT e.id),
+                    'replies', COUNT(DISTINCT r.id)
+                )
+            ) AS yap,
+            NULL AS author,
+            NULL AS _count,
+            NULL AS "parentYap"
+        FROM "Echo"
+        JOIN "Yap" ON "Echo"."yapId" = "Yap".id
+        LEFT JOIN "Like" l ON "Yap".id = l."yapId"
+        LEFT JOIN "Echo" AS e ON "Yap".id = e."yapId"
+        LEFT JOIN "Yap" AS r ON "Yap".id = r."parentYapId"
+        LEFT JOIN "User" u3 ON "Echo"."username" = u3.username
+        LEFT JOIN "User" u4 ON "Yap"."authorId" = u4.id
+        LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
+        LEFT JOIN "User" u5 ON "ParentYap"."authorId" = u5.id
+        LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
+        WHERE u3.username = ${username}
+        GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, 
+                u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, 
+                "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", 
+                "Yap"."isReply", "Yap"."parentYapId", u4.username, 
+                u4."displayName", u4.image, u4."joinDate", "ParentYap".id, 
+                "ParentYap".text, "ParentYap".date, "ParentYap".image, 
+                "ParentYap"."authorId", "ParentYap"."isReply", 
+                "ParentYap"."parentYapId", u5.username, u5."displayName", 
+                u5.image, u5."joinDate", u2.username, u2."displayName", 
+                u2.image, u2."joinDate"
+    )
+    SELECT * FROM combined_posts
+    WHERE (date, id::VARCHAR) < (${date}, ${id})
+    ORDER BY date DESC, id DESC
+    LIMIT 20;
+    `;
 
-    return { yapsAndEchoes };
+      return { posts };
+    }
+
+    const posts = await db.$queryRaw<LatestPosts>`WITH combined_posts AS (
+      SELECT 
+          "Yap".id, 
+          "Yap".text, 
+          "Yap".image,
+          "Yap".date, 
+          'Yap' AS type, 
+          NULL AS username,
+          NULL AS yap,
+          CASE 
+              WHEN u1.id IS NULL THEN NULL
+              ELSE JSON_BUILD_OBJECT(
+                  'username', u1.username,
+                  'displayName', u1."displayName",
+                  'image', u1.image,
+                  'joinDate', u1."joinDate"
+              )
+          END AS author,
+          JSON_BUILD_OBJECT(
+              'likes', COUNT(DISTINCT l.id),
+              'echoes', COUNT(DISTINCT e.id),
+              'replies', COUNT(DISTINCT r.id)
+          ) AS _count,
+          CASE 
+              WHEN "ParentYap".id IS NULL THEN NULL
+              ELSE JSON_BUILD_OBJECT(
+                  'id', "ParentYap".id,
+                  'text', "ParentYap".text,
+                  'date', "ParentYap".date,
+                  'image', "ParentYap".image,
+                  'authorId', "ParentYap"."authorId",
+                  'isReply', "ParentYap"."isReply",
+                  'author', JSON_BUILD_OBJECT(
+                      'username', u2.username,
+                      'displayName', u2."displayName",
+                      'image', u2.image,
+                      'joinDate', u2."joinDate"
+                  )
+              )
+          END AS "parentYap"
+      FROM "Yap"
+      LEFT JOIN "Like" l ON "Yap".id = l."yapId"
+      LEFT JOIN "Echo" e ON "Yap".id = e."yapId"
+      LEFT JOIN "Yap" r ON "Yap".id = r."parentYapId"
+      LEFT JOIN "User" u1 ON "Yap"."authorId" = u1.id
+      LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
+      LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
+      WHERE u1.username = ${username}
+      GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
+              "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
+              "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
+      UNION ALL
+      SELECT 
+          "Echo".id::VARCHAR, 
+          NULL AS text,
+          NULL AS image,
+          "Echo".date, 
+          'Echo' AS type, 
+          "Echo"."username",
+          JSON_BUILD_OBJECT(
+              'id', "Yap".id,
+              'text', "Yap".text,
+              'date', "Yap".date,
+              'image', "Yap".image,
+              'imageKey', "Yap"."imageKey",
+              'isReply', "Yap"."isReply",
+              'parentYap', CASE 
+                  WHEN "ParentYap".id IS NULL THEN NULL
+                  ELSE JSON_BUILD_OBJECT(
+                      'id', "ParentYap".id,
+                      'text', "ParentYap".text,
+                      'date', "ParentYap".date,
+                      'image', "ParentYap".image,
+                      'authorId', "ParentYap"."authorId",
+                      'isReply', "ParentYap"."isReply",
+                      'author', JSON_BUILD_OBJECT(
+                          'username', u2.username,
+                          'displayName', u2."displayName",
+                          'image', u2.image,
+                          'joinDate', u2."joinDate"
+                      )
+                  )
+              END,
+              'author', JSON_BUILD_OBJECT(
+                  'username', u4.username,
+                  'displayName', u4."displayName",
+                  'image', u4.image,
+                  'joinDate', u4."joinDate"
+              ),
+              '_count', JSON_BUILD_OBJECT(
+                  'likes', COUNT(DISTINCT l.id),
+                  'echoes', COUNT(DISTINCT e.id),
+                  'replies', COUNT(DISTINCT r.id)
+              )
+          ) AS yap,
+          NULL AS author,
+          NULL AS _count,
+          NULL AS "parentYap"
+      FROM "Echo"
+      JOIN "Yap" ON "Echo"."yapId" = "Yap".id
+      LEFT JOIN "Like" l ON "Yap".id = l."yapId"
+      LEFT JOIN "Echo" AS e ON "Yap".id = e."yapId"
+      LEFT JOIN "Yap" AS r ON "Yap".id = r."parentYapId"
+      LEFT JOIN "User" u3 ON "Echo"."username" = u3.username
+      LEFT JOIN "User" u4 ON "Yap"."authorId" = u4.id
+      LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
+      LEFT JOIN "User" u5 ON "ParentYap"."authorId" = u5.id
+      LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
+      WHERE u3.username = ${username}
+      GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, 
+              u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, 
+              "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", 
+              "Yap"."isReply", "Yap"."parentYapId", u4.username, 
+              u4."displayName", u4.image, u4."joinDate", "ParentYap".id, 
+              "ParentYap".text, "ParentYap".date, "ParentYap".image, 
+              "ParentYap"."authorId", "ParentYap"."isReply", 
+              "ParentYap"."parentYapId", u5.username, u5."displayName", 
+              u5.image, u5."joinDate", u2.username, u2."displayName", 
+              u2.image, u2."joinDate"
+  )
+  SELECT * FROM combined_posts
+  ORDER BY date DESC, id DESC
+  LIMIT 20;
+  `;
+
+    console.log(posts);
+    return { posts };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {
       // console.log('Prisma error:', err);

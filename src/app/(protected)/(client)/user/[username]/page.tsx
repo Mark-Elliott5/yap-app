@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
@@ -23,57 +24,76 @@ export async function generateMetadata({
 
 async function UserProfileYapsAndEchoesPage({
   params,
+  searchParams,
 }: {
   params: { username: string };
+  searchParams: {
+    date: string | undefined;
+    id: string | undefined;
+  };
 }) {
   // get currently logged in user to check if this user has liked/echoed/replied
   // YapPost via its child Like/Echo/Reply button components
+  const { date, id } = searchParams;
   const currentData = getCurrentUsername();
-  const yapData = getUserProfileYapsAndEchoes(params.username);
+  const yapData = getUserProfileYapsAndEchoes(params.username, date, id);
 
-  const [currentUsername, { yapsAndEchoes, error }] = await Promise.all([
+  const [currentUsername, { posts, error }] = await Promise.all([
     currentData,
     yapData,
   ]);
 
   if (!currentUsername) return null;
 
-  const posts = (async () => {
+  const yapsAndEchoes = (() => {
     if (error) {
       return <SomethingWentWrong />;
     }
 
-    if (!yapsAndEchoes) return null;
-
-    const { yaps, echoes } = yapsAndEchoes;
-
-    if (!echoes || !yaps || (!echoes.length && !yaps.length)) {
+    if (!posts || !posts.length) {
+      if (date || id) {
+        return (
+          <span
+            className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+          >
+            {`You've reached the end!`}
+          </span>
+        );
+      }
       return <TheresNothingHere />;
     }
 
-    const posts = (() => {
-      const temp = [...yaps, ...echoes];
-      temp.sort((a, b) => b.date.getTime() - a.date.getTime());
-      return temp;
-    })();
+    return (
+      <>
+        {/* {date && id && <NewerPostsLink date={posts[0].date} id={posts[0].id} />} */}
+        {posts.map((post) => {
+          if (post.type === 'Echo') {
+            return (
+              <EchoYapPost
+                key={post.id}
+                currentUsername={currentUsername}
+                {...post}
+              />
+            );
+          }
 
-    return posts.map((yap) => {
-      if ('yap' in yap) {
-        return (
-          <EchoYapPost
-            key={yap.id}
-            currentUsername={currentUsername}
-            {...yap}
-          />
-        );
-      }
+          return (
+            <YapPost
+              key={post.id}
+              currentUsername={currentUsername}
+              {...post}
+            />
+          );
+        })}
 
-      return (
-        <YapPost key={yap.id} currentUsername={currentUsername} {...yap} />
-      );
-    });
+        <OlderPostsLink
+          length={posts.length}
+          date={posts[posts.length - 1].date}
+          id={posts[posts.length - 1].id}
+        />
+      </>
+    );
   })();
-
   return (
     <>
       <div className='flex gap-2 overflow-x-scroll px-[9px] py-[6px] text-sm text-zinc-950 sm:gap-4 sm:px-[unset] sm:py-[unset] sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
@@ -113,7 +133,7 @@ async function UserProfileYapsAndEchoesPage({
           <PostsFallback key={i} />
         ))}
       >
-        {posts}
+        {yapsAndEchoes}
       </Suspense>
     </>
   );

@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 
+import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import UsersFallback from '@/src/components/yap/UsersFallback';
 import UserTab from '@/src/components/yap/UserTab';
 import { getUsers } from '@/src/lib/database/fetch';
@@ -15,11 +16,7 @@ async function Users() {
 
   const posts = (() => {
     if (error || !users || !users.length) {
-      return (
-        <p className='text-zinc-950 dark:text-zinc-100'>
-          Something went wrong! Please reload the page.
-        </p>
-      );
+      return <SomethingWentWrong />;
     }
 
     return users.map((user) => <UserTab key={user.username} {...user} />);

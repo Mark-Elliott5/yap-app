@@ -6,6 +6,7 @@ import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import PostsFallback from '@/src/components/yap/PostsFallback';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
+import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import YapPost from '@/src/components/yap/YapPost';
 import { getLatestYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -14,8 +15,6 @@ export const metadata: Metadata = {
   title: `Home | yap`,
   description: 'Home Page | yap',
 };
-
-export const dynamic = 'force-dynamic';
 
 async function Home({
   searchParams,
@@ -42,13 +41,16 @@ async function Home({
     }
 
     if (!posts || !posts.length) {
-      return (
-        <span
-          className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
-        >
-          {`You've reached the end!`}
-        </span>
-      );
+      if (date || id) {
+        return (
+          <span
+            className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-center text-sm italic shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+          >
+            {`You've reached the end!`}
+          </span>
+        );
+      }
+      return <TheresNothingHere />;
     }
 
     return (
