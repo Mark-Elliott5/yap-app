@@ -116,7 +116,12 @@ const register = async (data: FormData) => {
       bio: '',
     };
 
-    await db.user.create({ data: userObj });
+    await db.user.create({
+      data: {
+        ...userObj,
+        following: { connect: { username: process.env.AUTOFOLLOW! } },
+      },
+    });
 
     // return { success: 'Registration successful!' };
 

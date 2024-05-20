@@ -1,6 +1,6 @@
 {
-  "name": "sm-clone",
-  "version": "0.1.0",
+  "name": "yap-app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
