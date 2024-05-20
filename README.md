@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# yap-app
 
-## Getting Started
+Site is currently deployed [here](https://yap-app.onrender.com).
 
-First, run the development server:
+This app is a Twitter-like social media app where users can register with Github OAuth or email/password credentials, then Yap and Echo posts (Tweet and Retweet respectively). Yaps can have text and/or an image attached. Text is parsed for @user mentions, which will automatically link to the mentioned user. Image hosting is provided by [uploadthing](https://uploadthing.com/) and their provided UTApi Server SDK. Users can customize their profile by uploading an avatar, writing a bio, and adding a display name. Users can also follow other users, and automatically follow me upon registering by default. When a user likes, echoes, or replies to your yap, you will receive a live notification update via Server Sent Events (SSE) as indicated by the swinging bell icon. Counters next to like and echo buttons are abbreviated to xK and xM numbers at the 1000 and 1000000 threshold (though they will never reach those numbers 😭). Users can search through yaps on the search page, which supports operations detailed in the [Prisma docs](https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search). Pagination is implemented with Link elements, searchParams and a Prisma native/raw SQL cursor.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+The app is built with Next.js App Router and takes into consideration the best practices as detailed in their documentation. This includes:
+-Fetching data on the server with React Server Components
+-Mutating data with Server Actions
+-Parallel data fetching to avoid waterfalls
+-Nested layouts
+-Progressive rendering with Suspense
+-React.cache() to dedupe requests during the Request/Response cycle
+-Edge-compatible database adapter for use in middleware
+
+Tailwind, react-hook-form, react-icons, and shadcn were some of the tools used to create the frontend. A Postgres database provided by [Neon](https://neon.tech) is used in conjunction with Prisma ORM which provides great type safety for queries. Zod and zod-form-data are used to provide validation on user inputs. Authentication was painfully implemented with Auth.js (next-auth v5).
+
+# Local Installation
+
+1. Clone this repository
+
+2. Navigate to the project in terminal and run the build script
+
+```console
+$ pnpm install --frozen-lockfile; pnpm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```console
+$ pnpm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Navigate localhost:3000 in the browser
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![yap-app](images/yap-app.png)
