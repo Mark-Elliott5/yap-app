@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, useForm } from 'react-hook-form';
@@ -14,6 +13,7 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
 import FormButton from '@/src/components/yap/FormButton';
 import FormError from '@/src/components/yap/FormError';
 import { createPost } from '@/src/lib/database/actions';
@@ -60,10 +60,9 @@ function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
               <FormItem>
                 <FormLabel>Text</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     {...field}
                     placeholder='Yappity yap'
-                    type='text'
                     minLength={0}
                     maxLength={144}
                     className='placeholder:italic'

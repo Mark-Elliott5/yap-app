@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
 import FormButton from '@/src/components/yap/FormButton';
 import FormError from '@/src/components/yap/FormError';
 import { createReply } from '@/src/lib/database/actions';
@@ -66,10 +67,9 @@ function ReplyPostForm({
               <FormItem>
                 <FormLabel>Text</FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     {...field}
                     placeholder='Yappity yap'
-                    type='text'
                     minLength={0}
                     maxLength={144}
                     className='placeholder:italic'
@@ -109,7 +109,6 @@ function ReplyPostForm({
             name='id'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Image</FormLabel>
                 <FormControl>
                   <Input {...field} value={id} type='hidden' hidden />
                 </FormControl>
