@@ -1324,7 +1324,8 @@ const getUserProfileYapsAndEchoes = async (
 
 const getNotifications = async (
   username: string,
-  id: number | undefined = undefined
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
 ) => {
   try {
     await db.user.update({
@@ -1335,9 +1336,14 @@ const getNotifications = async (
         newNotifications: null,
       },
     });
-    if (!id) {
+    if (date && id) {
       const notifications = await db.notification.findMany({
+        skip: 1,
         take: 20,
+        cursor: {
+          date,
+          id: parseInt(id),
+        },
         where: {
           username,
         },
@@ -1358,10 +1364,6 @@ const getNotifications = async (
 
     const notifications = await db.notification.findMany({
       take: 20,
-      skip: 1,
-      cursor: {
-        id,
-      },
       where: {
         username,
       },
