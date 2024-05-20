@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
 import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
+import PostsFallback from '@/src/components/yap/PostsFallback';
 import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
@@ -115,7 +117,14 @@ async function UserProfileEchoesPage({
           Likes
         </Link>
       </div>
-      {posts}
+      <Suspense
+        key={params.username + 'echoes' + date + id}
+        fallback={Array.from({ length: 8 }).map((_, i) => (
+          <PostsFallback key={i} />
+        ))}
+      >
+        {posts}
+      </Suspense>
     </>
   );
 }
