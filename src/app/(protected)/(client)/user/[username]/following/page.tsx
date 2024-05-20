@@ -24,7 +24,7 @@ async function FollowingPage({
   searchParams,
 }: Readonly<{
   params: { username: string };
-  searchParams: { id: string };
+  searchParams: { id?: string };
 }>) {
   const { id } = searchParams;
   const { following, error } = await getFollowing(params.username, id);

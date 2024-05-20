@@ -19,8 +19,8 @@ async function Following({
   searchParams,
 }: {
   searchParams: {
-    date: string | undefined;
-    id: string | undefined;
+    date?: string;
+    id?: string;
   };
 }) {
   const currentUsername = await getCurrentUsername();
@@ -72,6 +72,7 @@ async function Following({
         {yaps.map((post) => (
           <YapPost key={post.id} currentUsername={currentUsername} {...post} />
         ))}
+
         <OlderPostsLink
           length={yaps.length}
           date={yaps[yaps.length - 1].date}

@@ -2,7 +2,7 @@ import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
 import { LatestPosts } from '@/src/lib/database/fetchTypes';
-import { User, Yap } from '@prisma/client';
+import { Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -1573,16 +1573,20 @@ const getUsers = async (id: string | undefined = undefined) => {
 
 const getSearch = async (
   query: string,
-  id: User['id'] | undefined = undefined
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
 ) => {
   try {
     if (query === '') return { yaps: undefined };
 
-    console.log(query);
-
-    if (!id) {
+    if (date && id) {
       const yaps = await db.yap.findMany({
+        skip: 1,
         take: 20,
+        cursor: {
+          date,
+          id,
+        },
         where: {
           text: {
             search: query.split(' ').join(','),
@@ -1628,10 +1632,6 @@ const getSearch = async (
 
     const yaps = await db.yap.findMany({
       take: 20,
-      skip: 1,
-      cursor: {
-        id,
-      },
       where: {
         text: {
           search: query.split(' ').join(','),

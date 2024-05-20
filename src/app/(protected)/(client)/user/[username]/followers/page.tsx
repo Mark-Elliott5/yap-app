@@ -25,7 +25,7 @@ async function FollowersPage({
 }: Readonly<{
   params: { username: string };
   searchParams: {
-    id: string | undefined;
+    id?: string;
   };
 }>) {
   const { id } = searchParams;

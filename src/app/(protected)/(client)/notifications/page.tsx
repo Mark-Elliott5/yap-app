@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 async function Notifications({
   searchParams,
 }: {
-  searchParams: { date: string; id: string };
+  searchParams: { date?: string; id?: string };
 }) {
   const session = await getSession();
   if (!session || !session.user || !session.user.username) return null;

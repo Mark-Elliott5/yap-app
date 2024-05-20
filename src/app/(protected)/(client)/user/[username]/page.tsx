@@ -28,8 +28,8 @@ async function UserProfileYapsAndEchoesPage({
 }: {
   params: { username: string };
   searchParams: {
-    date: string | undefined;
-    id: string | undefined;
+    date?: string;
+    id?: string;
   };
 }) {
   // get currently logged in user to check if this user has liked/echoed/replied

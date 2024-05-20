@@ -11,7 +11,9 @@ function SearchInput({ className }: { className?: string }) {
     <Input
       onKeyDown={(e) => {
         e.key === 'Enter' &&
-          router.push(`/search/${encodeURIComponent(e.currentTarget.value)}`);
+          router.push(
+            `/search?query=${encodeURIComponent(e.currentTarget.value)}`
+          );
       }}
       maxLength={50}
       className={className}

@@ -26,8 +26,8 @@ async function UserProfileLikesPage({
 }: {
   params: { username: string };
   searchParams: {
-    date: string | undefined;
-    id: string | undefined;
+    date?: string;
+    id?: string;
   };
 }) {
   const { date, id } = searchParams;

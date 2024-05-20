@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: 'Users Page | yap',
 };
 
-async function Users({ searchParams }: { searchParams: { id: string } }) {
+async function Users({ searchParams }: { searchParams: { id?: string } }) {
   const { id } = searchParams;
   const { users, error } = await getUsers(id);
 
