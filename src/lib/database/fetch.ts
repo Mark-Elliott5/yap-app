@@ -672,9 +672,71 @@ const getUserProfileYaps = async (
   }
 };
 
-const getUserProfileMedia = async (username: string) => {
+const getUserProfileMedia = async (
+  username: string,
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
+) => {
   try {
+    if (date && id) {
+      const yaps = await db.yap.findMany({
+        skip: 1,
+        take: 20,
+        cursor: {
+          date,
+          id,
+        },
+        where: {
+          author: {
+            username,
+          },
+          NOT: {
+            image: null,
+          },
+        },
+        omit: {
+          parentYapId: true,
+          authorId: true,
+        },
+        include: {
+          author: {
+            select: {
+              displayName: true,
+              username: true,
+              image: true,
+              joinDate: true,
+              // id: true,
+            },
+          },
+          parentYap: {
+            include: {
+              author: {
+                select: {
+                  username: true,
+                  displayName: true,
+                  image: true,
+                  joinDate: true,
+                },
+              },
+            },
+          },
+          _count: {
+            select: {
+              likes: true,
+              echoes: true,
+              replies: true,
+            },
+          },
+        },
+        orderBy: {
+          date: 'desc',
+        },
+      });
+
+      return { yaps };
+    }
     const yaps = await db.yap.findMany({
+      take: 20,
       where: {
         author: {
           username,
