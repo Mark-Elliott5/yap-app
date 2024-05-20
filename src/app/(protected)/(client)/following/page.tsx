@@ -101,6 +101,7 @@ async function Following({
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
         <Suspense
+          key={'following' + date + id}
           fallback={Array.from({ length: 8 }).map((_, i) => (
             <PostsFallback key={i} />
           ))}

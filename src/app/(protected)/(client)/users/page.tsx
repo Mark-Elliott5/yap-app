@@ -59,6 +59,7 @@ async function Users({ searchParams }: { searchParams: { id?: string } }) {
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
         <Suspense
+          key={'users' + id}
           fallback={Array.from({ length: 10 }).map((_, i) => (
             <UsersFallback key={i} />
           ))}

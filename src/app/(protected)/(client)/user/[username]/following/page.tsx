@@ -117,6 +117,7 @@ async function FollowingPage({
       </div>
       <div className='flex w-full flex-col gap-4'>
         <Suspense
+          key={params.username + 'following' + id}
           fallback={Array.from({ length: 10 }).map((_, i) => (
             <UsersFallback key={i} />
           ))}

@@ -129,6 +129,7 @@ async function UserProfileYapsAndEchoesPage({
         </Link>
       </div>
       <Suspense
+        key={params.username + 'yapsandechoes' + date + id}
         fallback={Array.from({ length: 8 }).map((_, i) => (
           <PostsFallback key={i} />
         ))}

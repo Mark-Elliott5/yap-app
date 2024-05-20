@@ -103,6 +103,7 @@ async function Home({
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
         <Suspense
+          key={'home' + date + id}
           fallback={Array.from({ length: 8 }).map((_, i) => (
             <PostsFallback key={i} />
           ))}

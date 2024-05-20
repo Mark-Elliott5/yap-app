@@ -110,6 +110,7 @@ async function UserProfileMediaPage({
         </Link>
       </div>
       <Suspense
+        key={params.username + 'media' + date + id}
         fallback={Array.from({ length: 8 }).map((_, i) => (
           <PostsFallback key={i} />
         ))}

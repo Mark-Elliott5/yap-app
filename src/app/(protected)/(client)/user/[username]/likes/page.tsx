@@ -118,6 +118,7 @@ async function UserProfileLikesPage({
         </Link>
       </div>
       <Suspense
+        key={params.username + 'likes' + date + id}
         fallback={Array.from({ length: 8 }).map((_, i) => (
           <PostsFallback key={i} />
         ))}

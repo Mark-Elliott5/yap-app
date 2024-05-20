@@ -90,6 +90,7 @@ async function Notifications({
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
         <Suspense
+          key={'notificiations' + date + id}
           fallback={Array.from({ length: 10 }).map((_, i) => (
             <NotifsFallback key={i} />
           ))}
