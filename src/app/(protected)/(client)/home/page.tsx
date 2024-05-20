@@ -13,9 +13,17 @@ export const metadata: Metadata = {
   description: 'Home Page | yap',
 };
 
-async function Home() {
+async function Home({
+  searchParams,
+}: {
+  searchParams: {
+    date: string | undefined;
+    id: string | undefined;
+  };
+}) {
+  const { date, id } = searchParams;
   const currentData = getCurrentUsername();
-  const postsData = getLatestYaps();
+  const postsData = getLatestYaps(date, id);
 
   const [currentUsername, { posts, error }] = await Promise.all([
     currentData,
