@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import EchoYapPost from '@/src/components/yap/EchoYapPost';
+import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
 import { getUserProfileEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
@@ -18,11 +19,17 @@ export async function generateMetadata({
 
 async function UserProfileEchoesPage({
   params,
+  searchParams,
 }: {
   params: { username: string };
+  searchParams: {
+    date: string | undefined;
+    id: string | undefined;
+  };
 }) {
+  const { date, id } = searchParams;
   const currentData = getCurrentUsername();
-  const yapData = getUserProfileEchoes(params.username);
+  const yapData = getUserProfileEchoes(params.username, date, id);
 
   const [currentUsername, { echoes, error }] = await Promise.all([
     currentData,
@@ -48,9 +55,23 @@ async function UserProfileEchoesPage({
       );
     }
 
-    return echoes.map((echo) => (
-      <EchoYapPost key={echo.id} currentUsername={currentUsername} {...echo} />
-    ));
+    return (
+      <>
+        {echoes.map((echo) => (
+          <EchoYapPost
+            key={echo.id}
+            currentUsername={currentUsername}
+            {...echo}
+          />
+        ))}
+
+        <OlderPostsLink
+          length={echoes.length}
+          date={echoes[echoes.length - 1].date}
+          id={echoes[echoes.length - 1].id}
+        />
+      </>
+    );
   })();
 
   return (

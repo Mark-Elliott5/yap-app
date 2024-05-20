@@ -2,7 +2,7 @@ import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
 import { LatestPosts } from '@/src/lib/database/fetchTypes';
-import { Echo, Like, User, Yap } from '@prisma/client';
+import { Like, User, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
@@ -801,12 +801,18 @@ const getUserProfileLikes = async (
 
 const getUserProfileEchoes = async (
   username: string,
-  id: Echo['id'] | undefined = undefined
+  date: string | undefined = undefined,
+  id: string | undefined = undefined
 ) => {
   try {
-    if (!id) {
+    if (date && id) {
       const echoes = await db.echo.findMany({
         take: 20,
+        skip: 1,
+        cursor: {
+          date,
+          id: parseInt(id),
+        },
         where: {
           username,
         },
@@ -853,10 +859,6 @@ const getUserProfileEchoes = async (
     }
     const echoes = await db.echo.findMany({
       take: 20,
-      skip: 1,
-      cursor: {
-        id,
-      },
       where: {
         username,
       },
@@ -1212,7 +1214,7 @@ const getNotifications = async (
     });
     if (!id) {
       const notifications = await db.notification.findMany({
-        take: 30,
+        take: 20,
         where: {
           username,
         },
@@ -1232,7 +1234,7 @@ const getNotifications = async (
     }
 
     const notifications = await db.notification.findMany({
-      take: 30,
+      take: 20,
       skip: 1,
       cursor: {
         id,
@@ -1393,7 +1395,7 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
   try {
     if (!id) {
       const users = await db.user.findMany({
-        take: 30,
+        take: 20,
         select: {
           displayName: true,
           username: true,
@@ -1408,7 +1410,7 @@ const getUsers = async (id: User['id'] | undefined = undefined) => {
       return { users };
     }
     const users = await db.user.findMany({
-      take: 30,
+      take: 20,
       skip: 1,
       cursor: {
         id,
@@ -1453,7 +1455,7 @@ const getSearch = async (
 
     if (!id) {
       const yaps = await db.yap.findMany({
-        take: 30,
+        take: 20,
         where: {
           text: {
             search: query.split(' ').join(','),
@@ -1498,7 +1500,7 @@ const getSearch = async (
     }
 
     const yaps = await db.yap.findMany({
-      take: 30,
+      take: 20,
       skip: 1,
       cursor: {
         id,

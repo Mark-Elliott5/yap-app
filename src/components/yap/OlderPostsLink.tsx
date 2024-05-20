@@ -7,7 +7,7 @@ function OlderPostsLink({
   date,
 }: {
   length: number;
-  id: string;
+  id: string | number;
   date: string | Date;
 }) {
   if (length < 20) {
