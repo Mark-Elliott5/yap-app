@@ -7,6 +7,8 @@ import {
   AvatarImage,
 } from '@/src/components/ui/avatar';
 import AutoMention from '@/src/components/yap/AutoMention';
+import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
+import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import DeleteButton from '@/src/components/yap/DeleteButton';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
@@ -59,9 +61,11 @@ async function EchoYapPost({
           <span className='text-xs'>@{username} echoed... </span>
         </div>
         <div className='flex items-center gap-2 text-zinc-600/70'>
-          <span className='text-xs'>{date.toLocaleDateString()}</span>
+          <span className='text-xs'>
+            <ClientLocaleDate date={date} />
+          </span>
           <span className='hidden text-xs sm:inline-block'>
-            {date.toLocaleTimeString()}
+            <ClientLocaleTime date={date} />
           </span>
           <TbAccessPoint
             size='1.25rem'
@@ -75,11 +79,7 @@ async function EchoYapPost({
         >
           <UserHovercard
             username={yap.author.username!}
-            joinDate={
-              typeof yap.author.joinDate === 'string'
-                ? new Date(yap.author.joinDate + 'Z')
-                : yap.author.joinDate
-            }
+            joinDate={yap.author.joinDate}
             displayName={yap.author.displayName}
             image={yap.author.image}
           >
@@ -116,13 +116,9 @@ async function EchoYapPost({
             href={`/user/${yap.author.username}/post/${yap.id}`}
             className='flex items-center gap-2 text-xs text-zinc-600/70'
           >
-            {typeof yap.date === 'string'
-              ? new Date(yap.date + 'Z').toLocaleDateString()
-              : yap.date.toLocaleDateString()}
+            <ClientLocaleDate date={yap.date} />
             <span className='hidden text-xs sm:inline-block'>
-              {typeof yap.date === 'string'
-                ? new Date(yap.date + 'Z').toLocaleTimeString()
-                : yap.date.toLocaleTimeString()}
+              <ClientLocaleTime date={yap.date} />
             </span>
           </Link>
         </div>

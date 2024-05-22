@@ -11,6 +11,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/src/components/ui/hover-card';
+import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
 
 async function UserHovercard({
   children,
@@ -23,7 +24,7 @@ async function UserHovercard({
   username: string;
   image: string | null;
   displayName: string | null;
-  joinDate: Date;
+  joinDate: string | Date;
 }) {
   return (
     <HoverCard>
@@ -63,7 +64,7 @@ async function UserHovercard({
             <div className='flex items-center gap-1'>
               <TbCalendarMonth className='inline-block h-4 w-4 text-black dark:text-white' />{' '}
               <span className='text-xs'>
-                Joined {new Date(joinDate).toLocaleDateString()}
+                Joined <ClientLocaleDate date={joinDate} />
               </span>
             </div>
           </div>

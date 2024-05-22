@@ -6,6 +6,8 @@ import {
   AvatarImage,
 } from '@/src/components/ui/avatar';
 import AutoMention from '@/src/components/yap/AutoMention';
+import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
+import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { User, Yap } from '@prisma/client';
 
@@ -36,11 +38,7 @@ async function ParentYapPreview({
       <div className='flex flex-wrap items-center justify-between gap-y-3'>
         <UserHovercard
           username={author.username!}
-          joinDate={
-            typeof author.joinDate === 'string'
-              ? new Date(author.joinDate + 'Z')
-              : author.joinDate
-          }
+          joinDate={author.joinDate}
           displayName={author.displayName}
           image={author.image}
         >
@@ -77,13 +75,9 @@ async function ParentYapPreview({
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
-          {typeof date === 'string'
-            ? new Date(date + 'Z').toLocaleDateString()
-            : date.toLocaleDateString()}
+          <ClientLocaleDate date={date} />
           <span className='hidden text-xs sm:inline-block'>
-            {typeof date === 'string'
-              ? new Date(date + 'Z').toLocaleTimeString()
-              : date.toLocaleTimeString()}
+            <ClientLocaleTime date={date} />
           </span>
         </Link>
       </div>

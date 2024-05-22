@@ -6,6 +6,8 @@ import {
   AvatarImage,
 } from '@/src/components/ui/avatar';
 import AutoMention from '@/src/components/yap/AutoMention';
+import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
+import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import DeleteButton from '@/src/components/yap/DeleteButton';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
@@ -58,11 +60,7 @@ async function YapPost({
       >
         <UserHovercard
           username={author.username!}
-          joinDate={
-            typeof author.joinDate === 'string'
-              ? new Date(author.joinDate + 'Z')
-              : author.joinDate
-          }
+          joinDate={author.joinDate}
           displayName={author.displayName}
           image={author.image}
         >
@@ -99,13 +97,9 @@ async function YapPost({
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
-          {typeof date === 'string'
-            ? new Date(date + 'Z').toLocaleDateString()
-            : date.toLocaleDateString()}
+          <ClientLocaleDate date={date} />
           <span className='hidden text-xs sm:inline-block'>
-            {typeof date === 'string'
-              ? new Date(date + 'Z').toLocaleTimeString()
-              : date.toLocaleTimeString()}
+            <ClientLocaleTime date={date} />
           </span>
         </Link>
       </div>
