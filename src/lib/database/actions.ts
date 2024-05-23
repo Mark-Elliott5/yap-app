@@ -191,6 +191,7 @@ const onboarding = async (data: FormData) => {
     });
     // return { success: 'Registration successful!' };
   } catch (err) {
+    console.log('onboarding Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -205,7 +206,6 @@ const onboarding = async (data: FormData) => {
       return { error: err.message };
     }
 
-    console.log('Unknown error:', err);
     return { error: 'Something went wrong!' };
   }
 
@@ -240,6 +240,7 @@ const changeEmail = async (data: FormData) => {
 
     return { success: 'Email updated.' };
   } catch (err) {
+    console.log('changeEmail Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -298,6 +299,7 @@ const changePassword = async (data: FormData) => {
 
     return { success: 'Password updated.' };
   } catch (err) {
+    console.log('changePassword Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -347,7 +349,7 @@ const changeAvatar = async (data: FormData) => {
     });
     return { success: 'Avatar uploaded successfully.', url: response.data.url };
   } catch (err) {
-    console.log(err);
+    console.log('changeAvatar Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -377,7 +379,7 @@ const deleteAccount = async (data: FormData) => {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.log('deleteAccount Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -416,7 +418,7 @@ const changeDisplayName = async (data: FormData) => {
     });
     return { success: 'Display name updated successfully.' };
   } catch (err) {
-    console.log(err);
+    console.log('changeDisplayName Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -448,7 +450,7 @@ const changeBio = async (data: FormData) => {
     });
     return { success: 'Bio updated successfully.' };
   } catch (err) {
-    console.log(err);
+    console.log('changeBio Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -499,7 +501,7 @@ const createPost = async (data: FormData) => {
 
     return { postId };
   } catch (err) {
-    console.log(err);
+    console.log('createPost Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -611,7 +613,7 @@ const createReply = async (data: FormData) => {
 
     return { postId };
   } catch (err) {
-    console.log(err);
+    console.log('createReply Error:', err);
     if (err instanceof ZodError) {
       return { error: err.issues[0].message };
     }
@@ -651,6 +653,7 @@ const deleteYap = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
+    console.log('deleteYap Error:', err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
@@ -777,6 +780,7 @@ const heartYap = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
+    console.log('heartYap Error:', err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
@@ -903,6 +907,7 @@ const echoYap = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
+    console.log('echoYap Error:', err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
@@ -1006,7 +1011,35 @@ const followUser = async (data: FormData) => {
 
     return { success: true };
   } catch (err) {
-    console.log(err);
+    console.log('followUser Error:', err);
+    if (err instanceof PrismaClientKnownRequestError) {
+      console.log('Prisma error:', err);
+      return { error: 'Something went wrong! Please try again.' };
+    }
+
+    if (err instanceof ActionError) {
+      return { error: err.message };
+    }
+    // if (err instanceof PrismaClientKnownRequestError) {
+    //   return { error: 'Database error!' };
+    // }
+    return { error: 'Unknown error occured.' };
+  }
+};
+
+const clearNotifications = async () => {
+  try {
+    const { user } = await getSessionWrapper('Access denied.');
+
+    await db.notification.deleteMany({
+      where: {
+        username: user.username!,
+      },
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.log('clearNotif Error:', err);
     if (err instanceof PrismaClientKnownRequestError) {
       console.log('Prisma error:', err);
       return { error: 'Something went wrong! Please try again.' };
@@ -1028,6 +1061,7 @@ export {
   changeDisplayName,
   changeEmail,
   changePassword,
+  clearNotifications,
   createPost,
   createReply,
   deleteAccount,

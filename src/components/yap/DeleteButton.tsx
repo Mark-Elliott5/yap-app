@@ -34,7 +34,7 @@ function DeleteButton({ id }: DeleteButtonProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
-            <button
+            <div
               className={`flex items-center gap-1 text-zinc-500 transition-all hover:scale-[1.2] hover:text-red-500 hover:drop-shadow-delete active:scale-[0.95] dark:text-zinc-600`}
               onClick={() => setFormVisible(true)}
             >
@@ -59,7 +59,7 @@ function DeleteButton({ id }: DeleteButtonProps) {
               ) : (
                 <TbTrash size='1.25rem' />
               )}
-            </button>
+            </div>
           </div>
         </TooltipTrigger>
         <TooltipContent>

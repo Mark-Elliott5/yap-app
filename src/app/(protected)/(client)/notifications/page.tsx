@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 
 import { Separator } from '@/src/components/ui/separator';
+import ClearNotificationsButton from '@/src/components/yap/ClearNotifications';
 import NotificationTab from '@/src/components/yap/NotificationTab';
 import NotifsFallback from '@/src/components/yap/NotifsFallback';
 import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
@@ -83,10 +84,11 @@ async function Notifications({
 
   return (
     <>
-      <div className='my-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
+      <div className='my-4 flex items-center justify-between gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
         <div className='cursor-default rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'>
           Notifications
         </div>
+        <ClearNotificationsButton />
       </div>
       <div className='flex min-h-dvh flex-col gap-4'>
         <Suspense
