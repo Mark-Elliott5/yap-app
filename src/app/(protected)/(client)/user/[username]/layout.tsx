@@ -43,13 +43,15 @@ async function Profile({
           <div className='flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
               {user.displayName && (
-                <p className='text-3xl md:text-4xl'>{user.displayName}</p>
+                <p className='max-w-[150px] truncate text-xl sm:max-w-[240px] sm:text-2xl md:max-w-[300px] md:text-3xl lg:max-w-[350px]'>
+                  {user.displayName}
+                </p>
               )}
               <p
                 className={
                   !user.displayName
-                    ? 'text-3xl md:text-4xl'
-                    : 'text-lg text-zinc-400 sm:text-xl md:text-3xl'
+                    ? 'max-w-[150px] truncate text-xl sm:max-w-[240px] sm:text-2xl md:max-w-[300px] md:text-3xl lg:max-w-[350px]'
+                    : 'text-lg text-zinc-400 sm:text-xl md:text-2xl'
                 }
               >
                 @{user.username}
