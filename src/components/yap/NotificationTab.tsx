@@ -33,7 +33,7 @@ function NotificationTab({
       className={`rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 shadow-xl transition-all hover:scale-[1.05] dark:border-zinc-800 dark:bg-zinc-900`}
     >
       <div className='top-0 flex items-center justify-between'>
-        <div className='flex items-center gap-3'>
+        <div className='flex flex-grow items-center gap-3'>
           {type === 'like' ? (
             <TbHeartFilled className='h-4 w-4 text-yap-red-500 drop-shadow-heart lg:h-5 lg:w-5' />
           ) : type === 'echo' ? (
@@ -43,7 +43,7 @@ function NotificationTab({
           ) : (
             <TbUsers className='h-4 w-4 text-zinc-600 drop-shadow-thread-light lg:h-5 lg:w-5 dark:text-zinc-400' />
           )}
-          <div className='flex items-center gap-3 text-xs text-zinc-950 sm:text-sm lg:text-base dark:text-zinc-100'>
+          <div className='flex min-w-[90%] items-center gap-3 text-xs text-zinc-950 sm:text-sm lg:text-base dark:text-zinc-100'>
             <Link
               href={`/user/${authorUsername}`}
               className='flex items-center'
@@ -65,7 +65,7 @@ function NotificationTab({
                   ? `/user/${authorUsername}`
                   : `/user/${username}/post/${postId}`
               }
-              className='hover:underline'
+              className='flex-grow hover:underline'
             >
               @{authorUsername}{' '}
               {type === 'like'
