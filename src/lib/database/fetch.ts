@@ -1303,7 +1303,6 @@ const getUserProfileYapsAndEchoes = async (
   LIMIT 20;
   `;
 
-    console.log(posts);
     return { posts };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError) {

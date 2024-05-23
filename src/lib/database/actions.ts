@@ -941,7 +941,7 @@ const followUser = async (data: FormData) => {
       },
     });
 
-    await db.user.update({
+    const updatedUser = await db.user.update({
       where: {
         username,
       },
@@ -953,6 +953,56 @@ const followUser = async (data: FormData) => {
         },
       },
     });
+
+    if (!isUserFollowing) {
+      const notification: Prisma.NotificationCreateInput = {
+        type: 'follow',
+        postId: null,
+        user: {
+          connect: {
+            username,
+          },
+        },
+        author: {
+          connect: {
+            id: user.id,
+          },
+        },
+      };
+
+      try {
+        await db.user.update({
+          where: {
+            username,
+            AND: {
+              newNotifications: null,
+            },
+          },
+          data: {
+            newNotifications: new Date(),
+          },
+        });
+      } catch (err) {
+        if (
+          err instanceof PrismaClientKnownRequestError &&
+          err.code !== 'P2025'
+        ) {
+          throw err;
+        }
+      }
+
+      await db.notification.create({ data: notification });
+      const notifier = notifierUserIdMap.get(updatedUser.id);
+      if (notifier) notifier.update({ data: 'true', event: 'update' });
+    } else {
+      await db.notification.deleteMany({
+        where: {
+          username: username,
+          authorUsername: user.username!,
+          type: 'follow',
+        },
+      });
+    }
 
     return { success: true };
   } catch (err) {

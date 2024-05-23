@@ -84,6 +84,7 @@ enum NotifType {
   echo
   like
   reply
+  follow
 }
 
 model Notification {
@@ -93,7 +94,7 @@ model Notification {
   username       String    @db.VarChar(15)
   authorUsername String    @db.VarChar(15)
   author         User      @relation(name: "SentNotifications", fields: [authorUsername], references: [username], onDelete: Cascade)
-  postId         String
+  postId         String?
   date           DateTime  @default(now())
 }
 

@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import { TbAccessPoint, TbHeartFilled, TbMessage } from 'react-icons/tb';
+import {
+  TbAccessPoint,
+  TbHeartFilled,
+  TbMessage,
+  TbUsers,
+} from 'react-icons/tb';
 
 import {
   Avatar,
@@ -33,8 +38,10 @@ function NotificationTab({
             <TbHeartFilled className='h-4 w-4 text-yap-red-500 drop-shadow-heart lg:h-5 lg:w-5' />
           ) : type === 'echo' ? (
             <TbAccessPoint className='h-4 w-4 text-yap-peri-500 drop-shadow-echo lg:h-5 lg:w-5' />
-          ) : (
+          ) : type === 'reply' ? (
             <TbMessage className='h-4 w-4 text-yap-blue-500 drop-shadow-reply lg:h-5 lg:w-5' />
+          ) : (
+            <TbUsers className='h-4 w-4 text-zinc-600 drop-shadow-thread-light lg:h-5 lg:w-5 dark:text-zinc-400' />
           )}
           <div className='flex items-center gap-3 text-xs text-zinc-950 sm:text-sm lg:text-base dark:text-zinc-100'>
             <Link
@@ -53,16 +60,21 @@ function NotificationTab({
               </Avatar>
             </Link>
             <Link
-              href={`/user/${username}/post/${postId}`}
+              href={
+                type === 'follow'
+                  ? `/user/${authorUsername}`
+                  : `/user/${username}/post/${postId}`
+              }
               className='hover:underline'
             >
               @{authorUsername}{' '}
               {type === 'like'
-                ? 'liked'
+                ? 'liked your yap.'
                 : type === 'echo'
-                  ? 'echoed'
-                  : 'replied to'}{' '}
-              your yap.
+                  ? 'echoed your yap.'
+                  : type === 'reply'
+                    ? 'replied to your yap.'
+                    : 'followed you.'}
             </Link>
           </div>
         </div>
