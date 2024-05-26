@@ -293,7 +293,7 @@ const changePassword = async (data: FormData) => {
     await db.user.update({
       where: { id: currentUser.id },
       data: {
-        password: newPassword,
+        password: await bcrypt.hash(newPassword, 10),
       },
     });
 
