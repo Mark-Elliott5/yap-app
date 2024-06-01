@@ -82,7 +82,7 @@ export const {
           OAuth: true,
           following: {
             connect: {
-              username: process.env.AUTOFOLLOW!,
+              username: process.env.AUTOFOLLOW ?? '',
             },
           },
         },

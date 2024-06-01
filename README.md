@@ -24,6 +24,16 @@ Tailwind, react-hook-form, react-icons, and shadcn were some of the tools used t
 
 1. Clone this repository
 
+2. Create a .env file in root containing:
+
+- a DATABASE_URL key (your postgres database connection string)
+- an AUTH_SECRET key for Auth.js
+- your GITHUB_CLIENT_ID and GITHUB_SECRET (for OAuth)
+- your UPLOADTHING_APP_ID and UPLOADTHING_SECRET
+- an AUTH_TRUST_HOST key set to true
+- a NEXT_PUBLIC_APP_URL, NEXTAUTH_URL, and NOTIFSTREAM_URL set to your deployed host url with no trailing forward slash.
+- an optional AUTOFOLLOW key, containing the username of any user you want newly registered users to automatically follow.
+
 2. Navigate to the project in terminal and run the build script
 
 ```console

@@ -17,7 +17,15 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const source = new EventSource(
-      'https://yap-app.onrender.com/api/notifications',
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000/api/notifications'
+        : process.env.NOTIFSTREAM_URL
+          ? `${process.env.NOTIFSTREAM_URL}/api/notifications`
+          : (() => {
+              throw new Error(
+                'Your production build is missing a NOTIFSTREAM_URL .env key! Please provide your deployed host URL with no trailing forward slash.'
+              );
+            })(),
       {
         withCredentials: true,
       }
