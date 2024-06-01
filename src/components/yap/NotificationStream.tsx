@@ -12,20 +12,20 @@ import { TbBell, TbBellFilled } from 'react-icons/tb';
 
 const EventSourceContext = createContext<null | EventSource>(null);
 
-export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
+export const EventSourceProvider = ({
+  children,
+  NOTIFSTREAM_URL,
+}: {
+  children: ReactNode;
+  NOTIFSTREAM_URL?: string;
+}) => {
   const [eventSource, setEventSource] = useState<null | EventSource>(null);
 
   useEffect(() => {
     const source = new EventSource(
-      process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000/api/notifications'
-        : process.env.NOTIFSTREAM_URL
-          ? `${process.env.NOTIFSTREAM_URL}/api/notifications`
-          : (() => {
-              throw new Error(
-                'Your production build is missing a NOTIFSTREAM_URL .env key! Please provide your deployed host URL with no trailing forward slash.'
-              );
-            })(),
+      NOTIFSTREAM_URL
+        ? `${process.env.NOTIFSTREAM_URL}/api/notifications`
+        : 'http://localhost:3000/api/notifications',
       {
         withCredentials: true,
       }
@@ -35,7 +35,7 @@ export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       source.close();
     };
-  }, []);
+  }, [NOTIFSTREAM_URL]);
 
   return (
     <EventSourceContext.Provider value={eventSource}>
@@ -89,9 +89,15 @@ const NotificationIcon = ({ initialState }: { initialState: Date | null }) => {
   );
 };
 
-const Notifications = ({ initialState }: { initialState: Date | null }) => {
+const Notifications = ({
+  initialState,
+  NOTIFSTREAM_URL,
+}: {
+  initialState: Date | null;
+  NOTIFSTREAM_URL?: string;
+}) => {
   return (
-    <EventSourceProvider>
+    <EventSourceProvider NOTIFSTREAM_URL={NOTIFSTREAM_URL}>
       <NotificationIcon initialState={initialState} />
     </EventSourceProvider>
   );
