@@ -34,18 +34,18 @@ Tailwind, react-hook-form, react-icons, and shadcn were some of the tools used t
 - a NEXT_PUBLIC_APP_URL, NEXTAUTH_URL, and NOTIFSTREAM_URL set to your deployed host url with no trailing forward slash.
 - an optional AUTOFOLLOW key, containing the username of any user you want newly registered users to automatically follow.
 
-2. Navigate to the project in terminal and run the build script
+3. Navigate to the project in terminal and run the build script
 
 ```console
 $ pnpm install --frozen-lockfile; pnpm run build
 ```
 
-2. Run start
+4. Run start
 
 ```console
 $ pnpm run start
 ```
 
-3. Navigate localhost:3000 in the browser
+5. Navigate localhost:3000 in the browser
 
 ![yap-app](images/yap-app.png)
