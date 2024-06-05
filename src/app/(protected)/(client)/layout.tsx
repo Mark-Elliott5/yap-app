@@ -70,17 +70,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <TbHome />
               <span className='hidden md:inline-block'>Home</span>
             </Link>
-            <Notifications
-              initialState={session.user.newNotifications}
-              NOTIFSTREAM_URL={(() => {
-                if (!process.env.NOTIFSTREAM_URL) {
-                  console.error(
-                    'Your production build is missing a NOTIFSTREAM_URL .env key! Please provide your deployed host URL with no trailing forward slash.'
-                  );
-                }
-                return process.env.NOTIFSTREAM_URL;
-              })()}
-            />
+            <Notifications initialState={session.user.newNotifications} />
             {/* <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             href='/news'

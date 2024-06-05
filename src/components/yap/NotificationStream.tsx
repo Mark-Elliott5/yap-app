@@ -12,30 +12,20 @@ import { TbBell, TbBellFilled } from 'react-icons/tb';
 
 const EventSourceContext = createContext<null | EventSource>(null);
 
-export const EventSourceProvider = ({
-  children,
-  NOTIFSTREAM_URL,
-}: {
-  children: ReactNode;
-  NOTIFSTREAM_URL?: string;
-}) => {
+export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
   const [eventSource, setEventSource] = useState<null | EventSource>(null);
 
   useEffect(() => {
-    const source = new EventSource(
-      NOTIFSTREAM_URL
-        ? `${process.env.NOTIFSTREAM_URL}/api/notifications`
-        : 'http://localhost:3000/api/notifications',
-      {
-        withCredentials: true,
-      }
-    );
+    const source = new EventSource('/api/notifications', {
+      withCredentials: true,
+    });
     setEventSource(source);
+    console.log(source.url);
 
     return () => {
       source.close();
     };
-  }, [NOTIFSTREAM_URL]);
+  }, []);
 
   return (
     <EventSourceContext.Provider value={eventSource}>
@@ -89,15 +79,9 @@ const NotificationIcon = ({ initialState }: { initialState: Date | null }) => {
   );
 };
 
-const Notifications = ({
-  initialState,
-  NOTIFSTREAM_URL,
-}: {
-  initialState: Date | null;
-  NOTIFSTREAM_URL?: string;
-}) => {
+const Notifications = ({ initialState }: { initialState: Date | null }) => {
   return (
-    <EventSourceProvider NOTIFSTREAM_URL={NOTIFSTREAM_URL}>
+    <EventSourceProvider>
       <NotificationIcon initialState={initialState} />
     </EventSourceProvider>
   );

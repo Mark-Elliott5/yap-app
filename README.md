@@ -31,7 +31,7 @@ Tailwind, react-hook-form, react-icons, and shadcn were some of the tools used t
 - your GITHUB_CLIENT_ID and GITHUB_SECRET (for OAuth)
 - your UPLOADTHING_APP_ID and UPLOADTHING_SECRET
 - an AUTH_TRUST_HOST key set to true
-- a NEXT_PUBLIC_APP_URL, NEXTAUTH_URL, and NOTIFSTREAM_URL set to your deployed host url with no trailing forward slash.
+- a NEXT_PUBLIC_APP_URL and NEXTAUTH_URL set to your deployed host url with no trailing forward slash.
 - an optional AUTOFOLLOW key, containing the username of any user you want newly registered users to automatically follow.
 
 3. Navigate to the project in terminal and run the build script
