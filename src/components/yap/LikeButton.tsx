@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
-import abbreviateNum from '@/src/lib/abbreviateNum';
+import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
 import { heartYap } from '@/src/lib/database/actions';
 import { Yap } from '@prisma/client';
 
@@ -60,9 +60,9 @@ function LikeButton({
                 />
               )}
               <span className='font-light text-inherit'>
-                {abbreviateNum(
-                  likes + (!liked && on ? 1 : liked && !on ? -1 : 0)
-                )}
+                <ClientCompactNum
+                  num={likes + (!liked && on ? 1 : liked && !on ? -1 : 0)}
+                />
               </span>
             </button>
           </form>

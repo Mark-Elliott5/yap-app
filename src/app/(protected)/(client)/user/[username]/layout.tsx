@@ -12,8 +12,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+// import abbreviateNum from '@/src/lib/abbreviateNum';
+import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
 import FollowButton from '@/src/components/yap/FollowButton';
-import abbreviateNum from '@/src/lib/abbreviateNum';
 import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
@@ -67,28 +68,28 @@ async function Profile({
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbMessage size={'1.25rem'} className='inline-block' />{' '}
-                {abbreviateNum(user._count.yaps)} Yaps
+                <ClientCompactNum num={user._count.yaps} /> Yaps
               </Link>
               <Link
                 href={`/user/${user.username}/echoes`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbAccessPoint size={'1.25rem'} className='inline-block' />{' '}
-                {abbreviateNum(user._count.echoes)} Echoes
+                <ClientCompactNum num={user._count.echoes} /> Echoes
               </Link>
               <Link
                 href={`/user/${user.username}/following`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbUsers size={'1.25rem'} className='inline-block' />{' '}
-                {abbreviateNum(user._count.following)} Following
+                <ClientCompactNum num={user._count.following} /> Following
               </Link>
               <Link
                 href={`/user/${user.username}/followers`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
                 <TbUsersGroup size={'1.25rem'} className='inline-block' />{' '}
-                {abbreviateNum(user._count.followers)} Followers
+                <ClientCompactNum num={user._count.followers} /> Followers
               </Link>
               {params.username !== currentUsername && (
                 <FollowButton

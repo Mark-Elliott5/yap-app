@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
-import abbreviateNum from '@/src/lib/abbreviateNum';
+import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
 import { User, Yap } from '@prisma/client';
 
 function ReplyButton({
@@ -41,7 +41,7 @@ function ReplyButton({
                 className={`${wobble ? 'animate-wiggle-more animate-infinite' : ''}`}
               />
               <span className='font-light text-inherit'>
-                {abbreviateNum(replies)}
+                <ClientCompactNum num={replies} />
               </span>
             </Link>
           </TooltipTrigger>

@@ -3,7 +3,7 @@
 /**
  * Convert number or BigInt to compact form per user locale, e.g. 1452 -> 1.5K.
  */
-function abbreviateNum(num: number | bigint) {
+function ClientCompactNum({ num }: { num: number | bigint }) {
   if (typeof num !== 'number' && typeof num !== 'bigint') return;
   const abbreviation = new Intl.NumberFormat(undefined, {
     notation: 'compact',
@@ -12,4 +12,4 @@ function abbreviateNum(num: number | bigint) {
   return abbreviation;
 }
 
-export default abbreviateNum;
+export default ClientCompactNum;

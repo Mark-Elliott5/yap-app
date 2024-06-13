@@ -8,7 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
-import abbreviateNum from '@/src/lib/abbreviateNum';
+import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
 import { echoYap } from '@/src/lib/database/actions';
 import { Yap } from '@prisma/client';
 
@@ -50,9 +50,9 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
                 className={`${spin ? 'animate-spin' : ''}`}
               />
               <span className='font-light text-inherit'>
-                {abbreviateNum(
-                  echoes + (!echoed && on ? 1 : echoed && !on ? -1 : 0)
-                )}
+                <ClientCompactNum
+                  num={echoes + (!echoed && on ? 1 : echoed && !on ? -1 : 0)}
+                />
               </span>
             </button>
           </form>
