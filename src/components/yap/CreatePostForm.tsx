@@ -17,11 +17,11 @@ import { Textarea } from '@/src/components/ui/textarea';
 import FormButton from '@/src/components/yap/FormButton';
 import FormError from '@/src/components/yap/FormError';
 import { createPost } from '@/src/lib/database/actions';
+import { GetUsername } from '@/src/lib/database/getUser';
 import { CreatePostSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '@prisma/client';
 
-function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
+function CreatePostForm({ currentUser }: { currentUser: GetUsername }) {
   const [actionResponse, setActionResponse] = useState<{
     error?: string;
   }>({});

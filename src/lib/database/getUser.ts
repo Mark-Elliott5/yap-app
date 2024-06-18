@@ -102,6 +102,8 @@ const getCurrentUsername = cache(async () => {
   }
 });
 
+export type GetUsername = Awaited<ReturnType<typeof getCurrentUsername>>;
+
 const getSession = cache(async () => {
   try {
     const session = await auth();
