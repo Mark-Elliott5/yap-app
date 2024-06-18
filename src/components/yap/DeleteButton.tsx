@@ -10,13 +10,8 @@ import {
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
 import { deleteYap } from '@/src/lib/database/actions';
-import { Yap } from '@prisma/client';
 
-interface DeleteButtonProps {
-  id: Yap['id'];
-}
-
-function DeleteButton({ id }: DeleteButtonProps) {
+function DeleteButton({ id }: { id: string }) {
   const [formVisible, setFormVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();

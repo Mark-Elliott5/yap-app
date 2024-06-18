@@ -506,10 +506,6 @@ const getYap = async (id: Yap['id']) => {
   }
 };
 
-export type PrismaYapThread = NonNullable<
-  Prisma.PromiseReturnType<typeof getYap>['yap']
->;
-
 const getUserProfile = cache(async (username: string) => {
   try {
     const user = await db.user.findUnique({
@@ -1590,6 +1586,10 @@ const getUsers = async (id: string | undefined = undefined) => {
     return { error: 'Unknown error occured.' };
   }
 };
+
+export type PrismaUser = ArrayElement<
+  NonNullable<Prisma.PromiseReturnType<typeof getUsers>['users']>
+>;
 
 const getSearch = async (
   query: string,

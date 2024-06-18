@@ -10,10 +10,9 @@ import {
 } from '@/src/components/ui/tooltip';
 import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
 import { echoYap } from '@/src/lib/database/actions';
-import { Yap } from '@prisma/client';
 
 interface EchoButtonProps {
-  id: Yap['id'];
+  id: string;
   echoed: boolean;
   echoes: number;
 }

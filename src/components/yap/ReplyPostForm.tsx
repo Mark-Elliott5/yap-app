@@ -20,14 +20,13 @@ import FormError from '@/src/components/yap/FormError';
 import { createReply } from '@/src/lib/database/actions';
 import { CreateReplySchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, Yap } from '@prisma/client';
 
 function ReplyPostForm({
   id,
   currentUser,
 }: {
-  id: Yap['id'];
-  currentUser: User['username'];
+  id: string;
+  currentUser: string;
 }) {
   const [actionResponse, setActionResponse] = useState<{
     error?: string;

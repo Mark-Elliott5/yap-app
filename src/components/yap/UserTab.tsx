@@ -6,18 +6,13 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import { User } from '@prisma/client';
+import { PrismaUser } from '@/src/lib/database/fetch';
 
 /* in practice, username will never actually be null, because users 
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
 
-function UserTab({
-  username,
-  displayName,
-  image,
-  joinDate,
-}: Pick<User, 'displayName' | 'username' | 'image' | 'joinDate'>) {
+function UserTab({ username, displayName, image, joinDate }: PrismaUser) {
   return (
     <Link
       href={`/user/${username}`}

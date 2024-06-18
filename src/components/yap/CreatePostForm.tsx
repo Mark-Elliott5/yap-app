@@ -19,9 +19,8 @@ import FormError from '@/src/components/yap/FormError';
 import { createPost } from '@/src/lib/database/actions';
 import { CreatePostSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User } from '@prisma/client';
 
-function CreatePostForm({ currentUser }: { currentUser: User['username'] }) {
+function CreatePostForm({ currentUser }: { currentUser: string }) {
   const [actionResponse, setActionResponse] = useState<{
     error?: string;
   }>({});
