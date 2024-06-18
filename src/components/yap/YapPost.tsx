@@ -11,27 +11,14 @@ import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import DeleteButton from '@/src/components/yap/DeleteButton';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview, {
-  ParentYapPreviewProps,
-} from '@/src/components/yap/ParentYapPreview';
+import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
-import { getEchoed, getLiked } from '@/src/lib/database/fetch';
-import { User, Yap } from '@prisma/client';
+import { getEchoed, getLiked, PrismaYapPost } from '@/src/lib/database/fetch';
 
-interface YapProps
-  extends Omit<Yap, 'authorId' | 'parentYapId' | 'imageKey' | 'date'> {
-  author: Pick<User, 'displayName' | 'username' | 'image'> & {
-    joinDate: string | Date;
-  };
-  parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | 'thread' | null;
-  _count: {
-    likes: number;
-    echoes: number;
-    replies: number;
-  };
-  date: string | Date;
+interface YapProps extends Omit<PrismaYapPost, 'parentYap'> {
   currentUsername: string;
+  parentYap: PrismaYapPost['parentYap'] | 'thread' | null;
 }
 
 /* in practice, author.username will never actually be null, because users 
