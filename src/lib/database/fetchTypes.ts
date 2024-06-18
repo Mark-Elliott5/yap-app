@@ -10,19 +10,19 @@ export type LatestPosts = (
       author: {
         displayName: string | null;
         username: string | null;
-        joinDate: string;
+        joinDate: Date;
         image: string | null;
       };
       parentYap: {
         author: {
           displayName: string | null;
           username: string | null;
-          joinDate: string;
+          joinDate: Date;
           image: string | null;
         };
         id: string;
         text: string | null;
-        date: string;
+        date: Date;
         image: string | null;
         imageKey: string | null;
         isReply: boolean;
@@ -34,7 +34,7 @@ export type LatestPosts = (
       };
     }
   | {
-      id: string;
+      id: number;
       text: null;
       image: null;
       type: 'Echo';
@@ -46,25 +46,25 @@ export type LatestPosts = (
       yap: {
         id: string;
         text: string | null;
-        date: string;
+        date: Date;
         image: string | null;
         isReply: boolean;
         author: {
           displayName: string | null;
           username: string | null;
-          joinDate: string;
+          joinDate: Date;
           image: string | null;
         };
         parentYap: {
           id: string;
           text: string | null;
-          date: string;
+          date: Date;
           image: string | null;
           isReply: boolean;
           author: {
             displayName: string | null;
             username: string | null;
-            joinDate: string;
+            joinDate: Date;
             image: string | null;
           };
         } | null;

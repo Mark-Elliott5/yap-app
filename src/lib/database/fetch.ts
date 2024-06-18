@@ -573,6 +573,7 @@ const getUserProfileYaps = async (
         omit: {
           parentYapId: true,
           authorId: true,
+          imageKey: true,
         },
         include: {
           author: {
@@ -585,7 +586,7 @@ const getUserProfileYaps = async (
             },
           },
           parentYap: {
-            include: {
+            select: {
               author: {
                 select: {
                   username: true,
@@ -594,6 +595,10 @@ const getUserProfileYaps = async (
                   joinDate: true,
                 },
               },
+              date: true,
+              id: true,
+              text: true,
+              image: true,
             },
           },
           _count: {
@@ -948,9 +953,15 @@ const getUserProfileEchoes = async (
         where: {
           username,
         },
-        include: {
+        select: {
+          id: true,
           yap: {
-            include: {
+            select: {
+              id: true,
+              isReply: true,
+              date: true,
+              text: true,
+              image: true,
               author: {
                 select: {
                   displayName: true,
@@ -961,7 +972,11 @@ const getUserProfileEchoes = async (
                 },
               },
               parentYap: {
-                include: {
+                select: {
+                  id: true,
+                  date: true,
+                  image: true,
+                  text: true,
                   author: {
                     select: {
                       username: true,
@@ -981,6 +996,8 @@ const getUserProfileEchoes = async (
               },
             },
           },
+          date: true,
+          username: true,
         },
         orderBy: {
           date: 'desc',
