@@ -679,6 +679,8 @@ export type PrismaYapPost = ArrayElement<
   NonNullable<Prisma.PromiseReturnType<typeof getUserProfileYaps>['yaps']>
 >;
 
+export type PrismaParentYapPost = NonNullable<PrismaYapPost['parentYap']>;
+
 const getUserProfileMedia = async (
   username: string,
   date: string | undefined = undefined,

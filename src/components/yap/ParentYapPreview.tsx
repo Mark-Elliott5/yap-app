@@ -9,13 +9,10 @@ import AutoMention from '@/src/components/yap/AutoMention';
 import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
 import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import UserHovercard from '@/src/components/yap/UserHovercard';
-import { User, Yap } from '@prisma/client';
+import { PrismaParentYapPost } from '@/src/lib/database/fetch';
 
 export interface ParentYapPreviewProps
-  extends Pick<Yap, 'text' | 'image' | 'id' | 'isReply'> {
-  author: Pick<User, 'displayName' | 'username' | 'image'> & {
-    joinDate: string | Date;
-  };
+  extends Omit<PrismaParentYapPost, 'date'> {
   date: string | Date;
   currentUsername: string;
 }
