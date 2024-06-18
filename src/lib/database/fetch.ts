@@ -2,10 +2,13 @@ import { cache } from 'react';
 
 import db from '@/src/lib/database/db';
 import { LatestPosts } from '@/src/lib/database/fetchTypes';
-import { Yap } from '@prisma/client';
+import { Prisma, Yap } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
+
+type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
 const getLatestYaps = async (
   date: string | undefined = undefined,
@@ -1041,6 +1044,16 @@ const getUserProfileEchoes = async (
     return { error: 'Unknown error occured.' };
   }
 };
+
+export type PrismaEchoPost = ArrayElement<
+  NonNullable<Prisma.PromiseReturnType<typeof getUserProfileEchoes>['echoes']>
+>;
+
+// export type echoes = Prisma.validator<Prisma.EchoGetPayload<
+
+// export type userProfileEcho = Awaited<
+//   ReturnType<typeof getUserProfileEchoes>
+// >['echoes'];
 
 const getUserProfileYapsAndEchoes = async (
   username: string,

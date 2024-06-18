@@ -12,30 +12,15 @@ import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
 import DeleteButton from '@/src/components/yap/DeleteButton';
 import EchoButton from '@/src/components/yap/EchoButton';
 import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview, {
-  ParentYapPreviewProps,
-} from '@/src/components/yap/ParentYapPreview';
+import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
 import ReplyButton from '@/src/components/yap/ReplyButton';
 import UserHovercard from '@/src/components/yap/UserHovercard';
-import { getEchoed, getLiked } from '@/src/lib/database/fetch';
-import { Echo, User, Yap } from '@prisma/client';
+import { getEchoed, getLiked, PrismaEchoPost } from '@/src/lib/database/fetch';
 
-interface EchoYapProps extends Pick<Echo, 'date' | 'username'> {
-  yap: {
-    author: Pick<User, 'displayName' | 'username' | 'image'> & {
-      joinDate: string | Date;
-    };
-    parentYap: Omit<ParentYapPreviewProps, 'currentUsername'> | null;
-    _count: {
-      likes: number;
-      echoes: number;
-      replies: number;
-    };
-    date: string | Date;
-  } & Omit<Yap, 'authorId' | 'parentYapId' | 'imageKey' | 'date'>;
+interface EchoProps extends PrismaEchoPost {
   currentUsername: string;
 }
-
+// const a: PrismaEchoPost = {};
 /* in practice, author.username will never actually be null, because users 
   will be redirected to an onboarding page if it is, and will not be able to 
   use server actions either (can't post, etc.) */
@@ -45,7 +30,7 @@ async function EchoYapPost({
   currentUsername,
   date,
   username,
-}: EchoYapProps) {
+}: EchoProps) {
   const liked = await getLiked(yap.id, currentUsername);
   const echoed = await getEchoed(yap.id, currentUsername);
   return (
