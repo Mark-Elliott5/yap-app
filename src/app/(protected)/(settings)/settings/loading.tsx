@@ -1,4 +1,5 @@
 import { Archivo_Black } from 'next/font/google';
+import Link from 'next/link';
 
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
@@ -13,12 +14,12 @@ function Loading() {
   return (
     <div className='h-dvh'>
       <div className='sticky flex items-center justify-between px-4 py-2'>
-        <a
+        <Link
           href='/'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
         >
           yap
-        </a>
+        </Link>
         <div className='flex items-center gap-2 text-zinc-100'>
           <Skeleton className='h-4 w-[100px]' />
           <Skeleton className='h-4 w-[130px]' />

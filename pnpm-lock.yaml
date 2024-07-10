@@ -86,6 +86,9 @@ dependencies:
   react-icons:
     specifier: ^5.2.1
     version: 5.2.1(react@18.2.0)
+  react-medium-image-zoom:
+    specifier: ^5.2.7
+    version: 5.2.7(react-dom@18.2.0)(react@18.2.0)
   react-responsive:
     specifier: ^10.0.0
     version: 10.0.0(react@18.2.0)
@@ -3794,6 +3797,16 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  /react-medium-image-zoom@5.2.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-I2mC3zQMmJ/JH5D04WIT5cS8jxFvB9Ybr3ORiIIeT3hPWRxT6mnC4dNUyvO1mVxxg158H6249UClr7tXRm5IUQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react-remove-scroll-bar@2.3.6(@types/react@18.2.68)(react@18.2.0):
     resolution: {integrity: sha512-DtSYaao4mBmX+HDo5YWYdBWQwYIQQshUV/dVxFxK+KM26Wjwp1gZ6rv6OC3oujI6Bfu6Xyg3TwK533AQutsn/g==}

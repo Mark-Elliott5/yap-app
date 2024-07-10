@@ -14,6 +14,7 @@ import ReplyButton from '@/src/components/yap/post/buttons/ReplyButton';
 import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
 import ClientLocaleTime from '@/src/components/yap/post/ClientLocaleTime';
 import ParentYapPreview from '@/src/components/yap/post/ParentYapPreview';
+import ZoomPostImage from '@/src/components/yap/post/ZoomPostImage';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked, PrismaEchoPost } from '@/src/lib/database/fetch';
 
@@ -72,7 +73,6 @@ async function EchoYapPost({
               <Avatar>
                 <AvatarImage src={yap.author.image ?? ''} height={'1.5rem'} />
                 <AvatarFallback>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     alt={`${yap.author.displayName ?? yap.author.username}'s avatar`}
                     src={'/defaultavatar.svg'}
@@ -136,14 +136,7 @@ async function EchoYapPost({
             </p>
           )}
 
-          {yap.image && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={yap.image}
-              alt='post image'
-              className='max-h-[500px] w-full rounded-md object-cover'
-            />
-          )}
+          {yap.image && <ZoomPostImage image={yap.image} />}
         </div>
         <div className='flex flex-wrap items-center gap-[16%] gap-y-3'>
           <LikeButton id={yap.id} liked={liked} likes={yap._count.likes} />

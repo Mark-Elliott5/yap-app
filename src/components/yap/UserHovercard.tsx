@@ -38,7 +38,6 @@ async function UserHovercard({
             <Avatar className='h-20 w-20'>
               <AvatarImage src={image ?? ''} />
               <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={`${displayName ?? username}'s avatar`}
                   src={'/defaultavatar.svg'}

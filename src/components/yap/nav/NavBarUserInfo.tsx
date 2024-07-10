@@ -42,7 +42,6 @@ async function NavBarUserInfo() {
       <Avatar>
         <AvatarImage src={image ?? ''} height={'1.5rem'} />
         <AvatarFallback>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt={`${displayName ?? username}'s avatar`}
             src={'/defaultavatar.svg'}

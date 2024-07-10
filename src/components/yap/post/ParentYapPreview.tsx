@@ -8,6 +8,7 @@ import {
 import AutoMention from '@/src/components/yap/post/AutoMention';
 import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
 import ClientLocaleTime from '@/src/components/yap/post/ClientLocaleTime';
+import ZoomPostImage from '@/src/components/yap/post/ZoomPostImage';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { PrismaParentYapPost } from '@/src/lib/database/fetch';
 
@@ -43,7 +44,6 @@ async function ParentYapPreview({
             <Avatar className='h-8 w-8'>
               <AvatarImage src={author.image ?? ''} />
               <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={`${author.displayName ?? author.username}'s avatar`}
                   src={'/defaultavatar.svg'}
@@ -78,25 +78,13 @@ async function ParentYapPreview({
           </span>
         </Link>
       </div>
-      <Link
-        href={`/user/${author.username}/post/${id}`}
-        className='flex flex-col gap-2 py-2'
-      >
-        {text && (
-          <p className='text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'>
-            <AutoMention text={text} />
-          </p>
-        )}
+      {text && (
+        <p className='text-xs text-zinc-950 sm:text-sm dark:text-zinc-100'>
+          <AutoMention text={text} />
+        </p>
+      )}
 
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt='post image'
-            className='max-h-[500px] w-full rounded-md object-cover'
-          />
-        )}
-      </Link>
+      {image && <ZoomPostImage image={image} />}
     </div>
   );
 }

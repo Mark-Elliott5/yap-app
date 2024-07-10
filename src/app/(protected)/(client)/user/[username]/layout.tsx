@@ -100,7 +100,6 @@ async function Profile({
             <Avatar className='h-[125px] w-[125px] border-[2px] border-zinc-400 sm:h-[150px] sm:w-[150px] md:h-[175px] md:w-[175px] lg:h-[200px] lg:w-[200px] dark:border-zinc-800'>
               <AvatarImage src={user.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={`${user.displayName ?? user.username}'s avatar`}
                   src={'/defaultavatar.svg'}
@@ -132,7 +131,6 @@ dark:bg-zinc-950 dark:text-zinc-50'
           <Avatar className='h-[125px] w-[125px] border-[2px] border-zinc-400 sm:h-[150px] sm:w-[150px] md:h-[175px] md:w-[175px] lg:h-[200px] lg:w-[200px] dark:border-zinc-800'>
             <AvatarImage src={''} height={'1.5rem'} />
             <AvatarFallback>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img alt={`avatar`} src={'/defaultavatar.svg'} />
             </AvatarFallback>
           </Avatar>

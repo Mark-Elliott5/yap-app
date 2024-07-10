@@ -13,6 +13,7 @@ import ReplyButton from '@/src/components/yap/post/buttons/ReplyButton';
 import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
 import ClientLocaleTime from '@/src/components/yap/post/ClientLocaleTime';
 import ParentYapPreview from '@/src/components/yap/post/ParentYapPreview';
+import ZoomPostImage from '@/src/components/yap/post/ZoomPostImage';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked, PrismaYapPost } from '@/src/lib/database/fetch';
 
@@ -55,7 +56,6 @@ async function YapPost({
             <Avatar>
               <AvatarImage src={author.image ?? ''} height={'1.5rem'} />
               <AvatarFallback>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   alt={`${author.displayName ?? author.username}'s avatar`}
                   src={'/defaultavatar.svg'}
@@ -122,14 +122,7 @@ async function YapPost({
           </p>
         )}
 
-        {image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={image}
-            alt='post image'
-            className='max-h-[500px] w-full rounded-md object-cover'
-          />
-        )}
+        {image && <ZoomPostImage image={image} />}
       </div>
       <div className='flex flex-wrap items-center gap-[16%] gap-y-3'>
         <LikeButton id={id} liked={liked} likes={_count.likes} />
