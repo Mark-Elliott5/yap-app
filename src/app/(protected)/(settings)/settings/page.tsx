@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import SettingsClient from '@/src/components/settings/SettingsClient';
+import SettingsClient from '@/src/components/yap/settings/SettingsClient';
 import { getSession } from '@/src/lib/database/getUser';
 
 export const metadata: Metadata = {

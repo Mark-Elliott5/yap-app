@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { Separator } from '@/src/components/ui/separator';
+import YapPost from '@/src/components/yap/post/YapPost';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
-import YapPost from '@/src/components/yap/YapPost';
 import { getYap } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 

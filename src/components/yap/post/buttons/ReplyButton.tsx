@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/src/components/ui/tooltip';
-import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
+import ClientCompactNum from '@/src/components/yap/post/ClientCompactNum';
 import { User, Yap } from '@prisma/client';
 
 function ReplyButton({

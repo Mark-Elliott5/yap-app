@@ -5,12 +5,6 @@ import Link from 'next/link';
 
 // import { useMediaQuery } from 'react-responsive';
 import LogoutButton from '@/src/components/auth/LogoutButton';
-import ChangeAvatarForm from '@/src/components/settings/ChangeAvatarForm';
-import ChangeBioForm from '@/src/components/settings/ChangeBioForm';
-import ChangeDisplayNameForm from '@/src/components/settings/ChangeDisplayNameForm';
-import ChangeEmailForm from '@/src/components/settings/ChangeEmailForm';
-import ChangePasswordForm from '@/src/components/settings/ChangePasswordForm';
-import DeleteAccountForm from '@/src/components/settings/DeleteAccountForm';
 import {
   Avatar,
   AvatarFallback,
@@ -27,7 +21,13 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Separator } from '@/src/components/ui/separator';
-import SettingsDropDown from '@/src/components/yap/SettingsDropDown';
+import SettingsDropDown from '@/src/components/yap/nav/SettingsDropDown';
+import ChangeAvatarForm from '@/src/components/yap/settings/ChangeAvatarForm';
+import ChangeBioForm from '@/src/components/yap/settings/ChangeBioForm';
+import ChangeDisplayNameForm from '@/src/components/yap/settings/ChangeDisplayNameForm';
+import ChangeEmailForm from '@/src/components/yap/settings/ChangeEmailForm';
+import ChangePasswordForm from '@/src/components/yap/settings/ChangePasswordForm';
+import DeleteAccountForm from '@/src/components/yap/settings/DeleteAccountForm';
 import { cn } from '@/src/lib/utils';
 
 const archivoBlack = Archivo_Black({

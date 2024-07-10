@@ -6,14 +6,14 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import AutoMention from '@/src/components/yap/AutoMention';
-import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
-import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
-import DeleteButton from '@/src/components/yap/DeleteButton';
-import EchoButton from '@/src/components/yap/EchoButton';
-import LikeButton from '@/src/components/yap/LikeButton';
-import ParentYapPreview from '@/src/components/yap/ParentYapPreview';
-import ReplyButton from '@/src/components/yap/ReplyButton';
+import AutoMention from '@/src/components/yap/post/AutoMention';
+import DeleteButton from '@/src/components/yap/post/buttons/DeleteButton';
+import EchoButton from '@/src/components/yap/post/buttons/EchoButton';
+import LikeButton from '@/src/components/yap/post/buttons/LikeButton';
+import ReplyButton from '@/src/components/yap/post/buttons/ReplyButton';
+import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
+import ClientLocaleTime from '@/src/components/yap/post/ClientLocaleTime';
+import ParentYapPreview from '@/src/components/yap/post/ParentYapPreview';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked, PrismaEchoPost } from '@/src/lib/database/fetch';
 
@@ -137,7 +137,7 @@ async function EchoYapPost({
           )}
 
           {yap.image && (
-            // eslint-disable-next-line @next/next/no-img-element
+            /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={yap.image}
               alt='post image'

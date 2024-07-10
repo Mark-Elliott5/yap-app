@@ -2,12 +2,12 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import EchoYapPost from '@/src/components/yap/EchoYapPost';
-import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
-import PostsFallback from '@/src/components/yap/PostsFallback';
+import EchoYapPost from '@/src/components/yap/post/EchoYapPost';
+import OlderPostsLink from '@/src/components/yap/post/OlderPostsLink';
+import PostsFallback from '@/src/components/yap/post/PostsFallback';
+import YapPost from '@/src/components/yap/post/YapPost';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
-import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYapsAndEchoes } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 

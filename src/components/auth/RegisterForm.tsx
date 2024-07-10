@@ -15,8 +15,8 @@ import {
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
-import FormButton from '@/src/components/yap/FormButton';
-import FormError from '@/src/components/yap/FormError';
+import FormButton from '@/src/components/yap/form/buttons/FormButton';
+import FormError from '@/src/components/yap/form/FormError';
 import { register } from '@/src/lib/database/actions';
 import { RegisterSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

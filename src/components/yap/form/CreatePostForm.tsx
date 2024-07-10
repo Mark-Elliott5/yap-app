@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, useForm } from 'react-hook-form';
@@ -15,35 +14,26 @@ import {
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
 import { Textarea } from '@/src/components/ui/textarea';
-import FormButton from '@/src/components/yap/FormButton';
-import FormError from '@/src/components/yap/FormError';
-import { createReply } from '@/src/lib/database/actions';
+import FormButton from '@/src/components/yap/form/buttons/FormButton';
+import FormError from '@/src/components/yap/form/FormError';
+import { createPost } from '@/src/lib/database/actions';
 import { GetUsername } from '@/src/lib/database/getUser';
-import { CreateReplySchema } from '@/src/schemas';
+import { CreatePostSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function ReplyPostForm({
-  id,
-  currentUser,
-}: {
-  id: string;
-  currentUser: GetUsername;
-}) {
+function CreatePostForm({ currentUser }: { currentUser: GetUsername }) {
   const [actionResponse, setActionResponse] = useState<{
     error?: string;
   }>({});
   const router = useRouter();
-  const form = useForm<z.infer<typeof CreateReplySchema>>({
-    resolver: zodResolver(CreateReplySchema),
-    defaultValues: {
-      id,
-    },
+  const form = useForm<z.infer<typeof CreatePostSchema>>({
+    resolver: zodResolver(CreatePostSchema),
   });
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = async (data: FormData) => {
     setSubmitting(true);
-    const { postId, error } = await createReply(data);
+    const { postId, error } = await createPost(data);
     if (postId) return router.push(`/user/${currentUser}/post/${postId}`);
     if (error) {
       setActionResponse({ error });
@@ -54,12 +44,15 @@ function ReplyPostForm({
   return (
     <FormProvider {...form}>
       <Form
-        // action={createReply}
+        // action={createPost}
         onSubmit={({ formData }) => {
           !submitting ? handleChange(formData) : null;
         }}
       >
         <div className='flex flex-col gap-2 pb-6'>
+          <header className='text-3xl font-medium text-zinc-950 dark:text-zinc-100'>
+            Yap something!
+          </header>
           <FormField
             // control={form.control}
             name='text'
@@ -103,19 +96,6 @@ function ReplyPostForm({
               </FormItem>
             )}
           />
-          <FormField
-            // unnecessary when using FormProvider according to docs
-            // control={form.control}
-            name='id'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input {...field} value={id} type='hidden' hidden />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         <div className='flex flex-col gap-y-6'>
           {actionResponse?.error && (
@@ -130,4 +110,4 @@ function ReplyPostForm({
   );
 }
 
-export default ReplyPostForm;
+export default CreatePostForm;

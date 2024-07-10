@@ -11,7 +11,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/src/components/ui/hover-card';
-import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
+import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
 
 async function UserHovercard({
   children,

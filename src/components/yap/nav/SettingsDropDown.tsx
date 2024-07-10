@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/src/components/ui/dropdown-menu';
-import ThemeChanger from '@/src/components/yap/ThemeChanger';
+import ThemeChanger from '@/src/components/yap/nav/ThemeChanger';
 
 function SettingsDropDown() {
   return (

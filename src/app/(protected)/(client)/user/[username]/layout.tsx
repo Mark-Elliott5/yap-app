@@ -12,8 +12,8 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import ClientCompactNum from '@/src/components/yap/ClientCompactNum';
-import FollowButton from '@/src/components/yap/FollowButton';
+import ClientCompactNum from '@/src/components/yap/post/ClientCompactNum';
+import FollowButton from '@/src/components/yap/profile/buttons/FollowButton';
 import { getIsFollowing, getUserProfile } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 

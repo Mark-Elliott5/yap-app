@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
+import OlderPostsLink from '@/src/components/yap/post/OlderPostsLink';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
-import UsersFallback from '@/src/components/yap/UsersFallback';
-import UserTab from '@/src/components/yap/UserTab';
+import UsersFallback from '@/src/components/yap/users/UsersFallback';
+import UserTab from '@/src/components/yap/users/UserTab';
 import { getFollowers } from '@/src/lib/database/fetch';
 
 export async function generateMetadata({

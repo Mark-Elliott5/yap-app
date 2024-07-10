@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import CreatePostForm from '@/src/components/yap/CreatePostForm';
+import CreatePostForm from '@/src/components/yap/form/CreatePostForm';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 
 export const metadata: Metadata = {

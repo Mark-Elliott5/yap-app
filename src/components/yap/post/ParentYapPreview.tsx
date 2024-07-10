@@ -5,9 +5,9 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
-import AutoMention from '@/src/components/yap/AutoMention';
-import ClientLocaleDate from '@/src/components/yap/ClientLocaleDate';
-import ClientLocaleTime from '@/src/components/yap/ClientLocaleTime';
+import AutoMention from '@/src/components/yap/post/AutoMention';
+import ClientLocaleDate from '@/src/components/yap/post/ClientLocaleDate';
+import ClientLocaleTime from '@/src/components/yap/post/ClientLocaleTime';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { PrismaParentYapPost } from '@/src/lib/database/fetch';
 

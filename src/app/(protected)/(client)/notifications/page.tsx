@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 
 import { Separator } from '@/src/components/ui/separator';
-import ClearNotificationsButton from '@/src/components/yap/ClearNotifications';
-import NotificationTab from '@/src/components/yap/NotificationTab';
-import NotifsFallback from '@/src/components/yap/NotifsFallback';
-import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
+import ClearNotificationsButton from '@/src/components/yap/notifications/buttons/ClearNotifications';
+import NotificationTab from '@/src/components/yap/notifications/NotificationTab';
+import NotifsFallback from '@/src/components/yap/notifications/NotifsFallback';
+import OlderPostsLink from '@/src/components/yap/post/OlderPostsLink';
 import SomethingWentWrong from '@/src/components/yap/SomethingWentWrong';
 import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
 import { getNotifications } from '@/src/lib/database/fetch';

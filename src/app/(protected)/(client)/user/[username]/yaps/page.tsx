@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-import OlderPostsLink from '@/src/components/yap/OlderPostsLink';
-import PostsFallback from '@/src/components/yap/PostsFallback';
+import OlderPostsLink from '@/src/components/yap/post/OlderPostsLink';
+import PostsFallback from '@/src/components/yap/post/PostsFallback';
+import YapPost from '@/src/components/yap/post/YapPost';
 import TheresNothingHere from '@/src/components/yap/TheresNothingHere';
-import YapPost from '@/src/components/yap/YapPost';
 import { getUserProfileYaps } from '@/src/lib/database/fetch';
 import { getCurrentUsername } from '@/src/lib/database/getUser';
 

@@ -7,41 +7,35 @@ import { z } from 'zod';
 import {
   Form as FormProvider,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
 import { Input } from '@/src/components/ui/input';
-import FormButton from '@/src/components/yap/FormButton';
-import FormError from '@/src/components/yap/FormError';
-import { deleteAccount } from '@/src/lib/database/actions';
-import { DeleteAccountSchema } from '@/src/schemas';
+import FormButton from '@/src/components/yap/form/buttons/FormButton';
+import FormError from '@/src/components/yap/form/FormError';
+import FormSuccess from '@/src/components/yap/form/FormSuccess';
+import { changeBio } from '@/src/lib/database/actions';
+import { ChangeBioSchema } from '@/src/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-function DeleteAccountForm() {
-  const [changeTry, setChangeTry] = useState<
-    | {
-        error?: string;
-        // success?: string;
-      }
-    | undefined
-  >({});
-  const form = useForm<z.infer<typeof DeleteAccountSchema>>({
-    resolver: zodResolver(DeleteAccountSchema),
+function ChangeBioForm() {
+  const form = useForm<z.infer<typeof ChangeBioSchema>>({
+    resolver: zodResolver(ChangeBioSchema),
     defaultValues: {
-      username: '',
+      bio: '',
     },
   });
   const { isSubmitting } = form.formState;
 
+  const [changeTry, setChangeTry] = useState<{
+    error?: string;
+    success?: string;
+  }>({});
+
   const handleChange = async (data: FormData) => {
-    try {
-      setChangeTry(await deleteAccount(data));
-    } catch {
-      return;
-    }
+    setChangeTry(await changeBio(data));
   };
 
   return (
@@ -53,36 +47,30 @@ function DeleteAccountForm() {
         <div className='flex flex-col gap-2 pb-6'>
           <FormField
             // control={form.control}
-            name='username'
+            name='bio'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Delete Account</FormLabel>
+                <FormLabel>Bio</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder='yapper'
+                    placeholder='This is me!'
                     type='text'
-                    minLength={1}
-                    required
+                    minLength={0}
+                    maxLength={300}
                     className='placeholder:italic'
                   />
                 </FormControl>
                 <FormMessage />
-                <FormDescription>
-                  Enter your username to confirm you want to delete your
-                  account.
-                  <p className='font-bold text-yap-red-500'>
-                    This action is irreversible.
-                  </p>
-                </FormDescription>
               </FormItem>
             )}
           />
         </div>
         <div className='flex flex-col gap-y-6'>
           {changeTry?.error && <FormError message={changeTry.error} />}
-          <FormButton disabled={isSubmitting} variant='destructive'>
-            {isSubmitting ? 'Deleting...' : 'Delete Account'}
+          {changeTry?.success && <FormSuccess message={changeTry.success} />}
+          <FormButton disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : 'Save'}
           </FormButton>
         </div>
       </Form>
@@ -90,4 +78,4 @@ function DeleteAccountForm() {
   );
 }
 
-export default DeleteAccountForm;
+export default ChangeBioForm;
