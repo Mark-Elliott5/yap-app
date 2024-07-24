@@ -1557,6 +1557,11 @@ const getUsers = async (id: string | undefined = undefined) => {
       const users = await db.user.findMany({
         skip: 1,
         take: 20,
+        where: {
+          username: {
+            not: null,
+          },
+        },
         cursor: {
           id,
         },
@@ -1576,6 +1581,11 @@ const getUsers = async (id: string | undefined = undefined) => {
     }
     const users = await db.user.findMany({
       take: 20,
+      where: {
+        username: {
+          not: null,
+        },
+      },
       select: {
         id: true,
         displayName: true,
