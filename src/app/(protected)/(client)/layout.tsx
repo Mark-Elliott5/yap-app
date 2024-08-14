@@ -22,7 +22,7 @@ import Link from 'next/link';
 import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import NavBarUserInfo from '@/src/components/yap/nav/NavBarUserInfo';
-import Notifications from '@/src/components/yap/notifications/NotificationStream';
+import Notifications from '@/src/components/yap/notifications/Notifications';
 import { getSession } from '@/src/lib/database/getUser';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
