@@ -83,30 +83,35 @@ async function UserProfileYapsPage({
     <>
       <div className='flex gap-2 overflow-x-scroll px-[9px] py-[6px] text-sm text-zinc-950 sm:gap-4 sm:px-[unset] sm:py-[unset] sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
         <Link
+          prefetch={false}
           href={`.`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Latest
         </Link>
         <Link
+          prefetch={false}
           href={``}
           className='rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Yaps
         </Link>
         <Link
+          prefetch={false}
           href={`./echoes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Echoes
         </Link>
         <Link
+          prefetch={false}
           href={`./media`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Media
         </Link>
         <Link
+          prefetch={false}
           href={`./likes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >

@@ -24,16 +24,16 @@ const Notifications = ({ initialState }: { initialState: Date | null }) => {
       } catch {
         console.warn('Error occured during new notifications fetch');
       }
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [newNotifs]);
 
   return (
     <Link
+      prefetch={false}
       className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
       href='/notifications'
-      prefetch={false}
       onClick={() => setNewNotifs(false)}
     >
       {newNotifs ? (

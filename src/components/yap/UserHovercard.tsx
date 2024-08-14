@@ -31,6 +31,7 @@ async function UserHovercard({
       <HoverCardTrigger href={`/user/${username}`}>{children}</HoverCardTrigger>
       <HoverCardContent className='w-60 sm:w-72'>
         <Link
+          prefetch={false}
           href={`/user/${username}`}
           className={'flex items-center justify-start gap-2'}
         >
@@ -40,7 +41,7 @@ async function UserHovercard({
               <AvatarFallback>
                 <img
                   alt={`${displayName ?? username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+                  src={'/images/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>

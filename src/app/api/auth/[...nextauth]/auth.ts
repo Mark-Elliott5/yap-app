@@ -23,6 +23,11 @@ export const {
     error: '/authentication-error',
   },
   callbacks: {
+    authorized: async ({ auth }) => {
+      console.log('running authorized auth.ts');
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth;
+    },
     // async signIn({ user }) {
     //   if (!user?.id) return false;
     //   const existingUser = await getUserByIdEdge(user.id);
@@ -38,7 +43,7 @@ export const {
     // },
     // async redirect({user})
     async session({ session, token }) {
-      // console.log('AUTH CONFIG SESSION');
+      console.log('AUTH CONFIG SESSION');
       // console.log('SESSION CALLBACK TOKEN:', token);
 
       if (session.user) {
@@ -50,7 +55,7 @@ export const {
       return session;
     },
     async jwt({ token }) {
-      // console.log('AUTH CONFIG TOKEN');
+      console.log('AUTH CONFIG TOKEN');
       if (!token.sub) return token;
       // console.log('GETTING EXISTING USER');
       const existingUser = await getUserByIdEdge(token.sub);
@@ -102,6 +107,7 @@ export const {
     }),
     Credentials({
       async authorize(credentials) {
+        console.log('running AUTHORIZE auth.ts');
         // const result = await LoginSchema.safeParseAsync(credentials);
         // if (!result.success) return null;
         // const { data } = credentials;

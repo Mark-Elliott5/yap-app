@@ -35,6 +35,7 @@ function OlderPostsLink({
   return (
     <div className=''>
       <Link
+        prefetch={false}
         href={`?${customParam ? `${customParam}&` : ''}${id ? `id=${id}&` : ''}${date ? (typeof date === 'string' ? `date=${date}` : `date=${date.toISOString()}`) : ''}`}
         className='flex max-w-fit items-center gap-2 rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg dark:border-zinc-800 dark:bg-zinc-900'
         onClick={() => setSpin(true)}

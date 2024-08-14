@@ -45,6 +45,7 @@ function NotificationTab({
           )}
           <div className='flex min-w-[90%] items-center gap-3 text-xs text-zinc-950 sm:text-sm lg:text-base dark:text-zinc-100'>
             <Link
+              prefetch={false}
               href={`/user/${authorUsername}`}
               className='flex items-center'
             >
@@ -53,12 +54,13 @@ function NotificationTab({
                 <AvatarFallback>
                   <img
                     alt={`${authorUsername}'s avatar`}
-                    src={'/defaultavatar.svg'}
+                    src={'/images/defaultavatar.svg'}
                   />
                 </AvatarFallback>
               </Avatar>
             </Link>
             <Link
+              prefetch={false}
               href={
                 type === 'follow'
                   ? `/user/${authorUsername}`

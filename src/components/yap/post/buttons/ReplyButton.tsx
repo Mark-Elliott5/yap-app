@@ -30,6 +30,7 @@ function ReplyButton({
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
+              prefetch={false}
               href={`/user/${user}/post/${id}/reply`}
               className={`flex items-center gap-1 text-zinc-500 transition-all hover:scale-[1.2] hover:text-yap-blue-500 hover:drop-shadow-reply active:scale-[0.95] dark:text-zinc-600`}
               // onClick={() => setPostVisible((prev) => !prev)}

@@ -20,6 +20,7 @@ async function NavBarUserInfo() {
 
   return (
     <Link
+      prefetch={false}
       href={`/user/${username}`}
       className='flex items-center gap-3 text-zinc-100'
     >
@@ -44,7 +45,7 @@ async function NavBarUserInfo() {
         <AvatarFallback>
           <img
             alt={`${displayName ?? username}'s avatar`}
-            src={'/defaultavatar.svg'}
+            src={'/images/defaultavatar.svg'}
           />
         </AvatarFallback>
       </Avatar>

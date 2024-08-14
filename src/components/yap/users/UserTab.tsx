@@ -15,6 +15,7 @@ import { PrismaUser } from '@/src/lib/database/fetch';
 function UserTab({ username, displayName, image, joinDate }: PrismaUser) {
   return (
     <Link
+      prefetch={false}
       href={`/user/${username}`}
       className={`rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 shadow-xl transition-all hover:scale-[1.05] dark:border-zinc-800 dark:bg-zinc-900`}
     >
@@ -25,7 +26,7 @@ function UserTab({ username, displayName, image, joinDate }: PrismaUser) {
             <AvatarFallback>
               <img
                 alt={`${displayName ?? username}'s avatar`}
-                src={'/defaultavatar.svg'}
+                src={'/images/defaultavatar.svg'}
               />
             </AvatarFallback>
           </Avatar>

@@ -63,6 +63,7 @@ async function Profile({
                 </span>
               </div>
               <Link
+                prefetch={false}
                 href={`/user/${user.username}/yaps`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
@@ -70,6 +71,7 @@ async function Profile({
                 <ClientCompactNum num={user._count.yaps} /> Yaps
               </Link>
               <Link
+                prefetch={false}
                 href={`/user/${user.username}/echoes`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
@@ -77,6 +79,7 @@ async function Profile({
                 <ClientCompactNum num={user._count.echoes} /> Echoes
               </Link>
               <Link
+                prefetch={false}
                 href={`/user/${user.username}/following`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
@@ -84,6 +87,7 @@ async function Profile({
                 <ClientCompactNum num={user._count.following} /> Following
               </Link>
               <Link
+                prefetch={false}
                 href={`/user/${user.username}/followers`}
                 className='flex cursor-pointer items-center gap-1 hover:underline'
               >
@@ -102,7 +106,7 @@ async function Profile({
               <AvatarFallback>
                 <img
                   alt={`${user.displayName ?? user.username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+                  src={'/images/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>
@@ -131,7 +135,7 @@ dark:bg-zinc-950 dark:text-zinc-50'
           <Avatar className='h-[125px] w-[125px] border-[2px] border-zinc-400 sm:h-[150px] sm:w-[150px] md:h-[175px] md:w-[175px] lg:h-[200px] lg:w-[200px] dark:border-zinc-800'>
             <AvatarImage src={''} height={'1.5rem'} />
             <AvatarFallback>
-              <img alt={`avatar`} src={'/defaultavatar.svg'} />
+              <img alt={`avatar`} src={'/images/defaultavatar.svg'} />
             </AvatarFallback>
           </Avatar>
         </div>

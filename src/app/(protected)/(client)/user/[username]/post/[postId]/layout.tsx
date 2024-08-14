@@ -42,30 +42,35 @@ async function YapPostLayout({
     <>
       <div className='flex gap-2 overflow-x-scroll px-[9px] py-[6px] text-sm text-zinc-950 sm:gap-4 sm:px-[unset] sm:py-[unset] sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
         <Link
+          prefetch={false}
           href={`/user/${params.username}/`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Latest
         </Link>
         <Link
+          prefetch={false}
           href={`/user/${params.username}/yaps`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Yaps
         </Link>
         <Link
+          prefetch={false}
           href={`/user/${params.username}/echoes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Echoes
         </Link>
         <Link
+          prefetch={false}
           href={`/user/${params.username}/media`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >
           Media
         </Link>
         <Link
+          prefetch={false}
           href={`/user/${params.username}/likes`}
           className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
         >

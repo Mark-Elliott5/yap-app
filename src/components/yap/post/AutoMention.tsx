@@ -8,6 +8,7 @@ function AutoMention({ text }: { text: string }) {
     const matchExists = await getUserByUsername(match);
     return matchExists ? (
       <Link
+        prefetch={false}
         key={match + i}
         href={`/user/${match}`}
         className='text-yap-blue-500 hover:text-yap-blue-600'

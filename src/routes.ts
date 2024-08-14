@@ -1,7 +1,7 @@
 /**
  * Routes that are accessible to logged out users
  */
-const publicRoutes = new Set(['/']);
+const publicRoutes = new Set(['/', '/images/defaultavatar.svg']);
 
 /**
  * Authentication routes.

@@ -9,8 +9,8 @@ import {
 } from '@/src/routes';
 
 export default auth((req) => {
-  // console.log('MIDDLEWARE RUNNING');
   const { nextUrl } = req;
+  console.log('MIDDLEWARE RUNNING', nextUrl.pathname);
   // console.log('PATHNAME:', nextUrl.pathname);
   const isLoggedIn = !!req.auth;
   // console.log('REQ.AUTH:', req.auth);
@@ -74,7 +74,7 @@ export default auth((req) => {
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|images|favicon.ico|icon.svg).*)',
+  ],
 };
-
-export const runtime = 'nodejs';

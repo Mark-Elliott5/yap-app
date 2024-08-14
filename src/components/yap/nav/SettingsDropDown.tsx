@@ -22,7 +22,7 @@ function SettingsDropDown() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href='/settings' className='w-full'>
+          <Link prefetch={false} href='/settings' className='w-full'>
             Settings
           </Link>
         </DropdownMenuItem>

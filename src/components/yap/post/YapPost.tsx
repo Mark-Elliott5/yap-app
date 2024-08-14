@@ -58,7 +58,7 @@ async function YapPost({
               <AvatarFallback>
                 <img
                   alt={`${author.displayName ?? author.username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+                  src={'/images/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>
@@ -81,6 +81,7 @@ async function YapPost({
           </div>
         </UserHovercard>
         <Link
+          prefetch={false}
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >
@@ -98,6 +99,7 @@ async function YapPost({
               currentUsername={currentUsername}
             />
             <Link
+              prefetch={false}
               href={`/user/${parentYap.author.username}/post/${parentYap.id}`}
               className='text-xs text-zinc-600 sm:text-sm'
             >

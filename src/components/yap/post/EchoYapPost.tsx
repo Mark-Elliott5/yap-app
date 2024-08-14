@@ -39,6 +39,7 @@ async function EchoYapPost({
       className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
     >
       <Link
+        prefetch={false}
         href={`/user/${username}/`}
         className='flex flex-wrap items-center justify-between gap-y-3 text-xs text-zinc-600'
       >
@@ -75,7 +76,7 @@ async function EchoYapPost({
                 <AvatarFallback>
                   <img
                     alt={`${yap.author.displayName ?? yap.author.username}'s avatar`}
-                    src={'/defaultavatar.svg'}
+                    src={'/images/defaultavatar.svg'}
                   />
                 </AvatarFallback>
               </Avatar>
@@ -98,6 +99,7 @@ async function EchoYapPost({
             </div>
           </UserHovercard>
           <Link
+            prefetch={false}
             href={`/user/${yap.author.username}/post/${yap.id}`}
             className='flex items-center gap-2 text-xs text-zinc-600/70'
           >
@@ -114,6 +116,7 @@ async function EchoYapPost({
               currentUsername={currentUsername}
             />
             <Link
+              prefetch={false}
               href={`/user/${yap.parentYap.author.username}/post/${yap.parentYap.id}`}
               className='text-xs text-zinc-600 sm:text-sm'
             >

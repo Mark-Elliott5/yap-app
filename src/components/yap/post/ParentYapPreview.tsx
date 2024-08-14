@@ -46,7 +46,7 @@ async function ParentYapPreview({
               <AvatarFallback>
                 <img
                   alt={`${author.displayName ?? author.username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+                  src={'/images/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>
@@ -69,6 +69,7 @@ async function ParentYapPreview({
           </div>
         </UserHovercard>
         <Link
+          prefetch={false}
           href={`/user/${author.username}/post/${id}`}
           className='flex flex-wrap items-center gap-2 gap-y-3 text-xs text-zinc-600/70'
         >

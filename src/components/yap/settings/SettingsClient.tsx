@@ -91,15 +91,16 @@ function SettingsClient({
     <div className='h-dvh'>
       <nav className='sticky flex items-center justify-between px-4 py-2'>
         <Link
+          prefetch={false}
           href='/home'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
         >
           yap
         </Link>
         <Link
+          prefetch={false}
           href={`/user/${username}`}
           className='flex gap-3'
-          prefetch={false}
         >
           <div className='flex items-center gap-3 text-zinc-100'>
             <div className='flex flex-col sm:flex-row sm:gap-2'>
@@ -126,7 +127,7 @@ function SettingsClient({
               <AvatarFallback>
                 <img
                   alt={`${updatedUser.displayName ?? displayName ?? username}'s avatar`}
-                  src={'/defaultavatar.svg'}
+                  src={'/images/defaultavatar.svg'}
                 />
               </AvatarFallback>
             </Avatar>

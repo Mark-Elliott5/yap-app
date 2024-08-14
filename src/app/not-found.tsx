@@ -20,6 +20,7 @@ function NotFound() {
     <div className='flex min-h-dvh items-center justify-center'>
       <div className='flex flex-row items-center gap-6'>
         <Link
+          prefetch={false}
           href='/home'
           className={cn(
             'text-6xl text-yap-red-500 sm:text-8xl',
@@ -44,7 +45,11 @@ function NotFound() {
             </header>
             <h2 className='text-zinc-50'>Not Found</h2>
           </div>
-          <Link href='/home' className='text-zinc-50 hover:underline'>
+          <Link
+            prefetch={false}
+            href='/home'
+            className='text-zinc-50 hover:underline'
+          >
             Return home
           </Link>
         </div>

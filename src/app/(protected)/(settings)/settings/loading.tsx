@@ -15,6 +15,7 @@ function Loading() {
     <div className='h-dvh'>
       <div className='sticky flex items-center justify-between px-4 py-2'>
         <Link
+          prefetch={false}
           href='/'
           className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
         >

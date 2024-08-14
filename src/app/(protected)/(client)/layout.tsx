@@ -35,6 +35,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
       <div className='sticky top-0 z-10 backdrop-blur-[8px] md:z-[9]'>
         <nav className='flex items-center justify-between px-4 py-2'>
           <Link
+            prefetch={false}
             href='/home'
             className={cn('text-3xl text-yap-red-500', archivoBlack.className)}
           >
@@ -64,6 +65,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
         >
           <div className='sticky bottom-0 flex h-min min-w-full justify-evenly gap-2 border-t-1 border-zinc-300 bg-zinc-100 px-4 py-3 font-medium text-zinc-950 shadow-xl md:top-32 md:min-w-[unset] md:flex-col md:justify-center md:gap-8 md:rounded-lg md:border-x-[0.5px] md:bg-white md:px-5 md:py-5 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100'>
             <Link
+              prefetch={false}
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
               href='/home'
             >
@@ -71,7 +73,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <span className='hidden md:inline-block'>Home</span>
             </Link>
             <Notifications initialState={session.user.newNotifications} />
-            {/* <Link
+            {/* <Link prefetch={false} 
             className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             href='/news'
           >
@@ -79,6 +81,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <span className='hidden md:inline-block'>News</span>
           </Link> */}
             <Link
+              prefetch={false}
               href='/users'
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             >
@@ -86,6 +89,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <span className='hidden md:inline-block'>Users</span>
             </Link>
             <Link
+              prefetch={false}
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
               href={`/user/${username}`}
             >
@@ -93,6 +97,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <span className='hidden md:inline-block'>Profile</span>
             </Link>
             <Link
+              prefetch={false}
               href='/search'
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             >
@@ -100,6 +105,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <span className='hidden md:inline-block'>Search</span>
             </Link>
             <Link
+              prefetch={false}
               href='/post'
               className='flex items-center gap-2 rounded-md bg-gradient-to-r from-yap-red-500 from-20% to-rose-500 px-4 py-2 text-2xl text-zinc-100 transition-all hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:to-rose-700'
             >
