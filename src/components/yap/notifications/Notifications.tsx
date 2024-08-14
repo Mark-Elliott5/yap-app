@@ -14,10 +14,16 @@ const Notifications = ({ initialState }: { initialState: Date | null }) => {
     const interval = setInterval(async () => {
       // return if there are unchecked notifications to stop pointless fetches
       if (newNotifs) return;
-      const response = await fetch('/api/notifications', { cache: 'no-store' });
-      if (!response.ok) return;
-      const bool = await response.json();
-      setNewNotifs(bool);
+      try {
+        const response = await fetch('/api/notifications', {
+          cache: 'no-store',
+        });
+        if (!response.ok) return;
+        const bool = await response.json();
+        setNewNotifs(bool);
+      } catch {
+        console.warn('Error occured during new notifications fetch');
+      }
     }, 3000);
 
     return () => clearInterval(interval);
