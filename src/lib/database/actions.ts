@@ -6,7 +6,6 @@ import bcrypt from 'bcryptjs';
 import { ZodError } from 'zod';
 
 import { signIn, signOut } from '@/src/app/api/auth/[...nextauth]/auth';
-import { notifierUserIdMap } from '@/src/app/api/notifications/notifierMap';
 import db from '@/src/lib/database/db';
 import {
   getCurrentUserPassword,
@@ -607,8 +606,6 @@ const createReply = async (data: FormData) => {
       }
 
       await db.notification.create({ data: notification });
-      const notifier = notifierUserIdMap.get(yap.parentYap.authorId);
-      if (notifier) notifier.update({ data: 'true', event: 'update' });
     }
 
     return { postId };
@@ -756,8 +753,6 @@ const heartYap = async (data: FormData) => {
       }
 
       await db.notification.create({ data: notification });
-      const notifier = notifierUserIdMap.get(like.yap.authorId);
-      if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {
       await db.like.delete({
         where: {
@@ -883,8 +878,6 @@ const echoYap = async (data: FormData) => {
       }
 
       await db.notification.create({ data: notification });
-      const notifier = notifierUserIdMap.get(echo.yap.authorId);
-      if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {
       await db.echo.delete({
         where: {
@@ -946,7 +939,7 @@ const followUser = async (data: FormData) => {
       },
     });
 
-    const updatedUser = await db.user.update({
+    await db.user.update({
       where: {
         username,
       },
@@ -997,8 +990,6 @@ const followUser = async (data: FormData) => {
       }
 
       await db.notification.create({ data: notification });
-      const notifier = notifierUserIdMap.get(updatedUser.id);
-      if (notifier) notifier.update({ data: 'true', event: 'update' });
     } else {
       await db.notification.deleteMany({
         where: {

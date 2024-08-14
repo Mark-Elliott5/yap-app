@@ -1,89 +1,38 @@
 'use client';
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { TbBell, TbBellFilled } from 'react-icons/tb';
 
-const EventSourceContext = createContext<null | EventSource>(null);
-
-export const EventSourceProvider = ({ children }: { children: ReactNode }) => {
-  const [eventSource, setEventSource] = useState<null | EventSource>(null);
+const Notifications = ({ initialState }: { initialState: Date | null }) => {
+  const [newNotifs, setNewNotifs] = useState<boolean>(!!initialState);
 
   useEffect(() => {
-    const source = new EventSource('/api/notifications', {
-      withCredentials: true,
-    });
-    setEventSource(source);
-    console.log(source.url);
+    const interval = setInterval(async () => {
+      // return if there are unchecked notifications to stop pointless fetches
+      if (newNotifs) return;
+      const response = await fetch('/api/notifications', { cache: 'no-store' });
+      if (!response.ok) return;
+      const bool = await response.json();
+      setNewNotifs(bool);
+    }, 3000);
 
-    return () => {
-      source.close();
-    };
-  }, []);
-
-  return (
-    <EventSourceContext.Provider value={eventSource}>
-      {children}
-    </EventSourceContext.Provider>
-  );
-};
-
-const NotificationIcon = ({ initialState }: { initialState: Date | null }) => {
-  const [state, setState] = useState<boolean>(!!initialState);
-
-  const eventSource = useContext(EventSourceContext);
-  const updateState = useCallback(
-    (event: MessageEvent) => {
-      if (event.data === undefined) {
-        eventSource?.close();
-        return;
-      }
-      setState(event.data === 'true');
-    },
-    [eventSource]
-  );
-
-  useEffect(() => {
-    if (eventSource) {
-      eventSource.onerror = (error) => {
-        console.error('EventSource failed:', error);
-      };
-      eventSource.addEventListener('update', updateState);
-
-      return () => {
-        eventSource.removeEventListener('update', updateState);
-      };
-    }
-  }, [eventSource, updateState]);
+    return () => clearInterval(interval);
+  }, [newNotifs]);
 
   return (
     <Link
       className='flex items-center gap-2 px-2 py-1 text-2xl text-zinc-950 hover:opacity-70 hover:drop-shadow-lg dark:text-zinc-100'
       href='/notifications'
       prefetch={false}
-      onClick={() => setState(false)}
+      onClick={() => setNewNotifs(false)}
     >
-      {state ? (
+      {newNotifs ? (
         <TbBellFilled className={'animate-wiggle-more animate-infinite'} />
       ) : (
         <TbBell />
       )}
       <span className='hidden md:inline-block'>Notifications</span>
     </Link>
-  );
-};
-
-const Notifications = ({ initialState }: { initialState: Date | null }) => {
-  return (
-    <EventSourceProvider>
-      <NotificationIcon initialState={initialState} />
-    </EventSourceProvider>
   );
 };
 
