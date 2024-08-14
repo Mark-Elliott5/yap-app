@@ -1,10 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { TbBell, TbBellFilled } from 'react-icons/tb';
 
 const Notifications = ({ initialState }: { initialState: Date | null }) => {
-  const [newNotifs, setNewNotifs] = useState<boolean>(!!initialState);
+  const path = usePathname();
+  const [newNotifs, setNewNotifs] = useState<boolean>(
+    !!initialState && path !== '/notifications'
+  );
 
   useEffect(() => {
     const interval = setInterval(async () => {

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Fragment, Suspense } from 'react';
 import { Metadata } from 'next';
 
 import { Separator } from '@/src/components/ui/separator';
@@ -60,13 +60,13 @@ async function Notifications({
           ) {
             separatorUsed = true;
             return (
-              <>
+              <Fragment key={'separator'}>
                 <Separator className='bg-gradient-to-r from-transparent via-yap-red-500 to-transparent drop-shadow-heart' />
                 <div className='max-w-fit cursor-default rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'>
                   Old
                 </div>
                 <NotificationTab key={notif.id} {...notif} />
-              </>
+              </Fragment>
             );
           }
           return <NotificationTab key={notif.id} {...notif} />;
