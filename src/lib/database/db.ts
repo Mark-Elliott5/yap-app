@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 
 const connectionString = `${process.env.DATABASE_URL}`;
 
-const pool = new Pool({ connectionString });
+const pool = new Pool({ connectionString, idleTimeoutMillis: 25000 });
 const adapter = new PrismaNeon(pool);
 
 declare global {
