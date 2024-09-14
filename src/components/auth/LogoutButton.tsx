@@ -8,7 +8,7 @@ function LogoutButton({
   username?: string;
 }) {
   return (
-    <form action={logout} className={className}>
+    <form action={logout} onSubmit={logout} className={className}>
       <button type='submit' className={'h-10 w-full select-none py-2'}>
         Log out
         {username &&

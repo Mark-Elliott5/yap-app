@@ -9,7 +9,7 @@ function ThemeChanger() {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className='flex w-full items-center gap-1'
+      className='flex w-full items-center gap-1 px-2 py-1.5'
     >
       {theme === 'dark' ? <TbSunHigh /> : <TbMoon />} Theme
     </button>

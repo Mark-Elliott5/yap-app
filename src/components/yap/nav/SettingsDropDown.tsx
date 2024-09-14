@@ -22,7 +22,7 @@ function SettingsDropDown() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href='/settings' className='w-full'>
+          <Link href='/settings' className='w-full px-2 py-1.5'>
             Settings
           </Link>
         </DropdownMenuItem>
@@ -30,7 +30,7 @@ function SettingsDropDown() {
           <ThemeChanger />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className='w-full'>
+        <DropdownMenuItem>
           <DropDownLogout />
         </DropdownMenuItem>
       </DropdownMenuContent>
