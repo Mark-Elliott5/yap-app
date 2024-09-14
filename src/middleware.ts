@@ -27,6 +27,11 @@ export default auth((req) => {
     return Response.redirect(new URL('/login', nextUrl));
   }
 
+  if (nextUrl.pathname === '/myself')
+    return Response.redirect(
+      new URL(`/user/${req.auth?.user.username}`, nextUrl)
+    );
+
   if (isApiAuthRoute || isPublicRoute) {
     // console.log('ISAPIAUTHROUTE/PUBLICROUTE RETURN');
     return;
@@ -78,3 +83,5 @@ export const config = {
     '/((?!api|_next/static|_next/image|images|favicon.ico|icon.svg).*)',
   ],
 };
+
+// export const runtime = 'nodejs';

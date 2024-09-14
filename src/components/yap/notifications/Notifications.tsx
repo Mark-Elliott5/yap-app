@@ -1,33 +1,34 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { TbBell, TbBellFilled } from 'react-icons/tb';
 
-const Notifications = ({ initialState }: { initialState: Date | null }) => {
+const Notifications = () => {
   const path = usePathname();
-  const [newNotifs, setNewNotifs] = useState<boolean>(
-    !!initialState && path !== '/notifications'
+  const [newNotifs, setNewNotifs] = useState<boolean | undefined>(
+    path === '/notifications' ? false : undefined
   );
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      // return if there are unchecked notifications to stop pointless fetches
-      if (newNotifs) return;
-      try {
-        const response = await fetch('/api/notifications', {
-          cache: 'no-store',
-        });
-        if (!response.ok) return;
-        const bool = await response.json();
-        setNewNotifs(bool);
-      } catch {
-        console.warn('Error occured during new notifications fetch');
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
+  const checkForNotifs = useCallback(async () => {
+    // return if there are unchecked notifications to stop pointless fetches
+    if (newNotifs) return;
+    try {
+      const response = await fetch('/api/notifications', {
+        cache: 'no-store',
+      });
+      if (!response.ok) return;
+      const bool = await response.json();
+      setNewNotifs(bool);
+    } catch {
+      console.warn('Error occured during new notifications fetch');
+    }
   }, [newNotifs]);
+
+  useEffect(() => {
+    const interval = setInterval(checkForNotifs, 3000);
+    return () => clearInterval(interval);
+  }, [checkForNotifs]);
 
   return (
     <Link

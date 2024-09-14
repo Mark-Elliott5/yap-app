@@ -23,13 +23,8 @@ import { Separator } from '@/src/components/ui/separator';
 import { Skeleton } from '@/src/components/ui/skeleton';
 import NavBarUserInfo from '@/src/components/yap/nav/NavBarUserInfo';
 import Notifications from '@/src/components/yap/notifications/Notifications';
-import { getSession } from '@/src/lib/database/getUser';
 
 async function ClientLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
-  if (!session) return null;
-
-  const { username } = session.user;
   return (
     <>
       <div className='sticky top-0 z-10 backdrop-blur-[8px] md:z-[9]'>
@@ -72,8 +67,8 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
               <TbHome />
               <span className='hidden md:inline-block'>Home</span>
             </Link>
-            <Notifications initialState={session.user.newNotifications} />
-            {/* <Link prefetch={false} 
+            <Notifications />
+            {/* <Link
             className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
             href='/news'
           >
@@ -91,7 +86,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             <Link
               prefetch={false}
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-              href={`/user/${username}`}
+              href={'/user/myself'}
             >
               <TbUserSquare />
               <span className='hidden md:inline-block'>Profile</span>
