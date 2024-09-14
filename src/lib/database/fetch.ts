@@ -21,7 +21,8 @@ const getLatestYaps = async (
               "Yap".id, 
               "Yap".text, 
               "Yap".image,
-              "Yap".date, 
+              "Yap".date,
+              "Yap"."isReply",
               'Yap' AS type, 
               NULL AS username,
               NULL AS yap,
@@ -63,7 +64,7 @@ const getLatestYaps = async (
           LEFT JOIN "User" u1 ON "Yap"."authorId" = u1.id
           LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
           LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
-          GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
+          GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, "Yap"."isReply", u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
                   "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
                   "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
           UNION ALL
@@ -71,7 +72,8 @@ const getLatestYaps = async (
               "Echo".id::VARCHAR, 
               NULL AS text,
               NULL AS image,
-              "Echo".date, 
+              "Echo".date,
+              NULL as "isReply",
               'Echo' AS type, 
               "Echo"."username",
               JSON_BUILD_OBJECT(
@@ -147,7 +149,8 @@ const getLatestYaps = async (
             "Yap".id, 
             "Yap".text, 
             "Yap".image,
-            "Yap".date, 
+            "Yap".date,
+            "Yap"."isReply",
             'Yap' AS type, 
             NULL AS username,
             NULL AS yap,
@@ -189,15 +192,14 @@ const getLatestYaps = async (
         LEFT JOIN "User" u1 ON "Yap"."authorId" = u1.id
         LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
-        GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
-                "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
-                "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
+        GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, "Yap"."isReply", u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
         UNION ALL
         SELECT 
             "Echo".id::VARCHAR, 
             NULL AS text,
             NULL AS image,
             "Echo".date, 
+            NULL as "isReply",
             'Echo' AS type, 
             "Echo"."username",
             JSON_BUILD_OBJECT(
@@ -249,16 +251,7 @@ const getLatestYaps = async (
         LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
         LEFT JOIN "User" u5 ON "ParentYap"."authorId" = u5.id
         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
-        GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, 
-                u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, 
-                "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", 
-                "Yap"."isReply", "Yap"."parentYapId", u4.username, 
-                u4."displayName", u4.image, u4."joinDate", "ParentYap".id, 
-                "ParentYap".text, "ParentYap".date, "ParentYap".image, 
-                "ParentYap"."authorId", "ParentYap"."isReply", 
-                "ParentYap"."parentYapId", u5.username, u5."displayName", 
-                u5.image, u5."joinDate", u2.username, u2."displayName", 
-                u2.image, u2."joinDate"
+        GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", "Yap"."isReply", "Yap"."parentYapId", u4.username, u4."displayName", u4.image, u4."joinDate", "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", "ParentYap"."isReply", "ParentYap"."parentYapId", u5.username, u5."displayName", u5.image, u5."joinDate", u2.username, u2."displayName", u2.image, u2."joinDate"
     )
     SELECT * FROM combined_posts
     ORDER BY date DESC, id DESC
@@ -1091,6 +1084,7 @@ const getUserProfileYapsAndEchoes = async (
             "Yap".text, 
             "Yap".image,
             "Yap".date, 
+            "Yap".'isReply',
             'Yap' AS type, 
             NULL AS username,
             NULL AS yap,
@@ -1133,15 +1127,14 @@ const getUserProfileYapsAndEchoes = async (
         LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
         WHERE u1.username = ${username}
-        GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
-                "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
-                "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
+        GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, "Yap".'isReply', u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
         UNION ALL
         SELECT 
             "Echo".id::VARCHAR, 
             NULL AS text,
             NULL AS image,
-            "Echo".date, 
+            "Echo".date,
+            NULL as "isReply",
             'Echo' AS type, 
             "Echo"."username",
             JSON_BUILD_OBJECT(
@@ -1194,16 +1187,7 @@ const getUserProfileYapsAndEchoes = async (
         LEFT JOIN "User" u5 ON "ParentYap"."authorId" = u5.id
         LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
         WHERE u3.username = ${username}
-        GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, 
-                u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, 
-                "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", 
-                "Yap"."isReply", "Yap"."parentYapId", u4.username, 
-                u4."displayName", u4.image, u4."joinDate", "ParentYap".id, 
-                "ParentYap".text, "ParentYap".date, "ParentYap".image, 
-                "ParentYap"."authorId", "ParentYap"."isReply", 
-                "ParentYap"."parentYapId", u5.username, u5."displayName", 
-                u5.image, u5."joinDate", u2.username, u2."displayName", 
-                u2.image, u2."joinDate"
+        GROUP BY "Echo".id, "Echo".date, "Echo"."username", u3.id, u3.username, u3."displayName", u3.image, u3."joinDate", "Yap".id, "Yap".text, "Yap".date, "Yap".image, "Yap"."imageKey", "Yap"."authorId", "Yap"."isReply", "Yap"."parentYapId", u4.username, u4."displayName", u4.image, u4."joinDate", "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", "ParentYap"."isReply", "ParentYap"."parentYapId", u5.username, u5."displayName", u5.image, u5."joinDate", u2.username, u2."displayName", u2.image, u2."joinDate"
     )
     SELECT * FROM combined_posts
     WHERE (date, id::VARCHAR) < (${date}, ${id})
@@ -1219,7 +1203,8 @@ const getUserProfileYapsAndEchoes = async (
           "Yap".id, 
           "Yap".text, 
           "Yap".image,
-          "Yap".date, 
+          "Yap".date,
+          "Yap"."isReply",
           'Yap' AS type, 
           NULL AS username,
           NULL AS yap,
@@ -1262,15 +1247,14 @@ const getUserProfileYapsAndEchoes = async (
       LEFT JOIN "Yap" AS "ParentYap" ON "Yap"."parentYapId" = "ParentYap".id
       LEFT JOIN "User" u2 ON "ParentYap"."authorId" = u2.id
       WHERE u1.username = ${username}
-      GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", 
-              "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", 
-              "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
+      GROUP BY "Yap".id, "Yap".text, "Yap".image, "Yap".date, "Yap"."isReply", u1.id, u1.username, u1."displayName", u1.image, u1."joinDate", "ParentYap".id, "ParentYap".text, "ParentYap".date, "ParentYap".image, "ParentYap"."authorId", "ParentYap"."isReply", "ParentYap"."parentYapId", u2.username, u2."displayName", u2.image, u2."joinDate"
       UNION ALL
       SELECT 
           "Echo".id::VARCHAR, 
           NULL AS text,
           NULL AS image,
           "Echo".date, 
+          NULL AS "isReply",
           'Echo' AS type, 
           "Echo"."username",
           JSON_BUILD_OBJECT(
