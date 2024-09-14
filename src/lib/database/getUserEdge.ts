@@ -1,4 +1,4 @@
-import db from '@/src/lib/database/db';
+import { dbEdge } from '@/src/lib/database/db';
 import { User } from '@prisma/client';
 
 // These functions should ONLY be imported into auth.ts, or anywhere it might
@@ -11,7 +11,7 @@ import { User } from '@prisma/client';
  */
 const getUserByEmailEdge = async (email: User['email']) => {
   try {
-    const user = await db.user.findUnique({
+    const user = await dbEdge.user.findUnique({
       where: {
         email,
       },
@@ -28,7 +28,7 @@ const getUserByEmailEdge = async (email: User['email']) => {
  */
 const getUserByIdEdge = async (id: User['id']) => {
   try {
-    const user = await db.user.findUnique({
+    const user = await dbEdge.user.findUnique({
       where: {
         id,
       },
