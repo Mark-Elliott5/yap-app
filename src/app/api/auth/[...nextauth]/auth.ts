@@ -3,7 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import bcrypt from 'bcryptjs';
 
-import db from '@/src/lib/database/db';
+import { dbEdge } from '@/src/lib/database/db';
 import {
   getUserByEmailEdge,
   getUserByIdEdge,
@@ -80,7 +80,7 @@ export const {
   },
   events: {
     async linkAccount({ user }) {
-      await db.user.update({
+      await dbEdge.user.update({
         where: { id: user.id },
         data: {
           emailVerified: new Date(),
@@ -98,7 +98,7 @@ export const {
     //   }
     // },
   },
-  adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(dbEdge),
   session: { strategy: 'jwt' },
   providers: [
     Github({
