@@ -1347,7 +1347,7 @@ const getNotifications = async (
   id: string | undefined = undefined
 ) => {
   try {
-    await db.user.update({
+    db.user.update({
       where: {
         username,
       },
