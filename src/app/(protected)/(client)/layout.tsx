@@ -82,7 +82,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             </Link>
             <Link
               className='flex items-center gap-2 px-2 py-1 text-2xl hover:opacity-70 hover:drop-shadow-lg'
-              href={'/user/myself'}
+              href={'/myself'}
             >
               <TbUserSquare />
               <span className='hidden md:inline-block'>Profile</span>
