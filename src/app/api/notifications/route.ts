@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const session = await getSession();
   if (!session || !session.user) {
-    throw new Error('User not logged in. SSE connection aborted.');
+    throw new Error('User not logged in. Request aborted.');
   }
   return new NextResponse(JSON.stringify(!!session.user.newNotifications), {
     headers: {
