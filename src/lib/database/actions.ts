@@ -40,30 +40,30 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
 
-function handleActionError(err: unknown) {
+function getErrorMessage(err: unknown) {
   switch (true) {
     case err instanceof ZodError:
-      return { error: err.issues[0].message };
+      return err.issues[0].message;
 
     case err instanceof ActionError:
-      return { error: err.message };
+      return err.message;
 
     case err instanceof PrismaClientKnownRequestError:
       if (err.code === 'P2002') {
-        return { error: 'Email already in use.' };
+        return 'Email already in use.';
       }
-      return { error: 'Something went wrong! Try again.' };
+      return 'Something went wrong! Try again.';
 
     case err instanceof AuthError:
       switch (err.type) {
         case 'CredentialsSignin':
-          return { error: 'Invalid credentials.' };
+          return 'Invalid credentials.';
         default:
-          return { error: 'Something went wrong!' };
+          return 'Something went wrong!';
       }
 
     default:
-      return { error: 'Unknown error occurred.' };
+      return 'Unknown error occurred.';
   }
 }
 
@@ -83,7 +83,7 @@ const login = async (data: FormData) => {
     userPassword = password;
   } catch (err) {
     console.log('LOGIN ERR:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
   // successful auth throws NEXT_REDIRECT which is an error
   // therefore this function must be called outside try/catch or thrown again
@@ -138,7 +138,7 @@ const register = async (data: FormData) => {
     });
   } catch (err) {
     console.log('REGISTER ERROR:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
   // successful auth throws NEXT_REDIRECT which is an error
   // therefore this function must be called outside try/catch or thrown again
@@ -172,7 +172,7 @@ const onboarding = async (data: FormData) => {
     });
   } catch (err) {
     console.log('onboarding Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 
   redirect(`/home`, RedirectType.replace);
@@ -207,7 +207,7 @@ const changeEmail = async (data: FormData) => {
     return { success: 'Email updated.' };
   } catch (err) {
     console.log('changeEmail Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -244,7 +244,7 @@ const changePassword = async (data: FormData) => {
     return { success: 'Password updated.' };
   } catch (err) {
     console.log('changePassword Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -285,7 +285,7 @@ const changeAvatar = async (data: FormData) => {
     return { success: 'Avatar uploaded successfully.', url: response.data.url };
   } catch (err) {
     console.log('changeAvatar Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -305,7 +305,7 @@ const deleteAccount = async (data: FormData) => {
     });
   } catch (err) {
     console.log('deleteAccount Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
   await signOut({
     redirectTo: '/login',
@@ -334,7 +334,7 @@ const changeDisplayName = async (data: FormData) => {
     return { success: 'Display name updated successfully.' };
   } catch (err) {
     console.log('changeDisplayName Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -356,7 +356,7 @@ const changeBio = async (data: FormData) => {
     return { success: 'Bio updated successfully.' };
   } catch (err) {
     console.log('changeBio Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -397,7 +397,7 @@ const createPost = async (data: FormData) => {
     return { postId };
   } catch (err) {
     console.log('createPost Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -492,7 +492,7 @@ const createReply = async (data: FormData) => {
     return { postId };
   } catch (err) {
     console.log('createReply Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -517,7 +517,7 @@ const deleteYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('deleteYap Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -631,7 +631,7 @@ const heartYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('heartYap Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -745,7 +745,7 @@ const echoYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('echoYap Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -836,7 +836,7 @@ const followUser = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('followUser Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
@@ -853,7 +853,7 @@ const clearNotifications = async () => {
     return { success: true };
   } catch (err) {
     console.log('clearNotif Error:', err);
-    return handleActionError(err);
+    return { error: getErrorMessage(err) };
   }
 };
 
