@@ -40,6 +40,33 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 class ActionError extends Error {}
 
+function handleActionError(err: unknown) {
+  switch (true) {
+    case err instanceof ZodError:
+      return { error: err.issues[0].message };
+
+    case err instanceof ActionError:
+      return { error: err.message };
+
+    case err instanceof PrismaClientKnownRequestError:
+      if (err.code === 'P2002') {
+        return { error: 'Email already in use.' };
+      }
+      return { error: 'Something went wrong! Try again.' };
+
+    case err instanceof AuthError:
+      switch (err.type) {
+        case 'CredentialsSignin':
+          return { error: 'Invalid credentials.' };
+        default:
+          return { error: 'Something went wrong!' };
+      }
+
+    default:
+      return { error: 'Unknown error occurred.' };
+  }
+}
+
 const getSessionWrapper = async (err: string) => {
   const session = await getSession();
   if (!session || !session.user) {
@@ -49,38 +76,22 @@ const getSessionWrapper = async (err: string) => {
 };
 
 const login = async (data: FormData) => {
+  let userEmail: string, userPassword: string;
   try {
     const { email, password } = await LoginSchema.parseAsync(data);
-
-    await signIn('credentials', {
-      email,
-      password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
-    });
+    userEmail = email;
+    userPassword = password;
   } catch (err) {
     console.log('LOGIN ERR:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof AuthError) {
-      let msg = '';
-      switch (err.type) {
-        // no way currently of suppressing CredentialSignin console log
-        case 'CredentialsSignin':
-          msg = 'Invalid credentials.';
-          break;
-        default:
-          msg = 'Something went wrong!';
-      }
-      return { error: msg };
-    }
-    // successful auth throws NEXT_REDIRECT which is an error??
-    // therefore this line is necessary to redirect successful logins
-    throw err;
+    return handleActionError(err);
   }
-
-  // return { success: 'Login successful!' };
+  // successful auth throws NEXT_REDIRECT which is an error
+  // therefore this function must be called outside try/catch or thrown again
+  await signIn('credentials', {
+    email: userEmail,
+    password: userPassword,
+    redirectTo: DEFAULT_LOGIN_REDIRECT,
+  });
 };
 
 const logout = async () => {
@@ -90,6 +101,7 @@ const logout = async () => {
 };
 
 const register = async (data: FormData) => {
+  let userEmail: string, userPassword: string;
   try {
     const { email, password, confirmPassword } =
       await RegisterSchema.parseAsync(data);
@@ -97,6 +109,9 @@ const register = async (data: FormData) => {
     if (password !== confirmPassword) {
       throw new ActionError('Passwords do not match');
     }
+
+    userEmail = email;
+    userPassword = password;
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const userObj: Prisma.UserCreateInput = {
@@ -121,50 +136,17 @@ const register = async (data: FormData) => {
         following: { connect: { username: process.env.AUTOFOLLOW ?? '' } },
       },
     });
-
-    // return { success: 'Registration successful!' };
-
-    await signIn('credentials', {
-      email,
-      password,
-      redirectTo: DEFAULT_REGISTER_REDIRECT,
-    });
   } catch (err) {
     console.log('REGISTER ERROR:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-
-    if (err instanceof PrismaClientKnownRequestError) {
-      if (err.code === 'P2002') {
-        return { error: 'Email already in use.' };
-      }
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong!' };
-    }
-
-    if (err instanceof AuthError) {
-      let msg = '';
-      switch (err.type) {
-        // currently, no way of suppressing CredentialSignin console log
-        case 'CredentialsSignin':
-          msg = 'Invalid credentials.';
-          break;
-        default:
-          msg = 'Something went wrong!';
-      }
-      return { error: msg };
-    }
-    // successful auth throws NEXT_REDIRECT which is an error??
-    // therefore this line is necessary to redirect successful logins
-    throw err;
+    return handleActionError(err);
   }
-
-  // return { success: 'Register successful!' };
+  // successful auth throws NEXT_REDIRECT which is an error
+  // therefore this function must be called outside try/catch or thrown again
+  await signIn('credentials', {
+    email: userEmail,
+    password: userPassword,
+    redirectTo: DEFAULT_REGISTER_REDIRECT,
+  });
 };
 
 const onboarding = async (data: FormData) => {
@@ -178,7 +160,7 @@ const onboarding = async (data: FormData) => {
     const { username, displayName } = await OnboardingSchema.parseAsync(data);
     const existingUser = await getUserByUsername(username);
     if (existingUser) {
-      throw new ActionError('Username already taken');
+      throw new ActionError('Username already taken.');
     }
 
     await db.user.update({
@@ -188,24 +170,9 @@ const onboarding = async (data: FormData) => {
         displayName,
       },
     });
-    // return { success: 'Registration successful!' };
   } catch (err) {
     console.log('onboarding Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong!' };
-    }
-
-    if (err instanceof ActionError) {
-      console.log('ActionError:', err);
-      return { error: err.message };
-    }
-
-    return { error: 'Something went wrong!' };
+    return handleActionError(err);
   }
 
   redirect(`/home`, RedirectType.replace);
@@ -240,29 +207,7 @@ const changeEmail = async (data: FormData) => {
     return { success: 'Email updated.' };
   } catch (err) {
     console.log('changeEmail Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof AuthError) {
-      let msg = '';
-      switch (err.type) {
-        // no way currently of suppressing CredentialSignin console log
-        case 'CredentialsSignin':
-          msg = 'Invalid credentials.';
-          break;
-        default:
-          msg = 'Something went wrong!';
-      }
-      return { error: msg };
-    }
-
-    if (err instanceof ActionError) {
-      console.log('ActionError:', err);
-      return { error: err.message };
-    }
-
-    return { error: 'Something went wrong!' };
+    return handleActionError(err);
   }
 };
 
@@ -299,16 +244,7 @@ const changePassword = async (data: FormData) => {
     return { success: 'Password updated.' };
   } catch (err) {
     console.log('changePassword Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      console.log('ActionError:', err);
-      return { error: err.message };
-    }
-
-    return { error: 'Something went wrong!' };
+    return handleActionError(err);
   }
 };
 
@@ -349,17 +285,7 @@ const changeAvatar = async (data: FormData) => {
     return { success: 'Avatar uploaded successfully.', url: response.data.url };
   } catch (err) {
     console.log('changeAvatar Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -379,17 +305,7 @@ const deleteAccount = async (data: FormData) => {
     });
   } catch (err) {
     console.log('deleteAccount Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
   await signOut({
     redirectTo: '/login',
@@ -418,17 +334,7 @@ const changeDisplayName = async (data: FormData) => {
     return { success: 'Display name updated successfully.' };
   } catch (err) {
     console.log('changeDisplayName Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -450,17 +356,7 @@ const changeBio = async (data: FormData) => {
     return { success: 'Bio updated successfully.' };
   } catch (err) {
     console.log('changeBio Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -501,22 +397,7 @@ const createPost = async (data: FormData) => {
     return { postId };
   } catch (err) {
     console.log('createPost Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -611,22 +492,7 @@ const createReply = async (data: FormData) => {
     return { postId };
   } catch (err) {
     console.log('createReply Error:', err);
-    if (err instanceof ZodError) {
-      return { error: err.issues[0].message };
-    }
-
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -651,18 +517,7 @@ const deleteYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('deleteYap Error:', err);
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -776,18 +631,7 @@ const heartYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('heartYap Error:', err);
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -901,18 +745,7 @@ const echoYap = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('echoYap Error:', err);
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -1003,18 +836,7 @@ const followUser = async (data: FormData) => {
     return { success: true };
   } catch (err) {
     console.log('followUser Error:', err);
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
@@ -1031,18 +853,7 @@ const clearNotifications = async () => {
     return { success: true };
   } catch (err) {
     console.log('clearNotif Error:', err);
-    if (err instanceof PrismaClientKnownRequestError) {
-      console.log('Prisma error:', err);
-      return { error: 'Something went wrong! Please try again.' };
-    }
-
-    if (err instanceof ActionError) {
-      return { error: err.message };
-    }
-    // if (err instanceof PrismaClientKnownRequestError) {
-    //   return { error: 'Database error!' };
-    // }
-    return { error: 'Unknown error occured.' };
+    return handleActionError(err);
   }
 };
 
