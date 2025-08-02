@@ -5,6 +5,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+import ListElement from '@/src/components/yap/ListElement';
 import AutoMention from '@/src/components/yap/post/AutoMention';
 import DeleteButton from '@/src/components/yap/post/buttons/DeleteButton';
 import EchoButton from '@/src/components/yap/post/buttons/EchoButton';
@@ -40,8 +41,12 @@ async function YapPost({
   const liked = await getLiked(id, currentUsername);
   const echoed = await getEchoed(id, currentUsername);
   return (
-    <div
-      className={`flex w-full flex-col gap-2 ${parentYap === 'thread' ? 'rounded-b-lg rounded-tr-lg' : 'rounded-lg'} border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+    <ListElement
+      className={
+        parentYap === 'thread'
+          ? '!rounded-none !rounded-b-lg !rounded-tr-lg'
+          : ''
+      }
     >
       <div
         className={`flex flex-wrap items-center justify-between gap-y-3 ${isReply && 'mb-2'}`}
@@ -130,7 +135,7 @@ async function YapPost({
         <ReplyButton id={id} user={author.username} replies={_count.replies} />
         {author.username === currentUsername && <DeleteButton id={id} />}
       </div>
-    </div>
+    </ListElement>
   );
 }
 

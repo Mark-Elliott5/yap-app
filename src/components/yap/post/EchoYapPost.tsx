@@ -6,6 +6,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/src/components/ui/avatar';
+import ListElement from '@/src/components/yap/ListElement';
 import AutoMention from '@/src/components/yap/post/AutoMention';
 import DeleteButton from '@/src/components/yap/post/buttons/DeleteButton';
 import EchoButton from '@/src/components/yap/post/buttons/EchoButton';
@@ -37,9 +38,7 @@ async function EchoYapPost({
   const [liked, echoed] = await Promise.all([likedPromise, echoedPromise]);
 
   return (
-    <div
-      className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
-    >
+    <ListElement>
       <Link
         href={`/user/${username}/`}
         className='flex flex-wrap items-center justify-between gap-y-3 text-xs text-zinc-600'
@@ -153,7 +152,7 @@ async function EchoYapPost({
           )}
         </div>
       </div>
-    </div>
+    </ListElement>
   );
 }
 
