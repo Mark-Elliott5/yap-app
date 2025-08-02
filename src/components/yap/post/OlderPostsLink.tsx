@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { TbRotate2 } from 'react-icons/tb';
 
+import EndOfList from '@/src/components/yap/EndOfList';
+
 function OlderPostsLink({
   length,
   id,
@@ -25,13 +27,8 @@ function OlderPostsLink({
     return () => clearTimeout(timeout);
   }, [spin]);
 
-  if (length < 20) {
-    return (
-      <div>
-        <span className='flex max-w-fit cursor-default items-center gap-2 rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg dark:border-zinc-800 dark:bg-zinc-900'>{`You've reached the end!`}</span>
-      </div>
-    );
-  }
+  if (length < 20) return <EndOfList />;
+
   return (
     <div className=''>
       <Link
