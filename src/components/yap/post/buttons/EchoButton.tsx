@@ -40,7 +40,7 @@ function EchoButton({ id, echoed, echoes }: EchoButtonProps) {
           >
             <input hidden value={id} readOnly name='id' />
             <button
-              className={`transition-all hover:scale-[1.2] hover:text-yap-peri-500 hover:drop-shadow-echo active:scale-[0.95]  ${on ? 'text-yap-peri-500 drop-shadow-echo' : 'text-zinc-500 dark:text-zinc-600'} flex items-center gap-1`}
+              className={`transition-[transform,filter] hover:scale-[1.2] hover:text-yap-peri-500 hover:drop-shadow-echo active:scale-[0.95]  ${on ? 'text-yap-peri-500 drop-shadow-echo' : 'text-zinc-500 dark:text-zinc-600'} flex items-center gap-1`}
               onMouseOver={() => setSpin(true)}
               onMouseLeave={() => setSpin(false)}
             >

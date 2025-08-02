@@ -96,7 +96,7 @@ async function ClientLayout({ children }: { children: React.ReactNode }) {
             </Link>
             <Link
               href='/post'
-              className='flex items-center gap-2 rounded-md bg-gradient-to-r from-yap-red-500 from-20% to-rose-500 px-4 py-2 text-2xl text-zinc-100 transition-all hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:to-rose-700'
+              className='flex items-center gap-2 rounded-md bg-gradient-to-r from-yap-red-500 from-20% to-rose-500 px-4 py-2 text-2xl text-zinc-100 transition-[transform,filter] hover:scale-[1.05] hover:drop-shadow-heart active:scale-[0.95] dark:to-rose-700'
             >
               <TbSpeakerphone />
               <span className='hidden md:inline-block'>Yap</span>
