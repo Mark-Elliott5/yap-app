@@ -9,8 +9,11 @@ import { getSession } from '@/src/lib/database/getUser';
 
 async function NavBarUserInfo() {
   const session = await getSession();
-  // Will not evaluate to undefined, because they would have been redirected if so.
-  const { username, displayName, image } = session!.user as {
+
+  // Will not be falsy, because they would have been redirected if so.
+  if (!session) return null;
+
+  const { username, displayName, image } = session.user as {
     username: string;
     displayName: string | null;
     image: string | null;
