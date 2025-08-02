@@ -75,31 +75,31 @@ async function FollowersPage({
       <div className='flex gap-2 overflow-x-scroll px-[9px] py-[6px] text-sm text-zinc-950 sm:gap-4 sm:px-[unset] sm:py-[unset] sm:text-base md:overflow-x-visible md:text-lg lg:text-xl dark:text-zinc-100'>
         <Link
           href={`/user/${params.username}/`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Latest
         </Link>
         <Link
           href={`/user/${params.username}/yaps`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Yaps
         </Link>
         <Link
           href={`/user/${params.username}/echoes`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Echoes
         </Link>
         <Link
           href={`/user/${params.username}/media`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Media
         </Link>
         <Link
           href={`/user/${params.username}/likes`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Likes
         </Link>
@@ -107,13 +107,13 @@ async function FollowersPage({
       <div className='my-4 flex gap-4 text-xl text-zinc-950 dark:text-zinc-100'>
         <Link
           href={`/user/${params.username}/followers`}
-          className='rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-all hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
+          className='rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 shadow-lg transition-transform hover:scale-[1.2] dark:border-zinc-800 dark:bg-zinc-900'
         >
           Followers
         </Link>
         <Link
           href={`/user/${params.username}/following`}
-          className='px-4 py-2 backdrop-blur-sm transition-all hover:scale-[1.2]'
+          className='px-4 py-2 backdrop-blur-sm transition-transform hover:scale-[1.2]'
         >
           Following
         </Link>

@@ -41,7 +41,7 @@ function OlderPostsLink({
       >
         Load Older {typeText ? typeText : 'Posts'}
         <TbRotate2
-          className={`inline-block transition-all ${spin && 'animate-spin animate-reverse animate-thrice'}`}
+          className={`inline-block transition-transform ${spin && 'animate-spin animate-reverse animate-thrice'}`}
           size={'1.25rem'}
         />
       </Link>

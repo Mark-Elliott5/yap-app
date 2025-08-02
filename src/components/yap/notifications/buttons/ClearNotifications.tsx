@@ -23,7 +23,7 @@ function ClearNotificationsButton() {
   return (
     <div>
       <div
-        className={`flex cursor-pointer items-center gap-1 rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 text-sm shadow-lg transition-all hover:scale-[1.2] hover:text-red-500 active:scale-[0.95] sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
+        className={`flex cursor-pointer items-center gap-1 rounded-md border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-4 py-2 text-sm shadow-lg transition-transform hover:scale-[1.2] hover:text-red-500 active:scale-[0.95] sm:text-base dark:border-zinc-800 dark:bg-zinc-900`}
         onClick={() => setFormVisible(true)}
       >
         {formVisible ? (
