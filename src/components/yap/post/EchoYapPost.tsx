@@ -32,8 +32,10 @@ async function EchoYapPost({
   date,
   username,
 }: EchoProps) {
-  const liked = await getLiked(yap.id, currentUsername);
-  const echoed = await getEchoed(yap.id, currentUsername);
+  const likedPromise = getLiked(yap.id, currentUsername);
+  const echoedPromise = getEchoed(yap.id, currentUsername);
+  const [liked, echoed] = await Promise.all([likedPromise, echoedPromise]);
+
   return (
     <div
       className={`flex w-full flex-col gap-2 rounded-lg border-x-[0.5px] border-t-1 border-zinc-200 bg-white px-5 py-4 text-sm shadow-xl sm:text-base dark:border-zinc-800  dark:bg-zinc-900`}
