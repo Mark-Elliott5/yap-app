@@ -18,7 +18,7 @@ import ZoomPostImage from '@/src/components/yap/post/ZoomPostImage';
 import UserHovercard from '@/src/components/yap/UserHovercard';
 import { getEchoed, getLiked, PrismaEchoPost } from '@/src/lib/database/fetch';
 
-interface EchoProps extends PrismaEchoPost {
+interface EchoProps extends Omit<PrismaEchoPost, 'id'> {
   currentUsername: string;
 }
 // const a: PrismaEchoPost = {};
